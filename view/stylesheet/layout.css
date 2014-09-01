@@ -1,0 +1,164 @@
+body {
+	margin:0px;
+	padding:0px;
+	font-family:verdana, arial, helvetica, sans-serif;
+	color:#333;
+	}
+	
+h1 {
+	margin:0px 0px 15px 0px;
+	padding:0px;
+	font-size:28px;
+	line-height:28px;
+	font-weight:900;
+	color:#ccc;
+	}
+	
+p {
+	font:11px/18px verdana, arial, helvetica, sans-serif;
+	padding:0px;
+	}
+
+table {
+	font:11px verdana, arial, helvetica, sans-serif;
+	background-color:#ddeaff;
+	padding:5px;
+	border:none;
+	}
+	
+fieldset {	background-color:#ddeaff;}
+legend {background-color: white; padding:2px; 	border-style: solid;
+	border-color: grey;
+	border-width: 1px;}
+	
+.nostyle_table {
+	font:11px verdana, arial, helvetica, sans-serif;
+	border:0px;
+	background-color:none;
+	padding:5px;
+	}
+	
+td {padding:1px}
+th
+{
+	padding: 2px;
+	font-weight: 900;
+	text-align: left;
+	align: left;
+}
+
+a {
+	color:#09c;
+	font-size:11px;
+	text-decoration:none;
+	font-weight:600;
+	font-family:verdana, arial, helvetica, sans-serif;
+	}
+	
+a:link { color: #06C; }
+
+a:visited { color: #06C; }
+
+a:hover {background-color:#eee;}
+
+#Header
+{	font:Myriad;
+	font-size: 24px;
+	margin: 0px 0px px 0px;
+	padding: 5px 17px 5px 17px;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px 0px;
+	/* top and bottom borders: 1px; left and right borders: 0px */
+	line-height: 24px;
+	background-color: black;
+	height: 90px;
+	/* the correct height */
+}
+#Header a {color:white;}
+
+#Content {
+	padding:0px 0px 0px 20px;
+	}
+
+#Menu {
+	text-align: right;
+	position:absolute;
+	top:5px;
+	right:20px;
+	padding-left:20px;}
+#Menu p {padding:0px;margin:5px;}
+#Menu a {color:white;}
+
+
+#Error {
+	color:#FF0033;
+	font-size:14px;
+	}
+
+.form_element_name {font-weight:bold;font-size:16px;}
+
+
+#Two_Columns {width:22em; float:left;}
+
+
+/* Show only to IE PC \*/
+* html .boxhead h2 {height: 1%;} /* For IE 5 PC */
+
+.sidebox {
+	margin: 0; /* center for now */
+	width: 20em; /* ems so it will grow */
+	background: url(../images/box-parts/sbbody-r.gif) no-repeat bottom right;
+	font-size: 100%;
+}
+.boxhead {
+	background: url(../images/box-parts/sbhead-r.gif) no-repeat top right;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+.boxhead h2 {
+	background: url(../images/box-parts/sbhead-l.gif) no-repeat top left;
+	margin: 0;
+	padding: 22px 30px 5px;
+	color: white; 
+	font-weight: bold; 
+	font-size: 1.2em; 
+	line-height: 1em;
+	text-shadow: rgba(0,0,0,.4) 0px 2px 5px; /* Safari-only, but cool */
+}
+.boxbody {
+	background: url(../images/box-parts/sbbody-l.gif) no-repeat bottom left;
+	margin: 0;
+	padding: 5px 30px 31px;
+}
+
+
+
+
+
+
+.box { 
+  background: #99CCFF; 
+}
+.boxtop { 
+  background: url(images/corners/ne.gif) no-repeat top right; 
+}
+.boxtop div { 
+  height: 10px; 
+  background: url(images/corners/nw.gif) no-repeat top left; 
+}
+.boxbottom { 
+  background: url(images/corners/se.gif) no-repeat bottom right; 
+}
+.boxbottom div { 
+  height: 10px; 
+  background: url(images/corners/sw.gif) no-repeat bottom left; 
+}
+.boxcontent {
+  padding: 0px 10px 0px 10px;
+}
+
+.warning {
+	background-color: #FF9; 
+}

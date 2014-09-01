@@ -1,0 +1,313 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="agencySearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filter Agencies by:" switchType="ajax"
+                          headerClass="searchPanelHeader" styleClass="searchPanel">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency name</ui:define>
+                <h:inputText id="agencyName" value="#{agencyList.agency.agencyName}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency short name</ui:define>
+                <h:inputText id="agencyShortName" value="#{agencyList.agency.agencyShortName}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency fare url</ui:define>
+                <h:inputText id="agencyFareUrl" value="#{agencyList.agency.agencyFareUrl}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency phone</ui:define>
+                <h:inputText id="agencyPhone" value="#{agencyList.agency.agencyPhone}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency timezone</ui:define>
+                <h:selectOneMenu id="agencyTimezone" value="#{agencyList.agency.agencyTimezone}">
+                	<s:selectItems var="_tz" value="#{agencyList.availableTimezoneIds}" label="#{_tz}"
+                		noSelectionLabel="any"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Agency url</ui:define>
+                <h:inputText id="agencyUrl" value="#{agencyList.agency.agencyUrl}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+		        <div class="actionButtons">
+        		    <h:commandButton id="search" value="Search" action="/AgencyList.xhtml"/>
+            		<s:button id="reset" value="Reset" includePageParams="false"/>
+        		</div>
+			</s:decorate>
+        </rich:simpleTogglePanel>
+    </h:form>
+
+	<p/>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/AgencyEdit.xhtml"
+						  id="topCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add agency"/>
+					<f:param name="agencyFrom" value="AgencyList"/>
+					<f:param name="agencyId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty agencyList.resultList}">
+				<h:outputText value="Displaying #{agencyList.firstResult + 1} - #{agencyList.lastResult + 1} of #{agencyList.resultCount}"
+						   rendered="#{not empty agencyList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty agencyList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty agencyList.resultList}">
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="topFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="topPreviousPage">
+					<f:param name="firstResult"
+							value="#{agencyList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="topNextPage">
+					<f:param name="firstResult"
+							value="#{agencyList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="topLastPage">
+					<f:param name="firstResult"
+                		    value="#{agencyList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty agencyList.resultList}">
+				&#160;
+			</s:div>
+
+		</div>
+
+		<div class="results" id="agencyList">
+
+			<h:outputText value="The agency search returned no results."
+					   rendered="#{empty agencyList.resultList}"/>
+
+			<h:form id="agencyForm">
+			<rich:dataTable id="agencyList"
+						   var="_agency"
+						 value="#{agencyList.resultList}"
+					  rendered="#{not empty agencyList.resultList}"
+					styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Agency id"/>
+							<ui:param name="propertyPath" value="agency.agencyId"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_agency.agencyId}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Short name"/>
+							<ui:param name="propertyPath" value="agency.agencyShortName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_agency.agencyShortName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Name"/>
+							<ui:param name="propertyPath" value="agency.agencyName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_agency.agencyName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Phone"/>
+							<ui:param name="propertyPath" value="agency.agencyPhone"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_agency.agencyPhone}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Timezone"/>
+							<ui:param name="propertyPath" value="agency.agencyTimezone"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_agency.agencyTimezone}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{agencyList}"/>
+                    <ui:param name="propertyLabel" value="Agency URL"/>
+                    <ui:param name="propertyPath" value="agency.agencyUrl"/>
+						</ui:include>
+					</f:facet>
+					<h:outputLink value="#{_agency.agencyUrl}">
+						<h:outputText value="#{_agency.agencyUrl}"/>
+					</h:outputLink>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{agencyList}"/>
+							<ui:param name="propertyLabel" value="Fare URL"/>
+							<ui:param name="propertyPath" value="agency.agencyFareUrl"/>
+						</ui:include>
+					</f:facet>
+					<h:outputLink value="#{_agency.agencyFareUrl}">
+						<h:outputText value="#{_agency.agencyFareUrl}"/>
+					</h:outputLink>
+				</h:column>
+<!--				<rich:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--					<f:facet name="header">Action</f:facet>-->
+<!--					<s:link view="/#{empty from ? 'Agency' : from}.xhtml"-->
+<!--						   value="#{empty from ? 'View' : 'Select'}"-->
+<!--					 propagation="#{empty from ? 'none' : 'default'}"-->
+<!--							  id="agencyViewId">-->
+<!--						<f:param name="agencyId"-->
+<!--								value="#{_agency.agencyId}"/>-->
+<!--					</s:link>-->
+<!--				</rich:column>-->
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+					<f:facet name="header">Edit</f:facet>
+					<s:link view="/AgencyEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="agencyEdit"
+						rendered="#{empty from}">
+						<f:param name="agencyFrom" value="AgencyList"/>
+						<f:param name="agencyId"
+								value="#{_agency.agencyId}"/>
+					</s:link>
+				</rich:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+					<f:facet name="header">Delete</f:facet>
+					<h:commandLink id="deleteAgency"
+								value="Delete"
+							   action="#{oneStepDeletionHandler.deleteAgency(_agency.agencyId)}"
+							immediate="true"
+							  onclick="return confirm('Are you sure you want to delete this agency?');">
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+			</h:form>
+		</div>
+
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/AgencyEdit.xhtml"
+						  id="bottomCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add agency"/>
+					<f:param name="agencyFrom" value="AgencyList"/>
+					<f:param name="agencyId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty agencyList.resultList}">
+				<h:outputText value="Displaying #{agencyList.firstResult + 1} - #{agencyList.lastResult + 1} of #{agencyList.resultCount}"
+						   rendered="#{not empty agencyList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty agencyList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty agencyList.resultList}">
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="bottomFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="bottomPreviousPage">
+					<f:param name="firstResult"
+							value="#{agencyList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="bottomNextPage">
+					<f:param name="firstResult"
+							value="#{agencyList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/AgencyList.xhtml"
+					rendered="#{agencyList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="bottomLastPage">
+					<f:param name="firstResult"
+                		    value="#{agencyList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty agencyList.resultList}">
+				&#160;
+			</s:div>
+
+		</div>
+    </rich:panel>
+</ui:define>
+
+</ui:composition>

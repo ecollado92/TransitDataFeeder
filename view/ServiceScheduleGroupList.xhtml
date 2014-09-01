@@ -1,0 +1,145 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+	<s:div styleClass="tableControl">
+		<s:div styleClass="createNew">
+			<s:link view="/ServiceScheduleGroupEdit.xhtml"
+					  id="topCreate"
+			 propagation="none"
+				rendered="#{empty from}">
+				<h:graphicImage value="/img/new.png" alt="create new"/>
+				<h:outputText value=" Add Group"/>
+				<f:param name="ssGroupListFrom" value="#{ssGroupListFrom}"/>
+				<f:param name="ssGroupEditFrom" value="ServiceScheduleGroupList"/>
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="serviceScheduleGroupId"/>
+			</s:link>
+		</s:div>
+		<div class="display">&#160;</div>
+		<div class="navigation">&#160;</div>
+	</s:div>
+
+	<h:outputText value="There are no yearly service calendars defined."
+		rendered="#{empty agencyHome.instance.scheduleGroups}"/>
+
+	<ui:repeat value="#{agencyHome.instance.scheduleGroups}" var="_scheduleGroup" rendered="#{not empty agencyHome.instance.scheduleGroups}">
+		<div class="searchPanelHeader">
+			<h:outputText value="Service Dates for #{_scheduleGroup.serviceScheduleGroupLabel}"/>
+		</div>
+	    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader">
+		    <div class="tableControl">
+			    <s:div styleClass="createNew">
+					<s:link view="/ServiceScheduleBoundEdit.xhtml"
+							  id="topCreate"
+					 propagation="none"
+						rendered="#{empty from}">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Service Bound"/>
+						<f:param name="ssGroupListFrom" value="#{ssGroupListFrom}"/>
+						<f:param name="ssGroupEditFrom" value="ServiceScheduleGroupList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{_scheduleGroup.serviceScheduleGroupId}"/>
+			            <f:param name="serviceScheduleBoundId"/>
+					</s:link>
+				</s:div>
+				<div class="display">&#160;</div>
+				<div class="navigation">&#160;</div>
+			</div>
+
+		    <h:outputText value="#{_scheduleGroup.serviceScheduleGroupLabel} has no service bounds."
+        		rendered="#{empty _scheduleGroup.serviceScheduleBounds}"/>
+
+			<rich:dataTable id="serviceScheduleBoundsList"
+			               var="_serviceScheduleBound"
+			             value="#{listAdapter.asList(_scheduleGroup.serviceScheduleBounds, 'startDate')}"
+			          rendered="#{not empty _scheduleGroup.serviceScheduleBounds}"
+		            styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+	    	        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{serviceScheduleBoundList}"/>
+							<ui:param name="propertyLabel" value="Service schedule bounds id"/>
+							<ui:param name="propertyPath" value="serviceScheduleBound.serviceScheduleBoundsId"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_serviceScheduleBound.serviceScheduleBoundsId}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+	    	        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{serviceScheduleBoundList}"/>
+							<ui:param name="propertyLabel" value="Start Date"/>
+							<ui:param name="propertyPath" value="serviceScheduleBound.startDate"/>
+						</ui:include>
+	    	        </f:facet>
+	    	        <h:outputText value="#{_serviceScheduleBound.startDate}">
+	    	        	<s:convertDateTime type="date" dateStyle="short"/>
+	    	        </h:outputText>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+	    	        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{serviceScheduleBoundList}"/>
+							<ui:param name="propertyLabel" value="End Date"/>
+							<ui:param name="propertyPath" value="serviceScheduleBound.endDate"/>
+						</ui:include>
+	    	        </f:facet>
+	    	        <h:outputText value="#{_serviceScheduleBound.endDate}">
+		    	        <s:convertDateTime type="date" dateStyle="short"/>
+	    	        </h:outputText>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{serviceScheduleBoundList}"/>
+							<ui:param name="propertyLabel" value="Service Schedule Group"/>
+							<ui:param name="propertyPath" value="serviceScheduleBound.serviceScheduleGroup.serviceScheduleGroupLabel"/>
+						</ui:include>
+					</f:facet>
+		            <h:outputText value="#{_serviceScheduleBound.serviceScheduleGroup.serviceScheduleGroupLabel}"/>
+		        </h:column>
+		        <rich:column styleClass="action" headerClass="searchResultsTableHeader">
+		            <f:facet name="header">Action</f:facet>
+        		    <s:link view="/#{empty from ? 'ServiceScheduleBound' : from}.xhtml"
+						   value="#{empty from ? 'View' : 'Select'}"
+					 propagation="#{empty from ? 'none' : 'default'}"
+							  id="serviceScheduleBoundViewId">
+						<f:param name="ssGroupListFrom" value="#{ssGroupListFrom}"/>
+						<f:param name="ssGroupEditFrom" value="ServiceScheduleGroupList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{_scheduleGroup.serviceScheduleGroupId}"/>
+						<f:param name="serviceScheduleBoundId"
+							value="#{_serviceScheduleBound.serviceScheduleBoundsId}"/>
+        		    </s:link>
+        		    #{' '}
+        		    <s:link view="/ServiceScheduleBoundEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="serviceScheduleBoundEdit"
+						rendered="#{empty from}">
+						<f:param name="ssGroupListFrom" value="#{ssGroupListFrom}"/>
+						<f:param name="ssGroupEditFrom" value="ServiceScheduleGroupList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{_scheduleGroup.serviceScheduleGroupId}"/>
+						<f:param name="serviceScheduleBoundId"
+							value="#{_serviceScheduleBound.serviceScheduleBoundsId}"/>
+        		    </s:link>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+	</ui:repeat>
+
+</ui:define>
+
+</ui:composition>

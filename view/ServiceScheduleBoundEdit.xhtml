@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Calendar</li>
+		<li class="current">Holidays / exceptions</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{serviceScheduleBoundHome.managed ? 'Edit' : 'Add'} Date Range"/>
+	</div>
+    <h:form id="serviceScheduleBound" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+            <s:decorate id="startDateField" template="layout/edit.xhtml">
+                <ui:define name="label">Start date</ui:define>
+                <rich:calendar id="#{startEndDatesValidator.startDateFieldId}"
+                       required="true"
+                          value="#{serviceScheduleBoundHome.instance.startDate}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="endDateField" template="layout/edit.xhtml">
+                <ui:define name="label">End date</ui:define>
+                <rich:calendar id="#{startEndDatesValidator.endDateFieldId}"
+                       required="true"
+                       validator="#{startEndDatesValidator.validateEndDate}"
+                          value="#{serviceScheduleBoundHome.instance.endDate}" datePattern="MM/dd/yyyy" >
+					<f:attribute name="#{startEndDatesValidator.startDateReferenceId}"
+								value="serviceScheduleBound:startDateField:#{startEndDatesValidator.startDateFieldId}"/>
+                </rich:calendar>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{serviceScheduleBoundHome.persist}"
+                       disabled="#{!serviceScheduleBoundHome.wired}"
+                       rendered="#{!serviceScheduleBoundHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{serviceScheduleBoundHome.update}"
+                       rendered="#{serviceScheduleBoundHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{serviceScheduleBoundHome.remove}"
+                      immediate="true"
+                       rendered="#{serviceScheduleBoundHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/ServiceScheduleBound.xhtml"
+                rendered="#{serviceScheduleBoundHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty serviceScheduleBoundFrom ? 'ServiceScheduleBoundList' : serviceScheduleBoundFrom}.xhtml"
+                rendered="#{!serviceScheduleBoundHome.managed}"/>
+
+        </div>
+    </h:form>
+</ui:define>
+
+</ui:composition>

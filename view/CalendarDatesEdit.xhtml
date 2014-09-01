@@ -1,0 +1,119 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Calendar</li>
+		<li class="current">Holidays / exceptions</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{calendarDateHome.managed ? 'Edit' : 'Add'} Holiday / service exception"/>
+	</div>
+
+    <h:form id="calendarDates" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+
+            <s:decorate id="descriptionField" template="layout/edit.xhtml">
+                <ui:define name="label">Name / description</ui:define>
+                <h:inputTextarea id="description"
+                               cols="80"
+                               rows="3"
+                              value="#{calendarDateHome.instance.description}"/>
+            </s:decorate>
+
+
+            <s:decorate id="dateField" template="layout/edit.xhtml">
+                <ui:define name="label">Date</ui:define>
+                <rich:calendar id="date"
+                       required="true"
+                          value="#{calendarDateHome.instance.date}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+<!--            <s:decorate id="exceptionTypeField" template="layout/edit.xhtml">-->
+<!--                <ui:define name="label">Exception type</ui:define>-->
+<!--                <h:selectOneMenu required="true" value="#{calendarDateHome.instance.exceptionType}">-->
+<!--                	<s:selectItems var="_exceptionType" value="#{validationTableBean.calendarExceptionTypes}"-->
+<!--                		noSelectionLabel="select..." label="#{_exceptionType.exceptionTypeDescription}"/>-->
+<!--					<s:convertEntity/>-->
+<!--                </h:selectOneMenu>-->
+<!--            </s:decorate>-->
+
+
+            <s:decorate id="serviceRemovedField" template="layout/edit.xhtml">
+                <ui:define name="label">Service removed</ui:define>
+                <h:selectOneMenu value="#{calendarDateHome.instance.serviceRemoved}">
+                	<s:selectItems var="_removedService" value="#{agencyViewBean.currentAgencyCalendars}"
+                		noSelectionLabel="none"
+                		label="#{_removedService.serviceScheduleGroup.serviceScheduleGroupLabel} / #{_removedService.serviceLabel}"/>
+                	<s:convertEntity/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="serviceAddedField" template="layout/edit.xhtml">
+                <ui:define name="label">Service added</ui:define>
+                <h:selectOneMenu value="#{calendarDateHome.instance.serviceAdded}">
+                	<s:selectItems var="_addedService" value="#{agencyViewBean.currentAgencyCalendars}"
+                		noSelectionLabel="none"
+                		label="#{_addedService.serviceScheduleGroup.serviceScheduleGroupLabel} / #{_addedService.serviceLabel}"/>
+                	<s:convertEntity/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{calendarDateHome.persist}"
+                       disabled="#{!calendarDateHome.wired}"
+                       rendered="#{!calendarDateHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{calendarDateHome.update}"
+                       rendered="#{calendarDateHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{calendarDateHome.remove}"
+                      immediate="true"
+                       rendered="#{calendarDateHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty calendarDateEditFrom ? 'CalendarDates' : calendarDateEditFrom}.xhtml"
+                rendered="#{calendarDateHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty calendarDateEditFrom ? 'CalendarDatesList' : calendarDateEditFrom}.xhtml"
+                rendered="#{!calendarDateHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

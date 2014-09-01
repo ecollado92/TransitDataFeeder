@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/home.xhtml"
+      login-required="true">
+
+   <restrict>#{s:hasPermission('agencyAware','access')}</restrict>
+ 
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <param name="firstResult" value="#{stopList.firstResult}"/>
+   <param name="sort" value="#{stopList.orderColumn}"/>
+   <param name="dir" value="#{stopList.orderDirection}"/>
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+   <param name="currentView" value="#{navigationViewBean.currentMenuItem}"/>
+
+   <param name="from"/>
+   <param name="zoneId" value="#{stopList.zoneId}"/>
+   <param name="geolocated" value="#{stopList.geolocated}"/>
+   <param name="inSchedules" value="#{stopList.inSchedules}"/>
+   <param name="parentStationId" value="#{stopList.parentStationId}"/>
+   <param name="routeId" value="#{stopList.routeId}"/>
+
+   <param name="stopCode" value="#{stopList.stop.stopCode}"/>
+   <param name="stopComments" value="#{stopList.stop.stopComments}"/>
+   <param name="stopDesc" value="#{stopList.stop.stopDesc}"/>
+   <param name="stopName" value="#{stopList.stop.stopName}"/>
+   <param name="stopUrl" value="#{stopList.stop.stopUrl}"/>
+
+</page>

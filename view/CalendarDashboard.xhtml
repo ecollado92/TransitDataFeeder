@@ -1,0 +1,314 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Calendar</li>
+		<li>
+			<s:link view="/CalendarDatesList.xhtml" value="Holidays / exceptions">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="CALS"/>
+			</s:link>
+		</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<s:div styleClass="searchPanelHeader" rendered="#{empty serviceScheduleGroupList.resultList}">
+		<h:outputText value="Service Calendars"/>
+	</s:div>
+
+	<div class="tableControl">
+		<div class="createNew">
+			<s:link view="/ServiceScheduleGroupEdit.xhtml"
+			 propagation="none"
+				rendered="#{empty from}">
+				<h:graphicImage value="/img/new.png" alt="create new"/>
+				<h:outputText value=" Add calendar"/>
+				<f:param name="serviceScheduleGroupFrom" value="CalendarDashboard"/>
+				<f:param name="currentView" value="CALS"/>
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="serviceScheduleGroupId"/>
+			</s:link>
+		</div>
+		<div class="displaying">
+			&#160;
+		</div>
+		
+		<div class="navigation">
+			&#160;
+		</div>
+	</div>
+
+	<h:outputText value="There are no Service Calendars for this agency."
+			   rendered="#{empty serviceScheduleGroupList.resultList}"/>
+
+	<s:div rendered="#{not empty serviceScheduleGroupList.resultList}">
+	<table width="80%" cellspacing="0">
+	<a4j:repeat value="#{serviceScheduleGroupList.resultList}" var="_group">
+		<tr>
+			<th style="width: 90%; padding: 0;">
+				<div class="blackHeaderBlock">
+					<h:outputText value="#{_group.serviceScheduleGroupLabel}"/>
+				</div>
+			</th>
+			<th style="width: 10%; padding: 0;">
+				<div class="blackHeaderBlockEdit">
+					<s:link view="/ServiceScheduleGroupEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="scEdit"
+						rendered="#{empty from}">
+						<f:param name="serviceScheduleGroupFrom" value="CalendarDashboard"/>
+						<f:param name="currentView" value="CALS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{_group.serviceScheduleGroupId}"/>
+					</s:link>
+				</div>
+			</th>
+		</tr>
+<!--		<tr>-->
+<!--			<td colspan="2">-->
+<!--				<div class="groupSubunitHeader">-->
+<!--					<h:outputText value="Weekly Calendars for &quot;#{_group.serviceScheduleGroupLabel}&quot;"/>-->
+<!--				</div>-->
+<!--			</td>-->
+<!--		</tr>-->
+		<tr>
+			<td colspan="2">
+			    <rich:panel styleClass="searchResultsPanel" bodyClass="subunitSearchResultsPanelBody" headerClass="searchResultsPanelHeader">
+			    <div class="resultsSubtable">
+
+				    <h:outputText value="There are no dates for this calendar."
+               				   rendered="#{empty _group.serviceScheduleBounds}"/>
+
+				    <rich:dataTable id="boundsList"
+				                   var="_bounds"
+								 value="#{listAdapter.asList(_group.serviceScheduleBounds, 'startDate')}"
+							  rendered="#{not empty _group.serviceScheduleBounds}"
+							styleClass="subunitSearchResultsTable"
+						 columnClasses="subunitSearchResultsTableColumnCentered"
+							rowClasses="searchResultsRowEven,searchResultsRowOdd"
+						   headerClass="groupSubunitHeader">
+						<f:facet name="header">
+							<h:outputText value="Date ranges for &quot;#{_group.serviceScheduleGroupLabel}&quot;"/>
+						</f:facet>
+						<h:column headerClass="searchResultsTableHeader">
+							<h:outputText value="#{_bounds.startDate}">
+							</h:outputText>
+							<h:outputText value=" - "/>
+							<h:outputText value="#{_bounds.endDate}">
+							</h:outputText>
+						</h:column>
+					</rich:dataTable>
+				</div>
+			    </rich:panel>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			    <rich:panel styleClass="searchResultsPanel" bodyClass="subunitSearchResultsPanelBody" headerClass="searchResultsPanelHeader">
+<!--			    <div class="tableControl">-->
+<!--				    <s:div styleClass="createNew">-->
+<!--	    				<s:link view="/CalendarEdit.xhtml"-->
+<!--       			     propagation="none"-->
+<!--       		            rendered="#{empty from}">-->
+<!--							<h:graphicImage value="/img/new.png" alt="create new"/>-->
+<!--							<h:outputText value=" Add Service"/>-->
+<!--							<f:param name="calendarFrom" value="CalendarDashboard"/>-->
+<!--	        				<f:param name="currentView" value="CALS"/>-->
+<!--        				    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--        				    <f:param name="serviceScheduleGroupId" value="#{_group.serviceScheduleGroupId}"/>-->
+<!--	        			    <f:param name="calendarId"/>-->
+<!--						</s:link>-->
+<!--			    	</s:div>-->
+<!--			    	<div class="displaying">-->
+<!--			    		&#160;-->
+<!--					</div>-->
+<!--		-->
+<!--					<div class="navigation">-->
+<!--			    		&#160;-->
+<!--			    	</div>-->
+<!--			    </div>-->
+
+			    <div class="resultsSubtable">
+
+				    <h:outputText value="There are no weekly schedules for this calendar."
+               				   rendered="#{empty _group.calendars}"/>
+
+				    <rich:dataTable id="calendarList"
+				                   var="_calendar"
+								 value="#{_group.calendars}"
+							  rendered="#{not empty _group.calendars}"
+							styleClass="subunitSearchResultsTable"
+						 columnClasses="subunitSearchResultsTableColumn"
+							rowClasses="searchResultsRowEven,searchResultsRowOdd"
+						   headerClass="groupSubunitHeader">
+						<f:facet name="header">
+							<h:outputText value="Weekly Calendars for &quot;#{_group.serviceScheduleGroupLabel}&quot;"/>
+						</f:facet>
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">ID</f:facet>-->
+<!--							<h:outputText value="#{_calendar.calendarId}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">-->
+<!--                <ui:include src="layout/sort.xhtml">-->
+<!--                    <ui:param name="entityList" value="#{calendarList}"/>-->
+<!--                    <ui:param name="propertyLabel" value="Service id"/>-->
+<!--                    <ui:param name="propertyPath" value="calendar.serviceId"/>-->
+<!--                </ui:include>-->
+<!--							</f:facet>-->
+<!--							<h:outputText value="#{_calendar.serviceId}"/>-->
+<!--						</h:column>-->
+						<h:column headerClass="searchResultsTableHeader">
+<!--							<f:facet name="header">Service Label</f:facet>-->
+							<h:outputText value="#{_calendar.serviceLabel}"/>
+						</h:column>
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Service Calendar</f:facet>-->
+<!--							<h:outputText value="#{_calendar.serviceScheduleGroup.serviceScheduleGroupLabel}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Start Date</f:facet>-->
+<!--							<h:outputText value="#{_calendar.startDate}">-->
+<!--								<s:convertDateTime type="date" dateStyle="short"/>-->
+<!--							</h:outputText>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">End Date</f:facet>-->
+<!--							<h:outputText value="#{_calendar.endDate}">-->
+<!--								<s:convertDateTime type="date" dateStyle="short"/>-->
+<!--							</h:outputText>-->
+<!--						</h:column>-->
+						<h:column headerClass="searchResultsTableHeader">
+							<h:outputText value="Mon " rendered="#{_calendar.monday}"/>
+							<h:outputText value="Tue " rendered="#{_calendar.tuesday}"/>
+							<h:outputText value="Wed " rendered="#{_calendar.wednesday}"/>
+							<h:outputText value="Thu " rendered="#{_calendar.thursday}"/>
+							<h:outputText value="Fri " rendered="#{_calendar.friday}"/>
+							<h:outputText value="Sat " rendered="#{_calendar.saturday}"/>
+							<h:outputText value="Sun" rendered="#{_calendar.sunday}"/>
+						</h:column>
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Mon</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.monday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.monday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Tue</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.tuesday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.tuesday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Wed</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.wednesday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.wednesday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Thu</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.thursday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.thursday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Fri</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.friday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.friday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Sat</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.saturday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.saturday}"/>-->
+<!--						</h:column>-->
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Sun</f:facet>-->
+<!--							<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.sunday}"/>-->
+<!--							<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.sunday}"/>-->
+<!--						</h:column>-->
+<!--						<rich:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Action</f:facet>-->
+<!--							<s:link view="/#{empty from ? 'Calendar' : from}.xhtml"-->
+<!--								   value="#{empty from ? 'View' : 'Select'}"-->
+<!--							 propagation="#{empty from ? 'none' : 'default'}"-->
+<!--									  id="calendarViewId">-->
+<!--								<f:param name="calendarFrom" value="CalendarDashboard"/>-->
+<!--								<f:param name="calendarId"-->
+<!--										value="#{_calendar.calendarId}"/>-->
+<!--							</s:link>-->
+<!--							#{' '}-->
+<!--							<s:link view="/CalendarEdit.xhtml"-->
+<!--								   value="Edit"-->
+<!--							 propagation="none"-->
+<!--									  id="calendarEdit"-->
+<!--								rendered="#{empty from}">-->
+<!--								<f:param name="calendarFrom" value="CalendarDashboard"/>-->
+<!--								<f:param name="calendarId"-->
+<!--										value="#{_calendar.calendarId}"/>-->
+<!--							</s:link>-->
+<!--						</rich:column>-->
+					</rich:dataTable>
+				</div>
+
+<!--				<div class="tableControl">-->
+<!--					<s:div styleClass="createNew">-->
+<!--						<s:link view="/CalendarEdit.xhtml"-->
+<!--								  id="bottomCalCreate"-->
+<!--						 propagation="none"-->
+<!--							rendered="#{empty from}">-->
+<!--							<h:graphicImage value="/img/new.png" alt="create new"/>-->
+<!--							<h:outputText value=" Add Service"/>-->
+<!--							<f:param name="calendarFrom" value="CalendarDashboard"/>-->
+<!--							<f:param name="currentView" value="CALS"/>-->
+<!--							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--							<f:param name="serviceScheduleGroupId" value="#{_group.serviceScheduleGroupId}"/>-->
+<!--							<f:param name="calendarId"/>-->
+<!--						</s:link>-->
+<!--					</s:div>-->
+<!--					<div class="displaying">-->
+<!--						&#160;-->
+<!--					</div>-->
+
+<!--					<div class="navigation">-->
+<!--						&#160;-->
+<!--					</div>-->
+<!--				</div>-->
+				</rich:panel>
+			</td>
+		</tr>
+	</a4j:repeat>
+	</table>
+	</s:div>
+
+	<div class="tableControl">
+		<div class="createNew">
+			<s:link view="/ServiceScheduleGroupEdit.xhtml"
+			 propagation="none"
+				rendered="#{empty from}">
+				<h:graphicImage value="/img/new.png" alt="create new"/>
+				<h:outputText value=" Add calendar"/>
+				<f:param name="serviceScheduleGroupFrom" value="CalendarDashboard"/>
+				<f:param name="currentView" value="CALS"/>
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="serviceScheduleGroupId"/>
+			</s:link>
+		</div>
+		<div class="displaying">
+			&#160;
+		</div>
+		
+		<div class="navigation">
+			&#160;
+		</div>
+	</div>
+
+</ui:define>
+
+</ui:composition>

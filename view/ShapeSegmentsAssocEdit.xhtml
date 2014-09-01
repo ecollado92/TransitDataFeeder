@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="shapeSegmentsAssoc" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{shapeSegmentsAssocHome.managed ? 'Edit' : 'Add'} Shape segments assoc</f:facet>
+
+
+            <s:decorate id="shapeSegmentAssocIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Shape segment assoc id</ui:define>
+                <h:inputText id="shapeSegmentAssocId"
+                       required="true"
+                       disabled="#{shapeSegmentsAssocHome.managed}"
+                          value="#{shapeSegmentsAssocHome.instance.shapeSegmentAssocId}">
+                    <a:support event="onblur" reRender="shapeSegmentAssocIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="segmentSequenceField" template="layout/edit.xhtml">
+                <ui:define name="label">Segment sequence</ui:define>
+                <h:inputText id="segmentSequence"
+                          value="#{shapeSegmentsAssocHome.instance.segmentSequence}">
+                    <a:support event="onblur" reRender="segmentSequenceField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="shapeIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Shape id</ui:define>
+                <h:inputText id="shapeId"
+                          value="#{shapeSegmentsAssocHome.instance.shapeId}">
+                    <a:support event="onblur" reRender="shapeIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="shapeSegmentIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Shape segment id</ui:define>
+                <h:inputText id="shapeSegmentId"
+                          value="#{shapeSegmentsAssocHome.instance.shapeSegmentId}">
+                    <a:support event="onblur" reRender="shapeSegmentIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{shapeSegmentsAssocHome.persist}"
+                       disabled="#{!shapeSegmentsAssocHome.wired}"
+                       rendered="#{!shapeSegmentsAssocHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{shapeSegmentsAssocHome.update}"
+                       rendered="#{shapeSegmentsAssocHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{shapeSegmentsAssocHome.remove}"
+                      immediate="true"
+                       rendered="#{shapeSegmentsAssocHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/ShapeSegmentsAssoc.xhtml"
+                rendered="#{shapeSegmentsAssocHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty shapeSegmentsAssocFrom ? 'ShapeSegmentsAssocList' : shapeSegmentsAssocFrom}.xhtml"
+                rendered="#{!shapeSegmentsAssocHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

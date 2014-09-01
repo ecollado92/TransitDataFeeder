@@ -1,0 +1,183 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="stops" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{stopsHome.managed ? 'Edit' : 'Add'} Stops</f:facet>
+
+
+            <s:decorate id="stopIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop id</ui:define>
+                <h:inputText id="stopId"
+                       required="true"
+                       disabled="#{stopsHome.managed}"
+                          value="#{stopsHome.instance.stopId}">
+                    <a:support event="onblur" reRender="stopIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="directionIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Direction id</ui:define>
+                <h:inputText id="directionId"
+                       required="true"
+                          value="#{stopsHome.instance.directionId}">
+                    <a:support event="onblur" reRender="directionIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="parentStationField" template="layout/edit.xhtml">
+                <ui:define name="label">Parent station</ui:define>
+                <h:inputText id="parentStation"
+                          value="#{stopsHome.instance.parentStation}">
+                    <a:support event="onblur" reRender="parentStationField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopCodeField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop code</ui:define>
+                <h:inputText id="stopCode"
+                           size="18"
+                      maxlength="18"
+                          value="#{stopsHome.instance.stopCode}">
+                    <a:support event="onblur" reRender="stopCodeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopCommentsField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop comments</ui:define>
+                <h:inputTextarea id="stopComments"
+                               cols="80"
+                               rows="2"
+                              value="#{stopsHome.instance.stopComments}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopDescField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop desc</ui:define>
+                <h:inputTextarea id="stopDesc"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{stopsHome.instance.stopDesc}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopLatField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop lat</ui:define>
+                <h:inputText id="stopLat"
+                          value="#{stopsHome.instance.stopLat}">
+                    <a:support event="onblur" reRender="stopLatField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopListOrderField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop list order</ui:define>
+                <h:inputText id="stopListOrder"
+                       required="true"
+                          value="#{stopsHome.instance.stopListOrder}">
+                    <a:support event="onblur" reRender="stopListOrderField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopLonField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop lon</ui:define>
+                <h:inputText id="stopLon"
+                          value="#{stopsHome.instance.stopLon}">
+                    <a:support event="onblur" reRender="stopLonField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop name</ui:define>
+                <h:inputText id="stopName"
+                       required="true"
+                           size="80"
+                      maxlength="80"
+                          value="#{stopsHome.instance.stopName}">
+                    <a:support event="onblur" reRender="stopNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop url</ui:define>
+                <h:inputTextarea id="stopUrl"
+                               cols="80"
+                               rows="3"
+                              value="#{stopsHome.instance.stopUrl}"/>
+            </s:decorate>
+
+
+            <s:decorate id="zoneIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Zone id</ui:define>
+                <h:inputText id="zoneId"
+                          value="#{stopsHome.instance.zoneId}">
+                    <a:support event="onblur" reRender="zoneIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{stopsHome.persist}"
+                       disabled="#{!stopsHome.wired}"
+                       rendered="#{!stopsHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{stopsHome.update}"
+                       rendered="#{stopsHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{stopsHome.remove}"
+                      immediate="true"
+                       rendered="#{stopsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Stop.xhtml"
+                rendered="#{stopsHome.managed}">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stopsFrom ? 'StopsList' : stopsFrom}.xhtml"
+                rendered="#{!stopsHome.managed}">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="shapeSegmentTriprouteAssoc" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{shapeSegmentTriprouteAssocHome.managed ? 'Edit' : 'Add'} Shape segment triproute assoc</f:facet>
+
+
+            <s:decorate id="shapeSegmentTriprouteAssocField" template="layout/edit.xhtml">
+                <ui:define name="label">Shape segment triproute assoc</ui:define>
+                <h:inputText id="shapeSegmentTriprouteAssoc"
+                       required="true"
+                       disabled="#{shapeSegmentTriprouteAssocHome.managed}"
+                          value="#{shapeSegmentTriprouteAssocHome.instance.shapeSegmentTriprouteAssoc}">
+                    <a:support event="onblur" reRender="shapeSegmentTriprouteAssocField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="routeIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Route id</ui:define>
+                <h:inputText id="routeId"
+                          value="#{shapeSegmentTriprouteAssocHome.instance.routeId}">
+                    <a:support event="onblur" reRender="routeIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="shapeSegmentIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Shape segment id</ui:define>
+                <h:inputText id="shapeSegmentId"
+                          value="#{shapeSegmentTriprouteAssocHome.instance.shapeSegmentId}">
+                    <a:support event="onblur" reRender="shapeSegmentIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="tripIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Trip id</ui:define>
+                <h:inputText id="tripId"
+                          value="#{shapeSegmentTriprouteAssocHome.instance.tripId}">
+                    <a:support event="onblur" reRender="tripIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{shapeSegmentTriprouteAssocHome.persist}"
+                       disabled="#{!shapeSegmentTriprouteAssocHome.wired}"
+                       rendered="#{!shapeSegmentTriprouteAssocHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{shapeSegmentTriprouteAssocHome.update}"
+                       rendered="#{shapeSegmentTriprouteAssocHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{shapeSegmentTriprouteAssocHome.remove}"
+                      immediate="true"
+                       rendered="#{shapeSegmentTriprouteAssocHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/ShapeSegmentTriprouteAssoc.xhtml"
+                rendered="#{shapeSegmentTriprouteAssocHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty shapeSegmentTriprouteAssocFrom ? 'ShapeSegmentTriprouteAssocList' : shapeSegmentTriprouteAssocFrom}.xhtml"
+                rendered="#{!shapeSegmentTriprouteAssocHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,140 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Calendar Details</f:facet>
+
+        <s:decorate id="calendarId" template="layout/display.xhtml">
+            <ui:define name="label">Calendar id</ui:define>
+            <h:outputText value="#{calendarHome.instance.calendarId}"/>
+        </s:decorate>
+
+        <s:decorate id="endDate" template="layout/display.xhtml">
+            <ui:define name="label">End date</ui:define>
+            <h:outputText value="#{calendarHome.instance.endDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="friday" template="layout/display.xhtml">
+            <ui:define name="label">Friday</ui:define>
+            <h:outputText value="#{calendarHome.instance.friday}"/>
+        </s:decorate>
+
+        <s:decorate id="monday" template="layout/display.xhtml">
+            <ui:define name="label">Monday</ui:define>
+            <h:outputText value="#{calendarHome.instance.monday}"/>
+        </s:decorate>
+
+        <s:decorate id="saturday" template="layout/display.xhtml">
+            <ui:define name="label">Saturday</ui:define>
+            <h:outputText value="#{calendarHome.instance.saturday}"/>
+        </s:decorate>
+
+        <s:decorate id="serviceId" template="layout/display.xhtml">
+            <ui:define name="label">Service id</ui:define>
+            <h:outputText value="#{calendarHome.instance.serviceId}"/>
+        </s:decorate>
+
+        <s:decorate id="serviceLabel" template="layout/display.xhtml">
+            <ui:define name="label">Service label</ui:define>
+            <h:outputText value="#{calendarHome.instance.serviceLabel}"/>
+        </s:decorate>
+
+        <s:decorate id="startDate" template="layout/display.xhtml">
+            <ui:define name="label">Start date</ui:define>
+            <h:outputText value="#{calendarHome.instance.startDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="sunday" template="layout/display.xhtml">
+            <ui:define name="label">Sunday</ui:define>
+            <h:outputText value="#{calendarHome.instance.sunday}"/>
+        </s:decorate>
+
+        <s:decorate id="thursday" template="layout/display.xhtml">
+            <ui:define name="label">Thursday</ui:define>
+            <h:outputText value="#{calendarHome.instance.thursday}"/>
+        </s:decorate>
+
+        <s:decorate id="tuesday" template="layout/display.xhtml">
+            <ui:define name="label">Tuesday</ui:define>
+            <h:outputText value="#{calendarHome.instance.tuesday}"/>
+        </s:decorate>
+
+        <s:decorate id="wednesday" template="layout/display.xhtml">
+            <ui:define name="label">Wednesday</ui:define>
+            <h:outputText value="#{calendarHome.instance.wednesday}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CalendarEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty calendarFrom ? 'CalendarList' : calendarFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Service schedule group</h:panelGroup>
+        </f:facet>
+    <div class="association" id="serviceScheduleGroupParent">
+
+        <h:outputText value="There is no serviceScheduleGroup associated with this calendar."
+                   rendered="#{calendarHome.instance.serviceScheduleGroup == null}"/>
+
+        <rich:dataTable var="_serviceScheduleGroup"
+                   value="#{calendarHome.instance.serviceScheduleGroup}"
+                rendered="#{calendarHome.instance.serviceScheduleGroup != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="serviceScheduleGroupTable">
+            <h:column>
+                <f:facet name="header">Service schedule group id</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.serviceScheduleGroupId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency agency id</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.agency.agencyId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Service schedule group label</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.serviceScheduleGroupLabel}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewserviceScheduleGroup"
+                     value="View"
+                      view="/ServiceScheduleGroup.xhtml">
+                    <f:param name="serviceScheduleGroupId"
+                           value="#{_serviceScheduleGroup.serviceScheduleGroupId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

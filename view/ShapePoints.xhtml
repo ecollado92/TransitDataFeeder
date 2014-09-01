@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Shape points Details</f:facet>
+
+        <s:decorate id="shapePointId" template="layout/display.xhtml">
+            <ui:define name="label">Shape point id</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapePointId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency id</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.agencyId}"/>
+        </s:decorate>
+
+        <s:decorate id="shapeDistTraveled" template="layout/display.xhtml">
+            <ui:define name="label">Shape dist traveled</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapeDistTraveled}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="shapeId" template="layout/display.xhtml">
+            <ui:define name="label">Shape id</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapeId}"/>
+        </s:decorate>
+
+        <s:decorate id="shapePtLat" template="layout/display.xhtml">
+            <ui:define name="label">Shape pt lat</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapePtLat}"/>
+        </s:decorate>
+
+        <s:decorate id="shapePtLon" template="layout/display.xhtml">
+            <ui:define name="label">Shape pt lon</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapePtLon}"/>
+        </s:decorate>
+
+        <s:decorate id="shapePtSequence" template="layout/display.xhtml">
+            <ui:define name="label">Shape pt sequence</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapePtSequence}"/>
+        </s:decorate>
+
+        <s:decorate id="shapeSegmentId" template="layout/display.xhtml">
+            <ui:define name="label">Shape segment id</ui:define>
+            <h:outputText value="#{shapePointsHome.instance.shapeSegmentId}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ShapePointsEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty shapePointsFrom ? 'ShapePointsList' : shapePointsFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

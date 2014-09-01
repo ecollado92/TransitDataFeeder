@@ -1,0 +1,150 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="user" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{userHome.managed ? 'Edit' : 'Add'} User</f:facet>
+
+
+            <s:decorate id="userIdField" template="layout/edit.xhtml">
+                <ui:define name="label">User id</ui:define>
+                <h:inputText id="userId"
+                       required="true"
+                       disabled="#{userHome.managed}"
+                          value="#{userHome.instance.userId}">
+                    <a:support event="onblur" reRender="userIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="activeField" template="layout/edit.xhtml">
+                <ui:define name="label">Active</ui:define>
+                <h:inputText id="active"
+                           size="32"
+                      maxlength="32"
+                          value="#{userHome.instance.active}">
+                    <a:support event="onblur" reRender="activeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="emailField" template="layout/edit.xhtml">
+                <ui:define name="label">Email</ui:define>
+                <h:inputText id="email"
+                       required="true"
+                           size="40"
+                      maxlength="40"
+                          value="#{userHome.instance.email}">
+                    <a:support event="onblur" reRender="emailField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="firstNameField" template="layout/edit.xhtml">
+                <ui:define name="label">First name</ui:define>
+                <h:inputText id="firstName"
+                       required="true"
+                           size="15"
+                      maxlength="15"
+                          value="#{userHome.instance.firstName}">
+                    <a:support event="onblur" reRender="firstNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="lastNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Last name</ui:define>
+                <h:inputText id="lastName"
+                       required="true"
+                           size="30"
+                      maxlength="30"
+                          value="#{userHome.instance.lastName}">
+                    <a:support event="onblur" reRender="lastNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="readOnlyField" template="layout/edit.xhtml">
+                <ui:define name="label">Read only</ui:define>
+                <h:selectBooleanCheckbox id="readOnly"
+                                   required="true"
+                                      value="#{userHome.instance.readOnly}"/>
+            </s:decorate>
+
+
+            <s:decorate id="registrationDateField" template="layout/edit.xhtml">
+                <ui:define name="label">Registration date</ui:define>
+                <rich:calendar id="registrationDate"
+                       required="true"
+                          value="#{userHome.instance.registrationDate}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+
+            <s:decorate id="shaHashedPassField" template="layout/edit.xhtml">
+                <ui:define name="label">Sha hashed pass</ui:define>
+                <h:inputText id="shaHashedPass"
+                       required="true"
+                           size="40"
+                      maxlength="40"
+                          value="#{userHome.instance.shaHashedPass}">
+                    <a:support event="onblur" reRender="shaHashedPassField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{userHome.persist}"
+                       disabled="#{!userHome.wired}"
+                       rendered="#{!userHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{userHome.update}"
+                       rendered="#{userHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{userHome.remove}"
+                      immediate="true"
+                       rendered="#{userHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/User.xhtml"
+                rendered="#{userHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty userFrom ? 'UserList' : userFrom}.xhtml"
+                rendered="#{!userHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

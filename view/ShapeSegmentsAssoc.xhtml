@@ -1,0 +1,54 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Shape segments assoc Details</f:facet>
+
+        <s:decorate id="shapeSegmentAssocId" template="layout/display.xhtml">
+            <ui:define name="label">Shape segment assoc id</ui:define>
+            <h:outputText value="#{shapeSegmentsAssocHome.instance.shapeSegmentAssocId}"/>
+        </s:decorate>
+
+        <s:decorate id="segmentSequence" template="layout/display.xhtml">
+            <ui:define name="label">Segment sequence</ui:define>
+            <h:outputText value="#{shapeSegmentsAssocHome.instance.segmentSequence}"/>
+        </s:decorate>
+
+        <s:decorate id="shapeId" template="layout/display.xhtml">
+            <ui:define name="label">Shape id</ui:define>
+            <h:outputText value="#{shapeSegmentsAssocHome.instance.shapeId}"/>
+        </s:decorate>
+
+        <s:decorate id="shapeSegmentId" template="layout/display.xhtml">
+            <ui:define name="label">Shape segment id</ui:define>
+            <h:outputText value="#{shapeSegmentsAssocHome.instance.shapeSegmentId}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ShapeSegmentsAssocEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty shapeSegmentsAssocFrom ? 'ShapeSegmentsAssocList' : shapeSegmentsAssocFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

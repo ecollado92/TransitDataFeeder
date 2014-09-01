@@ -1,0 +1,103 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Agency group Details</f:facet>
+
+        <s:decorate id="agencyGroupId" template="layout/display.xhtml">
+            <ui:define name="label">Agency group id</ui:define>
+            <h:outputText value="#{agencyGroupHome.instance.agencyGroupId}"/>
+        </s:decorate>
+
+        <s:decorate id="groupName" template="layout/display.xhtml">
+            <ui:define name="label">Group name</ui:define>
+            <h:outputText value="#{agencyGroupHome.instance.groupName}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AgencyGroupEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty agencyGroupFrom ? 'AgencyGroupList' : agencyGroupFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Agency</h:panelGroup>
+        </f:facet>
+    <div class="association" id="agencyParent">
+
+        <h:outputText value="There is no agency associated with this zone."
+                   rendered="#{agencyGroupHome.instance.agencies == null}"/>
+
+        <rich:dataTable var="_agency"
+                   value="#{agencyGroupHome.instance.agencies}"
+                rendered="#{agencyGroupHome.instance.agencies != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="agencyTable">
+            <h:column>
+                <f:facet name="header">Agency id</f:facet>
+                <h:outputText value="#{_agency.agencyId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency fare url</f:facet>
+                <h:outputText value="#{_agency.agencyFareUrl}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency name</f:facet>
+                <h:outputText value="#{_agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency phone</f:facet>
+                <h:outputText value="#{_agency.agencyPhone}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency short name</f:facet>
+                <h:outputText value="#{_agency.agencyShortName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency timezone</f:facet>
+                <h:outputText value="#{_agency.agencyTimezone}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency url</f:facet>
+                <h:outputText value="#{_agency.agencyUrl}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewagency"
+                     value="View"
+                      view="/Agency.xhtml">
+                    <f:param name="agencyId"
+                           value="#{_agency.agencyId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+
+</ui:define>
+
+</ui:composition>

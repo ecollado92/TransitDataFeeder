@@ -1,0 +1,249 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/StopList.xhtml" value="Stops">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/StationList.xhtml" value="Stations">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/ZoneList.xhtml" value="Zones">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li class="current">Transfers</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="Transfers"/>
+	</div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+		<s:div styleClass="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/TransfersEdit.xhtml"
+        	          id="topCreate"
+              propagation="none"
+                 rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add transfer"/>
+					<f:param name="transfersFrom" value="TransfersList"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="transferId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty transferList.resultList}">
+				<h:outputText value="Displaying #{transferList.firstResult + 1} - #{transferList.lastResult + 1} of #{transferList.resultCount}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty transferList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty transferList.resultList}">
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="topFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="topPreviousPage">
+					<f:param name="firstResult"
+							value="#{transferList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="topNextPage">
+					<f:param name="firstResult"
+							value="#{transferList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="topLastPage">
+					<f:param name="firstResult"
+							value="#{transferList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty transferList.resultList}">
+				&#160;
+			</s:div>
+
+		</s:div>
+
+		<div class="results" id="transferList">
+
+			<h:outputText value="The transfers search returned no results."
+					   rendered="#{empty transferList.resultList}"/>
+
+			<rich:dataTable id="transferList"
+						   var="_transfer"
+						 value="#{transferList.resultList}"
+					  rendered="#{not empty transferList.resultList}"
+					styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{transferList}"/>
+							<ui:param name="propertyLabel" value="Transfer id"/>
+							<ui:param name="propertyPath" value="transfer.transferId"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_transfer.transferId}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{transferList}"/>
+							<ui:param name="propertyLabel" value="From Stop"/>
+							<ui:param name="propertyPath" value="transfer.fromLocation.stopName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_transfer.fromLocation.stopName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{transferList}"/>
+							<ui:param name="propertyLabel" value="To Stop"/>
+							<ui:param name="propertyPath" value="transfer.toLocation.stopName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_transfer.toLocation.stopName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{transferList}"/>
+							<ui:param name="propertyLabel" value="Min transfer time"/>
+							<ui:param name="propertyPath" value="transfer.minTransferTime"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_transfer.minTransferTime}" converter="minutesSecondsConverter"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{transferList}"/>
+							<ui:param name="propertyLabel" value="Transfer type"/>
+							<ui:param name="propertyPath" value="transfer.transferType.transferTypeDescription"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_transfer.transferType.transferTypeDescription}"/>
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+					<f:facet name="header">Action</f:facet>
+					<s:link view="/TransfersEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="transfersEdit"
+						rendered="#{empty from}">
+						<f:param name="transfersFrom" value="TransfersList"/>
+						<f:param name="agencyId"
+								value="#{_transfer.agency.agencyId}"/>
+						<f:param name="transferId"
+								value="#{_transfer.transferId}"/>
+					</s:link>
+				</rich:column>
+			</rich:dataTable>
+		</div>
+
+		<s:div styleClass="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/TransfersEdit.xhtml"
+        	          id="bottomCreate"
+              propagation="none"
+                 rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add transfer"/>
+					<f:param name="transfersFrom" value="TransfersList"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="transferId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty transferList.resultList}">
+				<h:outputText value="Displaying #{transferList.firstResult + 1} - #{transferList.lastResult + 1} of #{transferList.resultCount}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty transferList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty transferList.resultList}">
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="bottomFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="bottomPreviousPage">
+					<f:param name="firstResult"
+							value="#{transferList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="bottomNextPage">
+					<f:param name="firstResult"
+							value="#{transferList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/TransfersList.xhtml"
+					rendered="#{transferList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="bottomLastPage">
+					<f:param name="firstResult"
+							value="#{transferList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty transferList.resultList}">
+				&#160;
+			</s:div>
+
+		</s:div>
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,51 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<h3>Stops</h3>
+	<rich:dataTable id="stopsTable"
+	               var="_stop"
+				 value="#{agencyHome.instance.stops}"
+			  rendered="#{not empty agencyHome.instance.stops}">
+		<h:column>
+			<f:facet name="header">List order</f:facet>
+			<h:outputText value="#{_stop.stopListOrder}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Stop code</f:facet>
+			<h:outputText value="#{_stop.stopCode}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Name</f:facet>
+			<s:link id="viewstop"
+				value="#{_stop.stopName}"
+				view="/Stop.xhtml">
+				<f:param name="stopFrom" value="StopsDashboard"/>
+				<f:param name="stopId" value="#{_stop.stopId}"/>
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+			</s:link>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Direction</f:facet>
+			<h:outputText value="#{_stop.direction.directionLabel}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Zone</f:facet>
+			<h:outputText value="#{_stop.zone.zoneName}"/>
+		</h:column>
+        <rich:column styleClass="action">
+   			<f:facet name="header">Action</f:facet>
+   			Delete
+   		</rich:column>
+
+ 	</rich:dataTable>
+</ui:define>
+
+</ui:composition>

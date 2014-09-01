@@ -1,0 +1,261 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="calendarSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Calendar Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Service label</ui:define>
+                <h:inputText id="serviceLabel" value="#{calendarList.calendar.serviceLabel}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{calendarList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/CalendarList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Calendar Search Results (#{empty calendarList.resultList ? 0 : (calendarList.paginated ? calendarList.resultCount : calendarList.resultList.size)})</f:facet>
+    <div class="results" id="calendarList">
+
+    <h:outputText value="The calendar search returned no results."
+               rendered="#{empty calendarList.resultList}"/>
+
+    <rich:dataTable id="calendarList"
+                var="_calendar"
+              value="#{calendarList.resultList}"
+           rendered="#{not empty calendarList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Calendar id"/>
+                    <ui:param name="propertyPath" value="calendar.calendarId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.calendarId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Service id"/>
+                    <ui:param name="propertyPath" value="calendar.serviceId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.serviceId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Service label"/>
+                    <ui:param name="propertyPath" value="calendar.serviceLabel"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.serviceLabel}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Service Schedule Group"/>
+                    <ui:param name="propertyPath" value="calendar.serviceScheduleGroup.serviceScheduleGroupLabel"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.serviceScheduleGroup.serviceScheduleGroupLabel}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Start date"/>
+                    <ui:param name="propertyPath" value="calendar.startDate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.startDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="End date"/>
+                    <ui:param name="propertyPath" value="calendar.endDate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_calendar.endDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Sun"/>
+                    <ui:param name="propertyPath" value="calendar.sunday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.sunday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.sunday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Mon"/>
+                    <ui:param name="propertyPath" value="calendar.monday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.monday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.monday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Tue"/>
+                    <ui:param name="propertyPath" value="calendar.tuesday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.tuesday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.tuesday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Wed"/>
+                    <ui:param name="propertyPath" value="calendar.wednesday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.wednesday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.wednesday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Thu"/>
+                    <ui:param name="propertyPath" value="calendar.thursday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.thursday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.thursday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Fri"/>
+                    <ui:param name="propertyPath" value="calendar.friday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.friday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.friday}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{calendarList}"/>
+                    <ui:param name="propertyLabel" value="Sat"/>
+                    <ui:param name="propertyPath" value="calendar.saturday"/>
+                </ui:include>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.saturday}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.saturday}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Calendar' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="calendarViewId">
+                <f:param name="calendarId"
+                        value="#{_calendar.calendarId}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/CalendarEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="calendarEdit"
+                rendered="#{empty from}">
+                <f:param name="calendarId"
+                        value="#{_calendar.calendarId}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/CalendarList.xhtml"
+            rendered="#{calendarList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/CalendarList.xhtml"
+            rendered="#{calendarList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{calendarList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CalendarList.xhtml"
+            rendered="#{calendarList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{calendarList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CalendarList.xhtml"
+            rendered="#{calendarList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{calendarList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/CalendarEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create calendar">
+            <f:param name="calendarId"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

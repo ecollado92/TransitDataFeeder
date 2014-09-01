@@ -1,0 +1,345 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Routes</li>
+		<li class="nolink">Travel Directions</li>
+		<li class="nolink">Trips</li>
+		<li class="nolink">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{displayBean.getRouteDisplayValue(routeHome.instance)}"/>
+	</div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+        <s:decorate id="routeId" template="layout/display.xhtml">
+            <ui:define name="label">Route id</ui:define>
+            <h:outputText value="#{routeHome.instance.routeId}"/>
+        </s:decorate>
+
+        <s:decorate id="routeLongName" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeLongName}">
+            <ui:define name="label">Route long name</ui:define>
+            <h:outputText value="#{routeHome.instance.routeLongName}"/>
+        </s:decorate>
+
+        <s:decorate id="routeShortName" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeShortName}">
+            <ui:define name="label">Route short name</ui:define>
+            <h:outputText value="#{routeHome.instance.routeShortName}"/>
+        </s:decorate>
+
+        <s:decorate id="routeType" template="layout/display.xhtml">
+            <ui:define name="label">Route Type</ui:define>
+            <h:outputText value="#{routeHome.instance.routeType.routeTypeDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="routeDesc" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeDesc}">
+            <ui:define name="label">Description</ui:define>
+            <h:outputText value="#{routeHome.instance.routeDesc}"/>
+        </s:decorate>
+
+        <s:decorate id="routeUrl" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeUrl}">
+            <ui:define name="label">URL</ui:define>
+            <h:outputText value="#{routeHome.instance.routeUrl}"/>
+        </s:decorate>
+
+        <s:decorate id="routeColor" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeColor}">
+            <ui:define name="label">Route color</ui:define>
+            <h:outputText value="#{routeHome.instance.routeColor}"/>
+        </s:decorate>
+
+        <s:decorate id="routeTextColor" template="layout/display.xhtml" rendered="#{not empty routeHome.instance.routeTextColor}">
+            <ui:define name="label">Route text color</ui:define>
+            <h:outputText value="#{routeHome.instance.routeTextColor}"/>
+        </s:decorate>
+
+        <s:decorate id="routeBikesAllowed" template="layout/display.xhtml">
+            <ui:define name="label">Bikes allowed?</ui:define>
+            <h:outputText value="#{routeHome.instance.bikeOption.bikeOptionDescription}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/RouteEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+			<f:param name="routeEditFrom" value="RouteDashboard"/>
+			<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+        </s:button>
+
+        <s:button view="/#{empty routeDashboardFrom ? 'RouteList' : routeDashboardFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader">
+    	<f:facet name="header">Trips for this route</f:facet>
+	    <s:div styleClass="tableControl" rendered="#{not empty routeHome.instance.trips}">
+		    <s:div styleClass="createNew">
+		    	<s:link view="/TripsEdit.xhtml"
+	        	          id="topCreate"
+        	      propagation="none"
+            	     rendered="#{empty from}">
+            	  	<h:graphicImage value="/img/new.png" alt="create new"/>
+         	     	<h:outputText value=" Add trip"/>
+        		    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        		    <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        	   		<f:param name="tripId"/>
+				</s:link>
+    		</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty tripList.resultList}">
+				<h:outputText value="Displaying #{tripList.firstResult + 1} - #{tripList.lastResult + 1} of #{tripList.resultCount}"
+					   rendered="#{not empty tripList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+		
+			<s:div styleClass="displaying" rendered="#{empty tripList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty tripList.resultList}">
+				<s:link view="/RouteDashboard.xhtml"
+            		rendered="#{tripList.previousExists}"
+               		   value="#{messages.left}#{messages.left} First Page"
+                  	      id="topFirstPage">
+					<f:param name="firstResult" value="0"/>
+		        </s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+      		        rendered="#{tripList.previousExists}"
+             		   value="#{messages.left} Previous Page"
+           		          id="topPreviousPage">
+					<f:param name="firstResult"
+						value="#{tripList.previousFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+        		    rendered="#{tripList.nextExists}"
+               		   value="Next Page #{messages.right}"
+                  		  id="topNextPage">
+					<f:param name="firstResult"
+                    	value="#{tripList.nextFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+       		        rendered="#{tripList.nextExists}"
+               		   value="Last Page #{messages.right}#{messages.right}"
+                  		  id="topLastPage">
+					<f:param name="firstResult"
+                   		value="#{tripList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty tripList.resultList}">
+				&#160;
+			</s:div>
+
+		</s:div>
+    <div class="results" id="tripList">
+
+    <h:outputText value="The trips search returned no results."
+               rendered="#{empty tripList.resultList}"/>
+
+    <rich:dataTable id="tripListTable"
+                var="_trip"
+              value="#{tripList.resultList}"
+           rendered="#{not empty tripList.resultList}"
+          styleClass="searchResultsTable"
+       columnClasses="searchResultsTableColumn"
+         rowClasses="searchResultsRowEven,searchResultsRowOdd">
+			<h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tripList}"/>
+                    <ui:param name="propertyLabel" value="Trip id"/>
+                    <ui:param name="propertyPath" value="trip.tripId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_trip.tripId}"/>
+        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tripList}"/>
+                    <ui:param name="propertyLabel" value="Headsign"/>
+                    <ui:param name="propertyPath" value="trip.tripHeadsign"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_trip.tripHeadsign}"/>
+        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tripList}"/>
+                    <ui:param name="propertyLabel" value="Service Calendar"/>
+                    <ui:param name="propertyPath" value="trip.calendar.serviceLabel"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_trip.calendar.serviceLabel}"/>
+        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">
+					<ui:include src="layout/sort.xhtml">
+						<ui:param name="entityList" value="#{tripList}"/>
+						<ui:param name="propertyLabel" value="First stop time"/>
+						<ui:param name="propertyPath" value="trip.firstStopTime"/>
+					</ui:include>
+				</f:facet>
+				<h:outputText value="#{_trip.firstStopTime}">
+					<s:convertDateTime type="time" pattern="HH:mm"/>
+				</h:outputText>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">
+					<ui:include src="layout/sort.xhtml">
+						<ui:param name="entityList" value="#{tripList}"/>
+						<ui:param name="propertyLabel" value="Last stop time"/>
+						<ui:param name="propertyPath" value="trip.lastStopTime"/>
+					</ui:include>
+				</f:facet>
+				<h:outputText value="#{_trip.lastStopTime}">
+					<s:convertDateTime type="time"/>
+				</h:outputText>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tripList}"/>
+                    <ui:param name="propertyLabel" value="Direction"/>
+                    <ui:param name="propertyPath" value="trip.direction.directionLabel"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_trip.direction.directionLabel}"/>
+        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">
+					<ui:include src="layout/sort.xhtml">
+						<ui:param name="entityList" value="#{tripList}"/>
+						<ui:param name="propertyLabel" value="Based on"/>
+						<ui:param name="propertyPath" value="trip.basedOn.tripId"/>
+					</ui:include>
+				</f:facet>
+				<h:outputText value="#{displayBean.getTripDisplayValue(_trip.basedOn)}"/>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+						<ui:param name="entityList" value="#{tripList}"/>
+						<ui:param name="propertyLabel" value="Block"/>
+						<ui:param name="propertyPath" value="trip.block.blockLabel"/>
+					</ui:include>
+					</f:facet>
+				<h:outputText value="#{_trip.block.blockLabel}"/>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+	            <f:facet name="header">
+	                <ui:include src="layout/sort.xhtml">
+	                    <ui:param name="entityList" value="#{tripList}"/>
+	                    <ui:param name="propertyLabel" value="Bikes allowed"/>
+	                    <ui:param name="propertyPath" value="trip.bikeOption"/>
+	                </ui:include>
+    	        </f:facet>
+	            <h:outputText value="#{_trip.bikeOption.bikeOptionDescription}"/>
+			</h:column>
+    	    <rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+				<f:facet name="header">Edit</f:facet>
+				<s:link view="/TripsEdit.xhtml"
+	                   value="Edit"
+						  id="tripEditViewId">
+					<f:param name="tripEditFrom" value="RouteDashboard"/>
+					<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+					<f:param name="tripId"
+						value="#{_trip.tripId}"/>
+				</s:link>
+	        </rich:column>
+<!--    	    <rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">-->
+<!--				<f:facet name="header">Stop Times</f:facet>-->
+<!--				<s:link view="/StopTimesList.xhtml"-->
+<!--	                   value="Stop Times"-->
+<!--						  id="stopTimesViewId">-->
+<!--					<f:param name="stopTimeListFrom" value="RouteDashboard"/>-->
+<!--					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>-->
+<!--					<f:param name="tripId"-->
+<!--						value="#{_trip.tripId}"/>-->
+<!--				</s:link>-->
+<!--	        </rich:column>-->
+	    </rich:dataTable>
+
+    	</div>
+	    <s:div styleClass="tableControl" rendered="#{not empty tripList.resultList}">
+		    <s:div styleClass="createNew">
+		    	<s:link view="/TripsEdit.xhtml"
+	        	          id="bottomCreate"
+        	      propagation="none"
+            	     rendered="#{empty from}">
+            	  	<h:graphicImage value="/img/new.png" alt="create new"/>
+         	     	<h:outputText value=" Add trip"/>
+        		    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        		    <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        	   		<f:param name="tripId"/>
+				</s:link>
+    		</s:div>
+    		<div class="displaying">
+				<h:outputText value="Displaying #{tripList.firstResult + 1} - #{tripList.lastResult + 1} of #{tripList.resultCount}"
+					   rendered="#{not empty tripList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</div>
+		
+			<div class="navigation">
+				<s:link view="/RouteDashboard.xhtml"
+            		rendered="#{tripList.previousExists}"
+               		   value="#{messages.left}#{messages.left} First Page"
+                  	      id="bottomFirstPage">
+					<f:param name="firstResult" value="0"/>
+		        </s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+      		        rendered="#{tripList.previousExists}"
+             		   value="#{messages.left} Previous Page"
+           		          id="bottomPreviousPage">
+					<f:param name="firstResult"
+						value="#{tripList.previousFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+        		    rendered="#{tripList.nextExists}"
+               		   value="Next Page #{messages.right}"
+                  		  id="bottomNextPage">
+					<f:param name="firstResult"
+                    	value="#{tripList.nextFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/RouteDashboard.xhtml"
+       		        rendered="#{tripList.nextExists}"
+               		   value="Last Page #{messages.right}#{messages.right}"
+                  		  id="bottomLastPage">
+					<f:param name="firstResult"
+                   		value="#{tripList.lastFirstResult}"/>
+				</s:link>
+			</div>
+		</s:div>
+    </rich:panel>
+</ui:define>
+
+</ui:composition>

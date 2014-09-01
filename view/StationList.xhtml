@@ -1,0 +1,400 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/StopList.xhtml" value="Stops">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li class="current">Stations</li>
+		<li>
+			<s:link view="/ZoneList.xhtml" value="Zones">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/TransfersList.xhtml" value="Transfers">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+    <h:form id="stopSearch" styleClass="edit">
+        <rich:simpleTogglePanel label="Filter Stations by:" headerClass="searchPanelHeader" 
+        	styleClass="searchPanel" switchType="ajax">
+			<h:inputHidden name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Zone</ui:define>
+                <h:selectOneMenu id="zoneId" value="#{stationList.zoneId}">
+                	<s:selectItems value="#{agencyHome.instance.zones}" var="_zone" label="#{_zone.zoneName}" itemValue="#{_zone.zoneId}" noSelectionLabel="Any Zone"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Geolocated?</ui:define>
+                <h:selectOneMenu id="geolocated" value="#{stationList.geolocated}">
+                	<f:selectItem itemLabel="no selection" itemValue=""/>
+                	<f:selectItem itemLabel="Yes" itemValue="true"/>
+                	<f:selectItem itemLabel="No" itemValue="false"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Comments</ui:define>
+                <h:inputText id="stopComments" value="#{stationList.station.stopComments}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+	        <div class="actionButtons">
+    	        <h:commandButton id="search" value="Search" action="/StationList.xhtml"/>
+        	    <s:button id="reset" value="Reset" includePageParams="false">
+        	    	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        	    </s:button>
+        	</div>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+    </h:form>
+
+	<p/>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+
+    <div class="tableControl">
+	    <s:div styleClass="createNew">
+	    	<s:link view="/StationEdit.xhtml"
+        	          id="topCreate"
+              propagation="none"
+                 rendered="#{empty from}">
+              	<h:graphicImage value="/img/new.png" alt="create new"/>
+              	<h:outputText value=" Add station"/>
+        	    <f:param name="stationFrom" value="StationList"/>
+        	    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+           		<f:param name="stationStopId"/>
+			</s:link>
+    	</s:div>
+    	<div class="displaying">
+			<h:outputText value="Displaying #{stationList.firstResult + 1} - #{stationList.lastResult + 1} of #{stationList.resultCount}"
+				   rendered="#{not empty stationList.resultList}"/>
+			<h:outputText value=" -- "/>
+			<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+		</div>
+		
+		<div class="navigation">
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="topFirstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="topPreviousPage">
+            <f:param name="firstResult"
+                    value="#{stationList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="topNextPage">
+            <f:param name="firstResult"
+                    value="#{stationList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="topLastPage">
+            <f:param name="firstResult"
+                    value="#{stationList.lastFirstResult}"/>
+        </s:link>
+		</div>
+    </div>
+    <div class="results" id="stopList">
+
+    <h:outputText value="The station search returned no results."
+               rendered="#{empty stationList.resultList}"/>
+
+	<h:form id="stopForm">
+    <rich:dataTable id="stationList"
+                var="_station"
+              value="#{stationList.resultList}"
+           rendered="#{not empty stationList.resultList}"
+          styleClass="searchResultsTable"
+       columnClasses="searchResultsTableColumn"
+         rowClasses="searchResultsRowEven,searchResultsRowOdd">
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stationList}"/>
+                    <ui:param name="propertyLabel" value="ID"/>
+                    <ui:param name="propertyPath" value="station.stopId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_station.stopId}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stationList}"/>
+                    <ui:param name="propertyLabel" value="Station Code"/>
+                    <ui:param name="propertyPath" value="station.stopCode"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_station.stopCode}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stationList}"/>
+                    <ui:param name="propertyLabel" value="Name"/>
+                    <ui:param name="propertyPath" value="station.stopName"/>
+                </ui:include>
+            </f:facet>
+            <s:link view="/StationEdit.xhtml"
+                   value="#{_station.stopName}"
+             propagation="none"
+                      id="stationLink"
+                rendered="#{not empty _station.stopName}">
+                <f:param name="stopFrom" value="StationList"/>
+	            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                <f:param name="stationStopId"
+                        value="#{_station.stopId}"/>
+            </s:link>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stationList}"/>
+                    <ui:param name="propertyLabel" value="Comments"/>
+                    <ui:param name="propertyPath" value="station.stopComments"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_station.stopComments}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stationList}"/>
+                    <ui:param name="propertyLabel" value="Zone"/>
+                    <ui:param name="propertyPath" value="station.zone.zoneName"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_station.zone.zoneName}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+				<h:outputText value="Located"/>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="true" rendered="#{_station.geolocated}"/>
+			<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _station.geolocated}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+				<h:outputText>Transfer<br/>Rules</h:outputText>
+            </f:facet>
+			<h:graphicImage value="/img/true.png" alt="to" rendered="#{not empty _station.transfersToLocation}"/>
+			<h:graphicImage value="/img/true.png" alt="from" rendered="#{not empty _station.transfersFromLocation}"/>
+        </h:column>
+<!-- 
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Direction"/>
+                    <ui:param name="propertyPath" value="stop.direction.directionLabel"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.direction.directionLabel}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Parent station"/>
+                    <ui:param name="propertyPath" value="stop.parentStation.stopName"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.parentStation.stopName}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Description"/>
+                    <ui:param name="propertyPath" value="stop.stopDesc"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.stopDesc}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Latitude"/>
+                    <ui:param name="propertyPath" value="stop.stopLat"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.stopLat}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Longitude"/>
+                    <ui:param name="propertyPath" value="stop.stopLon"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.stopLon}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Stop order"/>
+                    <ui:param name="propertyPath" value="stop.stopListOrder"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.stopListOrder}"/>
+        </h:column>
+        <h:column headerClass="searchResultsTableHeader">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{stopList}"/>
+                    <ui:param name="propertyLabel" value="Stop url"/>
+                    <ui:param name="propertyPath" value="stop.stopUrl"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_stop.stopUrl}"/>
+        </h:column>
+ -->
+
+<!-- 		
+        <rich:column styleClass="action" headerClass="searchResultsTableHeader">
+            <f:facet name="header"><h:outputText value="#{empty from ? 'View' : 'Select'}"/></f:facet>
+            <s:link view="/#{empty from ? 'Stop' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+                      id="stopViewId">
+                <f:param name="stopFrom" value="StopList"/>
+	            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                <f:param name="stopId"
+                        value="#{_stop.stopId}"/>
+            </s:link>
+        </rich:column>
+-->
+
+        <rich:column styleClass="action" headerClass="searchResultsTableHeader">
+            <f:facet name="header">Edit</f:facet>
+            <s:link view="/StationEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="stationEdit"
+                rendered="#{empty from}">
+                <f:param name="stationFrom" value="StationList"/>
+	            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                <f:param name="stationStopId"
+                        value="#{_station.stopId}"/>
+            </s:link>
+        </rich:column>
+
+		<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+			<f:facet name="header">Delete</f:facet>
+			<h:commandLink id="deleteStation"
+						value="Delete"
+					   action="#{oneStepDeletionHandler.deleteStation(_station.stopId)}"
+					immediate="true"
+					  onclick="return confirm('Are you sure you want to delete this station?');">
+			</h:commandLink>
+		</rich:column>
+
+<!--        <rich:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--            <f:facet name="header">Child stations</f:facet>-->
+<!--            <s:link view="/StopList.xhtml"-->
+<!--                   value="Child stations"-->
+<!--             propagation="none"-->
+<!--                      id="stopChildren"-->
+<!--                rendered="#{not empty _stop.childStops}">-->
+<!--                <f:param name="parentStationId" value="#{_stop.stopId}"/>-->
+<!--	            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--				<f:param name="firstResult"/>-->
+<!--            </s:link>-->
+<!--        </rich:column>-->
+
+    </rich:dataTable>
+    </h:form>
+    </div>
+    <div class="tableControl">
+	    <s:div styleClass="createNew">
+	    	<s:link view="/StationEdit.xhtml"
+        	          id="bottomCreate"
+              propagation="none"
+                 rendered="#{empty from}">
+              	<h:graphicImage value="/img/new.png" alt="create new"/>
+              	<h:outputText value=" Add station"/>
+        	    <f:param name="stationFrom" value="StationList"/>
+        	    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+           		<f:param name="stationStopId"/>
+			</s:link>
+    	</s:div>
+    	<div class="displaying">
+			<h:outputText value="Displaying #{stationList.firstResult + 1} - #{stationList.lastResult + 1} of #{stationList.resultCount}"
+				   rendered="#{not empty stationList.resultList}"/>
+			<h:outputText value=" -- "/>
+			<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+		</div>
+		
+		<div class="navigation">
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="bottomFirstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="bottomPreviousPage">
+            <f:param name="firstResult"
+                    value="#{stationList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="bottomNextPage">
+            <f:param name="firstResult"
+                    value="#{stationList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/StationList.xhtml"
+            rendered="#{stationList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="bottomLastPage">
+            <f:param name="firstResult"
+                    value="#{stationList.lastFirstResult}"/>
+        </s:link>
+		</div>
+    </div>
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

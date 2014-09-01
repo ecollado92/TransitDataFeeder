@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	template="/layout/template.xhtml">
+
+	<ui:define name="head">
+		<link href="stylesheet/useradmin.css" rel="stylesheet"
+			type="text/css" />
+	</ui:define>
+
+	<ui:define name="body">
+
+		<h1>User Details</h1>
+
+		<h:form id="userForm">
+
+			<rich:panel styleClass="useradmin">
+				<s:decorate id="usernameField" template="/layout/edit.xhtml">
+					<ui:define name="label">Username</ui:define>
+					<h:inputText id="username" value="#{userHome.instance.email}"
+						readonly="true" />
+				</s:decorate>
+
+				<s:decorate id="passwordField" template="/layout/edit.xhtml">
+					<ui:define name="label">Password</ui:define>
+					<h:inputSecret id="password" value="#{userAction.password}" />
+				</s:decorate>
+
+				<s:decorate id="confirmField" template="/layout/edit.xhtml">
+					<ui:define name="label">Confirm password</ui:define>
+					<h:inputSecret id="confirm" value="#{userAction.confirm}" />
+				</s:decorate>
+
+				<s:decorate id="firstnameField" template="/layout/edit.xhtml">
+					<ui:define name="label">First name</ui:define>
+					<h:inputText id="firstname" value="#{userHome.instance.firstName}" />
+				</s:decorate>
+
+				<s:decorate id="lastnameField" template="/layout/edit.xhtml">
+					<ui:define name="label">Last name</ui:define>
+					<h:inputText id="lastname" value="#{userHome.instance.lastName}" />
+				</s:decorate>
+
+				<s:decorate id="rolesField" template="/layout/edit.xhtml">
+					<ui:define name="label">Member of roles</ui:define>
+					<h:selectOneMenu id="roles"
+						value="#{userHome.currentUserRoles}" layout="pageDirection"
+						converter="StringListConverter"
+						styleClass="roles"
+						disabled="#{not s:hasRole('admin')}">
+						<s:selectItems value="#{identityManager.listGrantableRoles()}"
+							var="_role" label="#{_role}" />
+					</h:selectOneMenu>
+<!--					<div class="selectMany"><h:selectManyCheckbox id="roles"-->
+<!--						value="#{userHome.currentUserRoles}" layout="pageDirection"-->
+<!--						styleClass="roles" disabled="#{not identity.hasRole('admin')}">-->
+<!--						<s:selectItems value="#{identityManager.listGrantableRoles()}"-->
+<!--							var="_role" label="#{_role}" />-->
+<!--					</h:selectManyCheckbox></div>-->
+				</s:decorate>
+
+				<s:decorate id="enabledField" template="/layout/edit.xhtml">
+					<ui:define name="label">Enabled</ui:define>
+					<h:selectBooleanCheckbox id="enabled" value="#{userHome.instance.enabled}" 
+						disabled="#{not s:hasRole('admin')}"/>
+				</s:decorate>
+
+				<div style="clear: both" />
+
+			</rich:panel>
+
+			<div class="actionButtons">
+            	<h:commandButton id="save"
+               	              value="Save"
+                             action="#{userHome.persist}"
+                       	   disabled="#{!userHome.wired}"
+                           rendered="#{!userHome.managed}"/>
+
+	            <h:commandButton id="update"
+                              value="Save"
+                             action="#{userHome.update}"
+                           rendered="#{userHome.managed}"/>
+
+
+	            <s:button id="cancel"
+    	               value="Cancel"
+        	     propagation="end"
+            	        view="/home.xhtml"/>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

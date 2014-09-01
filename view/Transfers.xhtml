@@ -1,0 +1,62 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Transfer Details</f:facet>
+
+        <s:decorate id="transferId" template="layout/display.xhtml">
+            <ui:define name="label">Transfer id</ui:define>
+            <h:outputText value="#{transfersHome.instance.transferId}"/>
+        </s:decorate>
+
+        <s:decorate id="fromStopId" template="layout/display.xhtml">
+            <ui:define name="label">From Stop</ui:define>
+            <h:outputText value="#{transfersHome.instance.fromLocation.stopName}"/>
+        </s:decorate>
+
+        <s:decorate id="toStopId" template="layout/display.xhtml">
+            <ui:define name="label">To Stop</ui:define>
+            <h:outputText value="#{transfersHome.instance.toLocation.stopName}"/>
+        </s:decorate>
+
+        <s:decorate id="minTransferTime" template="layout/display.xhtml">
+            <ui:define name="label">Min transfer time</ui:define>
+            <h:outputText value="#{transfersHome.instance.minTransferTime}"/>
+        </s:decorate>
+
+        <s:decorate id="transferType" template="layout/display.xhtml">
+            <ui:define name="label">Transfer type</ui:define>
+            <h:outputText value="#{transfersHome.instance.transferType.transferTypeDescription}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TransfersEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+        </s:button>
+
+        <s:button view="/#{empty transfersFrom ? 'TransfersList' : transfersFrom}.xhtml"
+                    id="done"
+                 value="Done">
+			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,134 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Fares</li>
+		<li class="current">Fare Rules</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+    <h:form id="fareRules" styleClass="edit">
+
+        <rich:panel headerClass="searchPanelHeader" styleClass="searchPanel">
+            <f:facet name="header">#{fareRuleHome.managed ? 'Edit' : 'Add'} Fare rule</f:facet>
+
+            <s:decorate id="fareIdField" template="layout/edit.xhtml" rendered="#{empty fareId}">
+                <ui:define name="label">Fare id</ui:define>
+                <h:selectOneMenu value="#{fareRuleHome.instance.fare}">
+                	<s:selectItems var="_fare" value="#{agencyViewBean.currentAgencyFares}"
+								 label="#{displayBean.getFareDisplayValue(_fare)}"
+					  noSelectionLabel="Select fare..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="fareIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="originIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Origin</ui:define>
+                <h:selectOneMenu value="#{fareRuleHome.instance.origin}">
+                	<s:selectItems var="_zone" value="#{agencyViewBean.currentAgencyZones}" label="#{_zone.zoneName}" noSelectionLabel="Select zone..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="originIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="destinationIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Destination</ui:define>
+                <h:selectOneMenu value="#{fareRuleHome.instance.destination}">
+                	<s:selectItems var="_zone" value="#{agencyViewBean.currentAgencyZones}" label="#{_zone.zoneName}" noSelectionLabel="Select zone..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="destinationIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="containsIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Contains</ui:define>
+                <h:selectOneMenu value="#{fareRuleHome.instance.contains}">
+                	<s:selectItems var="_zone" value="#{agencyViewBean.currentAgencyZones}" label="#{_zone.zoneName}" noSelectionLabel="Select zone..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="containsIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="routeIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Route</ui:define>
+                <h:selectOneMenu value="#{fareRuleHome.instance.route}">
+                	<s:selectItems var="_route" value="#{agencyViewBean.currentAgencyRoutes}" label="#{displayBean.getRouteDisplayValue(_route)}" noSelectionLabel="Select route..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="routeIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{fareRuleHome.persist}"
+                       disabled="#{!fareRuleHome.wired}"
+                       rendered="#{!fareRuleHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{fareRuleHome.update}"
+                       rendered="#{fareRuleHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{fareRuleHome.remove}"
+                      immediate="true"
+                       rendered="#{fareRuleHome.managed}"/>
+
+			<h:commandButton id="cancelEdit"
+							value="Cancel"
+							action="cancelEdit"
+							rendered="#{fareRuleHome.managed}"/>
+
+			<h:commandButton id="cancelAdd"
+							value="Cancel"
+							action="cancelAdd"
+							rendered="#{!fareRuleHome.managed}"/>
+
+<!--            <s:button id="cancelEdit"-->
+<!--                   value="Cancel"-->
+<!--             propagation="end"-->
+<!--                    view="/#{empty fareRulesFrom ? 'FareRules' : fareRulesFrom}.xhtml"-->
+<!--                rendered="#{fareRuleHome.managed}">-->
+<!--				<f:param name="fareAttributesFrom" value="#{fareAttributesFrom}"/>-->
+<!--				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--			</s:button>-->
+
+<!--            <s:button id="cancelAdd"-->
+<!--                   value="Cancel"-->
+<!--             propagation="end"-->
+<!--                    view="/#{empty fareRulesFrom ? 'FareRulesList' : fareRulesFrom}.xhtml"-->
+<!--                rendered="#{!fareRuleHome.managed}">-->
+<!--				<f:param name="fareAttributesFrom" value="#{fareAttributesFrom}"/>-->
+<!--				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--			</s:button>-->
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

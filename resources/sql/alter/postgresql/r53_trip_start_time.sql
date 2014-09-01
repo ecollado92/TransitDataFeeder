@@ -1,0 +1,1 @@
+ALTER TABLE trip ALTER COLUMN trip_start_time TYPE time without time zone;

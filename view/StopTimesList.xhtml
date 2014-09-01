@@ -1,0 +1,312 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="Stop Times for Trip ID #{tripHome.instance.tripId}" rendered="#{not empty tripHome.tripTripId}"/>
+		<h:outputText value="Stop Times" rendered="#{empty tripHome.tripTripId}"/>
+	</div>
+
+    <h:form id="stopTimesSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="StopTimes Search Filter" switchType="ajax" rendered="#{empty tripHome.tripTripId}">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{stopTimeList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <s:div styleClass="actionButtons" rendered="#{empty tripHome.tripTripId}">
+            <h:commandButton id="search" value="Search" action="/StopTimesList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </s:div>
+
+        <s:div styleClass="actionButtons" rendered="#{not empty tripHome.tripTripId}">
+            <s:button id="cancel"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stopTimesListFrom ? 'RouteDashboard' : stopTimesListFrom}.xhtml">
+                
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+            </s:button>
+        </s:div>
+    </h:form>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader">
+	    <s:div styleClass="tableControl">
+		    <s:div styleClass="createNew">
+				<s:link view="/StopTimesEdit.xhtml"
+						  id="topCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add stop time"/>
+					<f:param name="stopTimeListFrom" value="#{stopTimeListFrom}"/>
+					<f:param name="stopTimeEditFrom" value="StopTimesList"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+					<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+				</s:link>
+			</s:div>
+	    	<s:div styleClass="displaying" rendered="#{not empty stopTimeList.resultList}">
+				<h:outputText value="Displaying #{stopTimeList.firstResult + 1} - #{stopTimeList.lastResult + 1} of #{stopTimeList.resultCount}"
+					   rendered="#{not empty stopTimeList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty stopTimeList.resultList}">
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="topFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+         		    rendered="#{stopTimeList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="topPreviousPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.previousFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="topNextPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.nextFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="topLastPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+		</s:div>
+
+	    <div class="results" id="stopTimesList">
+
+		    <h:outputText value="The stopTimes search returned no results."
+					   rendered="#{empty stopTimeList.resultList}"/>
+
+			<rich:dataTable id="stopTimeList"
+						   var="_stopTime"
+						 value="#{stopTimeList.resultList}"
+					  rendered="#{not empty stopTimeList.resultList}"
+		            styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Stop time id"/>
+							<ui:param name="propertyPath" value="stopTime.stopTimeId"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.stopTimeId}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sortComplex.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Arrival time"/>
+							<ui:param name="propertyPath" value="stopTime.arrivalTimeCarryover,stopTime.arrivalTime"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{carryoverTimeViewBean.displayTime(_stopTime.arrivalTime, _stopTime.arrivalTimeCarryover)}">
+						<s:convertDateTime type="time"/>
+					</h:outputText>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sortComplex.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Departure time"/>
+							<ui:param name="propertyPath" value="stopTime.departureTimeCarryover,stopTime.departureTime"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{carryoverTimeViewBean.displayTime(_stopTime.departureTime, _stopTime.departureTimeCarryover)}">
+						<s:convertDateTime type="time"/>
+					</h:outputText>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Drop off type"/>
+							<ui:param name="propertyPath" value="stopTime.dropOffType.pickupTypeDescription"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.dropOffType.pickupTypeDescription}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Pickup type"/>
+							<ui:param name="propertyPath" value="stopTime.pickupType.pickupTypeDescription"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.pickupType.pickupTypeDescription}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Shape dist traveled"/>
+							<ui:param name="propertyPath" value="stopTime.shapeDistTraveled"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.shapeDistTraveled}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Stop"/>
+							<ui:param name="propertyPath" value="stopTime.stop.stopName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.stop.stopName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Stop sequence"/>
+							<ui:param name="propertyPath" value="stopTime.stopSequence"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.stopSequence}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Timing point"/>
+							<ui:param name="propertyPath" value="stopTime.timingPoint"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.timingPoint}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+    		        <f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{stopTimeList}"/>
+							<ui:param name="propertyLabel" value="Trip id"/>
+							<ui:param name="propertyPath" value="stopTime.trip.tripId"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_stopTime.trip.tripId}"/>
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+					<f:facet name="header">Action</f:facet>
+					<s:link view="/#{empty from ? 'StopTimes' : from}.xhtml"
+						   value="#{empty from ? 'View' : 'Select'}"
+					 propagation="#{empty from ? 'none' : 'default'}"
+							  id="stopTimesViewId">
+						<f:param name="stopTimeListFrom" value="#{stopTimeListFrom}"/>
+						<f:param name="stopTimeEditFrom" value="StopTimesList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"
+							value="#{_stopTime.stopTimeId}"/>
+					</s:link>
+					#{' '}
+					<s:link view="/StopTimesEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="stopTimesEdit"
+						rendered="#{empty from}">
+						<f:param name="stopTimeListFrom" value="#{stopTimeListFrom}"/>
+						<f:param name="stopTimeEditFrom" value="StopTimesList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"
+							value="#{_stopTime.stopTimeId}"/>
+					</s:link>
+				</rich:column>
+			</rich:dataTable>
+		</div>
+
+	    <s:div styleClass="tableControl" rendered="#{not empty stopTimeList.resultList}">
+		    <s:div styleClass="createNew">
+				<s:link view="/StopTimesEdit.xhtml"
+						  id="bottomCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add stop time"/>
+					<f:param name="stopTimeListFrom" value="#{stopTimeListFrom}"/>
+					<f:param name="stopTimeEditFrom" value="StopTimesList"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+					<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+				</s:link>
+			</s:div>
+	    	<div class="displaying">
+				<h:outputText value="Displaying #{stopTimeList.firstResult + 1} - #{stopTimeList.lastResult + 1} of #{stopTimeList.resultCount}"
+					   rendered="#{not empty stopTimeList.resultList}"/>
+				<h:outputText value=" -- "/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</div>
+
+			<div class="navigation">
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="bottomFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+         		    rendered="#{stopTimeList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="bottomPreviousPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.previousFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="bottomNextPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.nextFirstResult}"/>
+				</s:link>
+
+		        <s:link view="/StopTimesList.xhtml"
+					rendered="#{stopTimeList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="bottomLastPage">
+					<f:param name="firstResult"
+						value="#{stopTimeList.lastFirstResult}"/>
+				</s:link>
+			</div>
+		</s:div>
+    </rich:panel>
+</ui:define>
+
+</ui:composition>

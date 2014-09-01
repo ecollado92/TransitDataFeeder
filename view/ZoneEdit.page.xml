@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/ZoneList.xhtml"
+      login-required="true">
+
+   <restrict>#{(empty zoneHome.zoneZoneId and s:hasPermission('zoneAware','add')) or (not empty zoneHome.zoneZoneId and s:hasPermission('zoneAware', 'edit'))}</restrict>
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{zoneHome.wire}"/>
+
+   <param name="zoneFrom"/>
+   <param name="zoneId" value="#{zoneHome.zoneZoneId}"/>
+   <param name="agencyFrom"/>
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+
+
+
+   <navigation from-action="#{zoneHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/#{empty zoneFrom ? 'Zone' : zoneFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{zoneHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/#{empty zoneFrom ? 'Zone' : zoneFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{zoneHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/#{empty zoneFrom ? 'ZoneList' : zoneFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+</page>

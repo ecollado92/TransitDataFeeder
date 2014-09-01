@@ -1,0 +1,593 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="Action Tests">
+    <groups>
+    </groups>
+    <test name="Action Test">
+      <class name="org.ideaproject.test.action.OneStepDeletionHandlerTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteAgencyGroup()" name="testDeleteAgencyGroup" duration-ms="147" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteCalendar()" name="testDeleteCalendar" duration-ms="197" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreateAndRemove()" name="testCreateAndRemove" duration-ms="182" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="startSeam()" name="startSeam" is-config="true" duration-ms="9363" started-at="2010-07-13T15:26:55Z" finished-at="2010-07-13T15:27:04Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteFare()" name="testDeleteFare" duration-ms="157" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteStop()" name="testDeleteStop" duration-ms="220" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteAgency()" name="testDeleteAgency" duration-ms="205" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteRoute()" name="testDeleteRoute" duration-ms="184" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteFareRule()" name="testDeleteFareRule" duration-ms="207" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="stopSeam()" name="stopSeam" is-config="true" duration-ms="59" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="4" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteStopTime()" name="testDeleteStopTime" duration-ms="201" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:07Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteServiceScheduleBound()" name="testDeleteServiceScheduleBound" duration-ms="394" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:07Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteStation()" name="testDeleteStation" duration-ms="151" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteZone()" name="testDeleteZone" duration-ms="199" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:08Z" finished-at="2010-07-13T15:27:08Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.action.DisplayBeanTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="testViewBeanFunctions()" name="testViewBeanFunctions" duration-ms="229" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.action.GtfsExportBeanTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="testDeleteAgencyGroup()" name="testDeleteAgencyGroup" duration-ms="498" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:06Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreateAndRemove()" name="testCreateAndRemove" duration-ms="404" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:06Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.action.OverviewBeanTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testViewBeanFunctions()" name="testViewBeanFunctions" duration-ms="89" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.action.TripViewBeanTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="testViewBeanFunctions()" name="testViewBeanFunctions" duration-ms="39" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:09Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.action.AgencyViewBeanTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="45" started-at="2010-07-13T15:27:04Z" finished-at="2010-07-13T15:27:04Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1006" started-at="2010-07-13T15:27:04Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="testViewBeanFunctions()" name="testViewBeanFunctions" duration-ms="236" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:05Z" finished-at="2010-07-13T15:27:05Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+  <suite name="CRUD Tests">
+    <groups>
+    </groups>
+    <test name="CRUD Test">
+      <class name="org.ideaproject.test.crud.CalendarDateExceptionCRUDTest">
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="45" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.AgencyCRUDTest">
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="17" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreateAndRemove()" name="testCreateAndRemove" duration-ms="86" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="99" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="19" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.TransferCRUDTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="53" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.ZoneCRUDTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="47" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.DirectionCRUDTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="45" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.ServiceScheduleGroupCRUDTest">
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="39" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="3" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="stopSeam()" name="stopSeam" is-config="true" duration-ms="42" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="startSeam()" name="startSeam" is-config="true" duration-ms="1660" started-at="2010-07-13T15:27:09Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.StationCRUDTest">
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="63" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="11" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="31" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.BlockCRUDTest">
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="10" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="38" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="10" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.AgencyGroupCRUDTest">
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="21" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="22" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="30" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.RouteCRUDTest">
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="56" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="24" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="5" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="32" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.FrequencyCRUDTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="57" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.TripCRUDTest">
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="101" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.FareRuleCRUDTest">
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="86" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.ServiceScheduleBoundCRUDTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="3" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="31" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.FareCRUDTest">
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="setup()" name="setup" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="59" started-at="2010-07-13T15:27:11Z" finished-at="2010-07-13T15:27:11Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.test.crud.StopCRUDTest">
+        <test-method status="PASS" signature="testUpdate()" name="testUpdate" duration-ms="11" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testRemove()" name="testRemove" duration-ms="10" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="79" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:12Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+  <suite name="Entity Home Tests">
+    <groups>
+    </groups>
+    <test name="EH Test">
+      <class name="org.ideaproject.action.entityhome.UserHomeTest">
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="120" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="setup()" name="setup" is-config="true" duration-ms="411" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="teardown()" name="teardown" is-config="true" duration-ms="24" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="76" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.action.entityhome.ValidationEntityTest">
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="teardown()" name="teardown" is-config="true" duration-ms="22" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="setup()" name="setup" is-config="true" duration-ms="907" started-at="2010-07-13T15:27:14Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="startSeam()" name="startSeam" is-config="true" duration-ms="1555" started-at="2010-07-13T15:27:12Z" finished-at="2010-07-13T15:27:14Z">
+        </test-method>
+        <test-method status="PASS" signature="stopSeam()" name="stopSeam" is-config="true" duration-ms="4" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+        <test-method status="PASS" signature="testCreate()" name="testCreate" duration-ms="7" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:15Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+  <suite name="Interaction Tests">
+    <groups>
+    </groups>
+    <test name="Login Test">
+      <class name="org.ideaproject.test.LoginTest">
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="startSeam()" name="startSeam" is-config="true" duration-ms="1493" started-at="2010-07-13T15:27:15Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="setupClass()" name="setupClass" is-config="true" duration-ms="2" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="70" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testLogin()" name="testLogin" duration-ms="14" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="cleanupClass()" name="cleanupClass" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testCompLogin()" name="testCompLogin" duration-ms="13" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testLoginComponent()" name="testLoginComponent" duration-ms="6" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="end()" name="end" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="begin()" name="begin" is-config="true" duration-ms="1" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="stopSeam()" name="stopSeam" is-config="true" duration-ms="23" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+  <suite name="Entity Home Tests">
+    <groups>
+    </groups>
+    <test name="EH Test">
+      <class name="org.ideaproject.util.HashCodeUtilTest">
+        <test-method status="PASS" signature="testHash_int_int()" name="testHash_int_int" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testHash_int_float()" name="testHash_int_float" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testHash_int_double()" name="testHash_int_double" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testHash_int_char()" name="testHash_int_char" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="FAIL" signature="testHash_int_long()" name="testHash_int_long" duration-ms="1" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+          <exception class="java.lang.AssertionError">
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError
+	at org.ideaproject.util.HashCodeUtilTest.testHash_int_long(HashCodeUtilTest.java:80)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.TestNG.privateMain(TestNG.java:914)
+	at org.testng.TestNG.main(TestNG.java:887)
+]]>
+            </full-stacktrace>
+          </exception>
+        </test-method>
+        <test-method status="PASS" signature="testHash_int_boolean()" name="testHash_int_boolean" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.util.StringUtilTest">
+        <test-method status="PASS" signature="setUp()" name="setUp" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testFormatTimeValue_Date_boolean()" name="testFormatTimeValue_Date_boolean" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testIsEmpty()" name="testIsEmpty" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testFormatTimeValue_Date()" name="testFormatTimeValue_Date" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.util.MapUtilTest">
+        <test-method status="PASS" signature="testCalculateDistance()" name="testCalculateDistance" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+      </class>
+      <class name="org.ideaproject.util.TripUtilTest">
+        <test-method status="PASS" signature="setup()" name="setup" is-config="true" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testBuildInheritedStopTimeList()" name="testBuildInheritedStopTimeList" duration-ms="1" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+        <test-method status="PASS" signature="testGetStopTimeArrivalTime()" name="testGetStopTimeArrivalTime" duration-ms="0" started-at="2010-07-13T15:27:17Z" finished-at="2010-07-13T15:27:17Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>

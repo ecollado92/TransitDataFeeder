@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="CRUD Tests" verbose="2" parallel="false">
+   <test name="CRUD Test">
+     <classes>
+       <class name="org.ideaproject.test.crud.AgencyGroupCRUDTest"/>
+       <class name="org.ideaproject.test.crud.AgencyCRUDTest"/>
+       <class name="org.ideaproject.test.crud.ZoneCRUDTest"/>
+       <class name="org.ideaproject.test.crud.DirectionCRUDTest"/>
+       <class name="org.ideaproject.test.crud.RouteCRUDTest"/>
+       <class name="org.ideaproject.test.crud.BlockCRUDTest"/>
+       <class name="org.ideaproject.test.crud.ServiceScheduleGroupCRUDTest"/>
+       <class name="org.ideaproject.test.crud.ServiceScheduleBoundCRUDTest"/>
+       <class name="org.ideaproject.test.crud.StationCRUDTest"/>
+       <class name="org.ideaproject.test.crud.StopCRUDTest"/>
+       <class name="org.ideaproject.test.crud.TripCRUDTest"/>
+       <class name="org.ideaproject.test.crud.FrequencyCRUDTest"/>
+       <class name="org.ideaproject.test.crud.FareCRUDTest"/>
+       <class name="org.ideaproject.test.crud.FareRuleCRUDTest"/>
+       <class name="org.ideaproject.test.crud.TransferCRUDTest"/>
+       <class name="org.ideaproject.test.crud.CalendarDateExceptionCRUDTest"/>
+     </classes>
+   </test>
+</suite>

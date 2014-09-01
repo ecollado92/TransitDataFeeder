@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="Action Tests" verbose="2" parallel="false">
+   <test name="Action Test">
+     <classes>
+       <class name="org.ideaproject.test.action.OneStepDeletionHandlerTest"/>
+       <class name="org.ideaproject.test.action.AgencyViewBeanTest"/>
+       <class name="org.ideaproject.test.action.OverviewBeanTest"/>
+       <class name="org.ideaproject.test.action.TripViewBeanTest"/>
+       <class name="org.ideaproject.test.action.DisplayBeanTest"/>
+       <class name="org.ideaproject.test.action.GtfsExportBeanTest"/>
+     </classes>
+   </test>
+</suite>

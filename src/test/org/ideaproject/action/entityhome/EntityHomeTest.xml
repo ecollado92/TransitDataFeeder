@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="Entity Home Tests" verbose="2" parallel="false">
+   <test name="EH Test">
+     <classes>
+       <class name="org.ideaproject.action.entityhome.UserHomeTest"/>
+       <class name="org.ideaproject.action.entityhome.ValidationEntityTest"/>
+     </classes>
+   </test>
+</suite>

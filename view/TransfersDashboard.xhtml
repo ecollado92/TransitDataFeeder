@@ -1,0 +1,67 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<h3>Transfers</h3>
+	<rich:dataTable id="transfersTable"
+	               var="_transfer"
+				 value="#{agencyHome.instance.transfers}"
+			  rendered="#{not empty agencyHome.instance.transfers}">
+		<h:column>
+			<f:facet name="header">Transfer ID</f:facet>
+			<h:outputText value="#{_transfer.transferId}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">From stop</f:facet>
+			<h:outputText value="#{_transfer.fromLocation.stopName}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">To stop</f:facet>
+			<h:outputText value="#{_transfer.toLocation.stopName}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Transfer type</f:facet>
+			<h:outputText value="#{_transfer.transferType.transferTypeDescription}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Min transfer time</f:facet>
+			<h:outputText value="#{_transfer.minTransferTime}"/>
+		</h:column>
+        <rich:column styleClass="action">
+   			<f:facet name="header">Action</f:facet>
+            <s:link view="/TransfersEdit.xhtml"
+                   value="Modify"
+             propagation="none"
+                      id="transfersEdit">
+                <f:param name="transfersFrom" value="TransfersDashboard"/>
+                <f:param name="agencyId"
+                        value="#{_transfer.agency.agencyId}"/>
+                <f:param name="transferId"
+                        value="#{_transfer.transferId}"/>
+            </s:link>
+   		 	| Delete
+   		</rich:column>
+
+ 	</rich:dataTable>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TransfersEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Add Transfer">
+            <f:param name="transfersFrom" value="TransfersDashboard"/>
+            <f:param name="transferId"/>
+            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

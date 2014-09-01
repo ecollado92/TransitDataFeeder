@@ -1,0 +1,130 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Service schedule group Details</f:facet>
+
+        <s:decorate id="serviceScheduleGroupId" template="layout/display.xhtml">
+            <ui:define name="label">Service schedule group id</ui:define>
+            <h:outputText value="#{serviceScheduleGroupHome.instance.serviceScheduleGroupId}"/>
+        </s:decorate>
+
+        <s:decorate id="serviceScheduleGroupLabel" template="layout/display.xhtml">
+            <ui:define name="label">Service schedule group label</ui:define>
+            <h:outputText value="#{serviceScheduleGroupHome.instance.serviceScheduleGroupLabel}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ServiceScheduleGroupEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty serviceScheduleGroupFrom ? 'ServiceScheduleGroupList' : serviceScheduleGroupFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Calendars</h:panelGroup>
+        </f:facet>
+    <div class="association" id="calendarChild">
+
+        <h:outputText value="There are no calendars associated with this service schedule group."
+                   rendered="#{empty serviceScheduleGroupHome.instance.calendars}"/>
+
+        <rich:dataTable var="_calendar"
+                   value="#{serviceScheduleGroupHome.instance.calendars}"
+                rendered="#{not empty serviceScheduleGroupHome.instance.calendars}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="calendarChildTable">
+			<h:column>
+            	<f:facet name="header">Calendar ID</f:facet>
+            	<h:outputText value="#{_calendar.calendarId}"/>
+        	</h:column>
+	        <h:column>
+    	        <f:facet name="header">Service label</f:facet>
+            	<h:outputText value="#{_calendar.serviceLabel}"/>
+        	</h:column>
+        	<h:column>
+            	<f:facet name="header">Start Date</f:facet>
+	            <h:outputText value="#{_calendar.startDate}">
+    	            <s:convertDateTime type="date" dateStyle="short"/>
+        	    </h:outputText>
+        	</h:column>
+        	<h:column>
+            	<f:facet name="header">End Date</f:facet>
+	            <h:outputText value="#{_calendar.endDate}">
+    	            <s:convertDateTime type="date" dateStyle="short"/>
+        	    </h:outputText>
+        	</h:column>
+	        <h:column>
+    	        <f:facet name="header">Sun</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.sunday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.sunday}"/>
+    	    </h:column>
+	        <h:column>
+    	        <f:facet name="header">Mon</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.monday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.monday}"/>
+    	    </h:column>
+	        <h:column>
+    	        <f:facet name="header">Tue</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.tuesday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.tuesday}"/>
+    	    </h:column>
+	        <h:column>
+    	        <f:facet name="header">Wed</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.wednesday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.wednesday}"/>
+    	    </h:column>
+	        <h:column>
+    	        <f:facet name="header">Thu</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.thursday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.thursday}"/>
+    	    </h:column>
+	        <h:column>
+    	        <f:facet name="header">Fri</f:facet>
+    	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.friday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.friday}"/>
+        	</h:column>
+	        <h:column>
+    	        <f:facet name="header">Sat</f:facet>
+     	        <h:graphicImage value="/img/true.png" alt="true" rendered="#{_calendar.saturday}"/>
+    	        <h:graphicImage value="/img/false.png" alt="false" rendered="#{not _calendar.saturday}"/>
+        	</h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcalendar"
+                     value="View"
+                      view="/Calendar.xhtml">
+                    <f:param name="calendarId"
+                           value="#{_calendar.calendarId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

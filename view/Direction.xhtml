@@ -1,0 +1,54 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Direction Details</f:facet>
+
+        <s:decorate id="directionId" template="layout/display.xhtml">
+            <ui:define name="label">Direction id</ui:define>
+            <h:outputText value="#{directionHome.instance.directionId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency</ui:define>
+            <h:outputText value="#{directionHome.instance.agency.agencyName}"/>
+        </s:decorate>
+
+        <s:decorate id="directionLabel" template="layout/display.xhtml">
+            <ui:define name="label">Direction label</ui:define>
+            <h:outputText value="#{directionHome.instance.directionLabel}"/>
+        </s:decorate>
+
+        <s:decorate id="inboundFlag" template="layout/display.xhtml">
+            <ui:define name="label">Inbound flag</ui:define>
+            <h:outputText value="#{directionHome.instance.inboundFlag}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/DirectionEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty directionFrom ? 'DirectionList' : directionFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

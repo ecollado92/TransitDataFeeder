@@ -1,0 +1,37 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+		<div class="searchPanelHeader">
+			<h:outputText value="Please select the agency you wish to view/edit:"/>
+		</div>
+		<p/>
+		<rich:dataTable id="agencyList"
+					   var="_agency"
+					 value="#{authenticatedUser.agencyAffiliations}"
+				styleClass="searchResultsTable"
+			 columnClasses="searchResultsTableColumn"
+				rowClasses="searchResultsRowEven,searchResultsRowOdd">
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Agency id</f:facet>
+				<h:outputText value="#{_agency.agencyId}"/>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Agency name</f:facet>
+				<s:link id="viewagencydashboard"
+					 value="#{_agency.agencyName}"
+					  view="/AgencyDashboard.xhtml">
+					<f:param name="currentView" value="DASH"/>
+					<f:param name="agencyId" value="#{_agency.agencyId}"/>
+				</s:link>
+			</h:column>
+		</rich:dataTable>
+    </ui:define>
+</ui:composition>

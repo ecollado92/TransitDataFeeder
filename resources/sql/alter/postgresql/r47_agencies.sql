@@ -1,0 +1,1 @@
+ALTER TABLE agency ADD COLUMN agency_lang VARCHAR(2) NOT NULL DEFAULT 'en';

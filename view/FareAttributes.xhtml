@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Fare attributes Details</f:facet>
+
+        <s:decorate id="fareId" template="layout/display.xhtml">
+            <ui:define name="label">Fare id</ui:define>
+            <h:outputText value="#{fareHome.instance.fareId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency</ui:define>
+            <h:outputText value="#{fareHome.instance.agency.agencyName}"/>
+        </s:decorate>
+
+        <s:decorate id="price" template="layout/display.xhtml">
+            <ui:define name="label">Price</ui:define>
+            <h:outputText value="#{fareHome.instance.price}"/>
+        </s:decorate>
+
+        <s:decorate id="currencyType" template="layout/display.xhtml">
+            <ui:define name="label">Currency type</ui:define>
+            <h:outputText value="#{fareHome.instance.currencyType}"/>
+        </s:decorate>
+
+        <s:decorate id="paymentMethod" template="layout/display.xhtml">
+            <ui:define name="label">Payment method</ui:define>
+            <h:outputText value="#{fareHome.instance.paymentMethod.paymentMethodDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="transfers" template="layout/display.xhtml">
+            <ui:define name="label">Transfers</ui:define>
+            <h:outputText value="#{fareHome.instance.transferLimit.transferLimitDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="transferDuration" template="layout/display.xhtml">
+            <ui:define name="label">Transfer duration</ui:define>
+            <h:outputText value="#{fareHome.instance.transferDuration}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/FareAttributesEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+        <s:button view="/#{empty fareAttributesFrom ? 'FareAttributesList' : fareAttributesFrom}.xhtml"
+                    id="done"
+                 value="Done">
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

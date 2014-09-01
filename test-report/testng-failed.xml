@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="5" skipfailedinvocationCounts="false" verbose="2" name="Failed suite [Entity Home Tests]" junit="false" parallel="false" annotations="JDK">
+  <test name="EH Test(failed)" junit="false" parallel="false" annotations="JDK">
+    <classes>
+      <class name="org.ideaproject.util.StringUtilTest">
+        <methods>
+          <include name="setUp"/>
+        </methods>
+      </class>
+      <class name="org.ideaproject.util.TripUtilTest">
+        <methods>
+          <include name="setup"/>
+        </methods>
+      </class>
+      <class name="org.ideaproject.util.HashCodeUtilTest">
+        <methods>
+          <include name="testHash_int_long"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>

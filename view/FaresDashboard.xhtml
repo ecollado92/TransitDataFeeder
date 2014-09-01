@@ -1,0 +1,302 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Fares</li>
+		<li>
+			<s:link view="/FareRulesList.xhtml" value="Fare Rules">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="FARES"/>
+			</s:link>
+		</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+	<div class="searchPanelHeader">
+		<h:outputText value="Fares"/>
+	</div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+			    <div class="tableControl">
+					<s:div styleClass="createNew">
+						<s:link view="/FareAttributesEdit.xhtml"
+								  id="boxtopFareCreate"
+						 propagation="none"
+							rendered="#{empty from}">
+							<h:graphicImage value="/img/new.png" alt="create new"/>
+							<h:outputText value=" Add Fare"/>
+							<f:param name="fareAttributesFrom" value="FaresDashboard"/>
+							<f:param name="currentView" value="FARES"/>
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+							<f:param name="fareFareId"/>
+						</s:link>
+					</s:div>
+
+					<s:div styleClass="displaying" rendered="#{not empty fareList.resultList}">
+						<h:outputText value="Displaying #{fareList.firstResult + 1} - #{fareList.lastResult + 1} of #{fareList.resultCount}"/>
+						<br/>
+						<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+					</s:div>
+
+					<s:div styleClass="displaying" rendered="#{empty fareList.resultList}">
+						&#160;
+					</s:div>
+		
+					<s:div styleClass="navigation" rendered="#{not empty fareList.resultList}">
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.previousExists}"
+							   value="#{messages.left}#{messages.left} First Page"
+								  id="boxtopFareFirstPage">
+							<f:param name="fareFirstResult" value="0"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.previousExists}"
+							   value="#{messages.left} Previous Page"
+								  id="boxtopFarePreviousPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.previousFirstResult}"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.nextExists}"
+							   value="Next Page #{messages.right}"
+								  id="boxtopFareNextPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.nextFirstResult}"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.nextExists}"
+							   value="Last Page #{messages.right}#{messages.right}"
+								  id="boxtopFareLastPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.lastFirstResult}"/>
+						</s:link>
+					</s:div>
+
+					<s:div styleClass="navigation" rendered="#{empty fareList.resultList}">
+						&#160;
+					</s:div>
+				</div>
+
+				<div class="results" id="boxfareList">
+
+					<h:outputText value="The fare attributes search returned no results."
+							   rendered="#{empty fareList.resultList}"/>
+
+					<h:form id="faresForm">
+					<rich:dataTable id="boxfareAttributesList"
+								   var="_fareAttributes"
+								 value="#{fareList.resultList}"
+							  rendered="#{not empty fareList.resultList}"
+							styleClass="searchResultsTable"
+						 columnClasses="searchResultsTableColumn"
+							rowClasses="searchResultsRowEven,searchResultsRowOdd">
+<!--						<h:column headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">-->
+<!--								<ui:include src="layout/namedSort.xhtml">-->
+<!--									<ui:param name="entityList" value="#{fareList}"/>-->
+<!--									<ui:param name="propertyLabel" value="Fare id"/>-->
+<!--									<ui:param name="propertyPath" value="fare.fareId"/>-->
+<!--									<ui:param name="sortParamName" value="fareSort"/>-->
+<!--									<ui:param name="dirParamName" value="fareDir"/>-->
+<!--								</ui:include>-->
+<!--							</f:facet>-->
+<!--							<h:outputText value="#{_fareAttributes.fareId}"/>-->
+<!--						</h:column>-->
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Cost"/>
+									<ui:param name="propertyPath" value="fare.price"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.price}">
+								<f:convertNumber currencySymbol="$" type="currency"/>
+							</h:outputText>
+						</h:column>
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Currency type"/>
+									<ui:param name="propertyPath" value="fare.currencyType"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.currencyType}"/>
+						</h:column>
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Payment method"/>
+									<ui:param name="propertyPath" value="fare.paymentMethod.paymentMethodDescription"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.paymentMethod.paymentMethodDescription}"/>
+						</h:column>
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Transfers"/>
+									<ui:param name="propertyPath" value="fare.transferLimit.transferLimitDescription"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.transferLimit.transferLimitDescription}"/>
+						</h:column>
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Transfer duration (minutes)"/>
+									<ui:param name="propertyPath" value="fare.transferDuration"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.transferDuration}" converter="minutesSecondsConverter"/>
+						</h:column>
+						<h:column headerClass="searchResultsTableHeader">
+							<f:facet name="header">
+								<ui:include src="layout/namedSort.xhtml">
+									<ui:param name="entityList" value="#{fareList}"/>
+									<ui:param name="propertyLabel" value="Rule count"/>
+									<ui:param name="propertyPath" value="fare.ruleCount"/>
+									<ui:param name="sortParamName" value="fareSort"/>
+									<ui:param name="dirParamName" value="fareDir"/>
+								</ui:include>
+							</f:facet>
+							<h:outputText value="#{_fareAttributes.ruleCount}"/>
+							#{' '}
+							<s:link view="/FareRulesList.xhtml"
+								   value="(List)"
+                      				  id="listFareRules"
+                      			rendered="#{_fareAttributes.ruleCount gt 0}">
+								<f:param name="fareRulesFrom" value="FaresDashboard"/>
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="ruleFareId"
+										value="#{_fareAttributes.fareId}"/>
+							</s:link>
+						</h:column>
+<!--						<rich:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--							<f:facet name="header">Action</f:facet>-->
+<!--							<s:link view="/#{empty from ? 'FareAttributes' : from}.xhtml"-->
+<!--								   value="#{empty from ? 'View' : 'Select'}"-->
+<!--							 propagation="#{empty from ? 'none' : 'default'}"-->
+<!--									  id="fareAttributesViewId">-->
+<!--								<f:param name="fareAttributesFrom" value="FaresDashboard"/>-->
+<!--								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--								<f:param name="fareFareId"-->
+<!--										value="#{_fareAttributes.fareId}"/>-->
+<!--							</s:link>-->
+<!--						</rich:column>-->
+						<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+							<f:facet name="header">Edit</f:facet>
+							<s:link view="/FareAttributesEdit.xhtml"
+								   value="Edit"
+							propagation="none"
+                      				  id="fareAttributesEdit">
+								<f:param name="fareAttributesFrom" value="FaresDashboard"/>
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="fareFareId"
+										value="#{_fareAttributes.fareId}"/>
+							</s:link>
+						</rich:column>
+						<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+							<f:facet name="header">Delete</f:facet>
+							<h:commandLink id="deleteFare"
+										value="Delete"
+									   action="#{oneStepDeletionHandler.deleteFare(_fareAttributes.fareId)}"
+									immediate="true"
+									  onclick="return confirm('Are you sure you want to delete this fare?');">
+							</h:commandLink>
+						</rich:column>
+					</rich:dataTable>
+					</h:form>
+				</div>
+
+			    <div class="tableControl">
+					<s:div styleClass="createNew">
+						<s:link view="/FareAttributesEdit.xhtml"
+								  id="boxbottomFareCreate"
+						 propagation="none"
+							rendered="#{empty from}">
+							<h:graphicImage value="/img/new.png" alt="create new"/>
+							<h:outputText value=" Add Fare"/>
+							<f:param name="fareAttributesFrom" value="FaresDashboard"/>
+							<f:param name="currentView" value="FARES"/>
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+							<f:param name="fareFareId"/>
+						</s:link>
+					</s:div>
+
+					<s:div styleClass="displaying" rendered="#{not empty fareList.resultList}">
+						<h:outputText value="Displaying #{fareList.firstResult + 1} - #{fareList.lastResult + 1} of #{fareList.resultCount}"/>
+						<br/>
+						<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+					</s:div>
+
+					<s:div styleClass="displaying" rendered="#{empty fareList.resultList}">
+						&#160;
+					</s:div>
+		
+					<s:div styleClass="navigation" rendered="#{not empty fareList.resultList}">
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.previousExists}"
+							   value="#{messages.left}#{messages.left} First Page"
+								  id="boxbottomFareFirstPage">
+							<f:param name="fareFirstResult" value="0"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.previousExists}"
+							   value="#{messages.left} Previous Page"
+								  id="boxbottomFarePreviousPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.previousFirstResult}"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.nextExists}"
+							   value="Next Page #{messages.right}"
+								  id="boxbottomFareNextPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.nextFirstResult}"/>
+						</s:link>
+
+						<s:link view="/FaresDashboard.xhtml"
+							rendered="#{fareList.nextExists}"
+							   value="Last Page #{messages.right}#{messages.right}"
+								  id="boxbottomFareLastPage">
+							<f:param name="fareFirstResult"
+									value="#{fareList.lastFirstResult}"/>
+						</s:link>
+					</s:div>
+
+					<s:div styleClass="navigation" rendered="#{empty fareList.resultList}">
+						&#160;
+					</s:div>
+				</div>
+	</rich:panel>
+</ui:define>
+
+</ui:composition>

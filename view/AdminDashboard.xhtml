@@ -1,0 +1,69 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<div class="twoColumnLeft">
+	    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+	    	<table class="dashboardFunctions">
+	    		<tr>
+		    		<th>
+						<div class="blackHeaderBlock">
+							<h:outputText value="Agency Management"/>
+						</div>
+		    		</th>
+	    		</tr>
+				<tr class="searchResultsRowEven">
+					<td class="centered">
+						<s:link id="agencyListLink" value="Manage Agencies" view="/AgencyList.xhtml">
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						</s:link>
+					</td>
+				</tr>
+				<tr class="searchResultsRowOdd">
+					<td class="centered">
+						<s:link id="agencyGroupListLink" value="Manage Agency Groups" view="/AgencyGroupList.xhtml">
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						</s:link>
+					</td>
+				</tr>
+	    	</table>
+		</rich:panel>
+	</div>
+	<div class="twoColumnRight">
+	    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+	    	<table class="dashboardFunctions">
+	    		<tr>
+		    		<th width="100%">
+						<div class="blackHeaderBlock">
+							<h:outputText value="User Management"/>
+						</div>
+		    		</th>
+	    		</tr>
+				<tr class="searchResultsRowEven">
+					<td class="centered">
+						<s:link id="manageUsersLink" value="Manage Users" view="/useradmin/usermanager.xhtml" propagation="none">
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						</s:link>
+					</td>
+				</tr>
+				<tr class="searchResultsRowOdd">
+					<td class="centered">
+						<s:link id="manageRolesLink" value="Manage Roles" view="/useradmin/rolemanager.xhtml">
+							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						</s:link>
+					</td>
+				</tr>
+	    	</table>
+		</rich:panel>
+	</div>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/StopList.xhtml"
+      login-required="true">
+
+	<begin-conversation join="true" flush-mode="MANUAL"/>
+
+	<action execute="#{stopHome.wire}"/>
+
+	<param name="stopFrom"/>
+	<param name="stopId" value="#{stopHome.stopStopId}"/>
+	<param name="directionFrom"/>
+	<param name="directionDirectionId" value="#{directionHome.directionDirectionId}"/>
+
+	<param name="zoneFrom"/>
+	<param name="zoneId" value="#{zoneHome.zoneZoneId}"/>
+	<param name="agencyFrom"/>
+	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+
+
+
+
+   <navigation from-action="#{stopHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/#{empty stopFrom ? 'Stop' : stopFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{stopHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/#{empty stopFrom ? 'Stop' : stopFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{stopHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/#{empty stopFrom ? 'StopList' : stopFrom}.xhtml">
+         	<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+         </redirect>
+      </rule>
+   </navigation>
+
+</page>

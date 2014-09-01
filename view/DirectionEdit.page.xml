@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/DirectionList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{directionHome.wire}"/>
+
+   <param name="directionFrom"/>
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+   <param name="directionDirectionId" value="#{directionHome.directionDirectionId}"/>
+
+
+   <navigation from-action="#{directionHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/#{empty directionFrom ? 'Direction' : directionFrom}.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{directionHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/#{empty directionFrom ? 'Direction' : directionFrom}.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{directionHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/#{empty directionFrom ? 'DirectionList' : directionFrom}.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Frequencies Details</f:facet>
+
+        <s:decorate id="frequencyId" template="layout/display.xhtml">
+            <ui:define name="label">Frequency id</ui:define>
+            <h:outputText value="#{frequencyViewBean.instance.frequencyId}"/>
+        </s:decorate>
+
+        <s:decorate id="startTime" template="layout/display.xhtml">
+            <ui:define name="label">Start time</ui:define>
+            <h:outputText value="#{carryoverTimeViewBean.displayTime(frequencyViewBean.instance.startTime, frequencyViewBean.instance.startTimeCarryover)}"/>
+        </s:decorate>
+
+        <s:decorate id="endTime" template="layout/display.xhtml">
+            <ui:define name="label">End time</ui:define>
+            <h:outputText value="#{frequencyViewBean.frequencyEndTime}">
+                <s:convertDateTime type="time"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="exactTimes" template="layout/display.xhtml">
+            <ui:define name="label">Exact times</ui:define>
+            <h:outputText value="#{frequencyViewBean.instance.exactTimes}"/>
+        </s:decorate>
+
+        <s:decorate id="headwaySecs" template="layout/display.xhtml">
+            <ui:define name="label">Headway secs</ui:define>
+            <h:outputText value="#{frequencyViewBean.instance.headwaySecs}"/>
+        </s:decorate>
+
+        <s:decorate id="tripId" template="layout/display.xhtml">
+            <ui:define name="label">Trip id</ui:define>
+            <h:outputText value="#{frequencyViewBean.instance.trip.tripId}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/FrequenciesEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty frequenciesFrom ? 'FrequenciesList' : frequenciesFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{calendarDateList.firstResult}"/>
+   <param name="sort" value="#{calendarDateList.orderColumn}"/>
+   <param name="dir" value="#{calendarDateList.orderDirection}"/>
+   <param name="logic" value="#{calendarDateList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="calendarDateListFrom"/>
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+   <param name="description" value="#{calendarDateList.calendarDate.description}"/>
+
+</page>

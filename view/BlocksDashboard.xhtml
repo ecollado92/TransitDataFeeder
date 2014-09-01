@@ -1,0 +1,41 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<h3>Blocks</h3>
+	<rich:dataTable id="blocksTable"
+	               var="_block"
+				 value="#{agencyHome.instance.blocks}"
+			  rendered="#{not empty agencyHome.instance.blocks}">
+		<h:column>
+			<f:facet name="header">Block ID</f:facet>
+			<h:outputText value="#{_block.blockId}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Label</f:facet>
+			<s:link id="viewblock"
+				value="#{_block.blockLabel}"
+				view="/Blocks.xhtml">
+				<f:param name="blockBlockId" value="#{_block.blockId}"/>
+			</s:link>
+		</h:column>
+		<h:column>
+			<f:facet name="header">Number of trips</f:facet>
+			<h:outputText value="#{_block.numberOfTrips}"/>
+		</h:column>
+        <rich:column styleClass="action">
+   			<f:facet name="header">Action</f:facet>
+   			Delete
+   		</rich:column>
+
+ 	</rich:dataTable>
+</ui:define>
+
+</ui:composition>

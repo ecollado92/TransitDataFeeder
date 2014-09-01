@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+
+	<f:verbatim>
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=#{googleApiKeyManager.apiKey}"
+			type="text/javascript">
+		<!--  -->
+		</script>
+	</f:verbatim>
+
+	<div id="map_canvas" style="clear: both; width: 500px; height: 250px"></div>
+	<f:verbatim>
+		<script type="text/javascript">
+			var map;
+			var geo;
+			var reasons=[];
+			var stopLat, stopLon;
+		
+			function addMarkerClickListener(markers) {
+				var elt;
+				map.clearOverlays();
+				for (elt in markers) {
+					cloneMarker(markers[elt].marker);
+				}
+				addStopMarker();
+				map.disableInfoWindow();
+			}
+
+			function cloneMarker(marker) {
+				if (marker != null) {
+					marker.closeInfoWindow();
+					var latLng = marker.getLatLng();
+					var my_icon = marker.getIcon();
+					var clone = new GMarker(latLng, {draggable:true, icon:my_icon});
+//					clone.setImage(icon);
+					GEvent.addListener(clone, "click", function(latlng) {
+						$('#{rootLevelId}:#{latField}').setValue(latlng.lat());
+						$('#{rootLevelId}:#{lonField}').setValue(latlng.lng());
+					});
+					GEvent.addListener(clone, "dragend", function(latlng) {
+						$('#{rootLevelId}:#{latField}').setValue(latlng.lat());
+						$('#{rootLevelId}:#{lonField}').setValue(latlng.lng());
+					});
+					GEvent.addListener(clone, "dblclick", function(latlng) {
+						map.removeOverlay(this);
+					});
+					map.addOverlay(clone);
+//					map.removeOverlay(marker);
+//					map.disableInfoWindow();
+				}
+			}
+
+			function initMap() {
+				if (GBrowserIsCompatible()) {
+					var mapOptions = {
+						googleBarOptions : {
+							style : "new",
+							onMarkersSetCallback : addMarkerClickListener
+						},
+						mapTypes : [G_NORMAL_MAP]
+					};
+					map = new GMap2($('map_canvas'), mapOptions);
+					map.enableGoogleBar();
+					map.setCenter(new GLatLng(#{centerLat}, #{centerLon}), 11);
+					var customUI = map.getDefaultUI();
+					customUI.maptypes.hybrid = false;
+					customUI.maptypes.satellite = false;
+					customUI.maptypes.physical = false;
+					map.setUI(customUI);
+					stopLat = '#{markerLat}';
+					stopLon = '#{markerLon}';
+					addStopMarker();
+					map.disableInfoWindow();
+					// map.addControl(new GMapTypeControl());
+					// map.addControl(new GSmallMapControl());
+				}
+			}
+
+			function addStopMarker() {
+				if (stopLat &amp;&amp; stopLon) {
+					var latLng = new GLatLng(stopLat, stopLon);
+					var marker = new GMarker(latLng, {draggable: true});
+					GEvent.addListener(marker, "click", function(latlng) {
+						$('#{rootLevelId}:#{latField}').setValue(latlng.lat());
+						$('#{rootLevelId}:#{lonField}').setValue(latlng.lng());
+					});
+					GEvent.addListener(marker, "dragend", function(latlng) {
+						$('#{rootLevelId}:#{latField}').setValue(latlng.lat());
+						$('#{rootLevelId}:#{lonField}').setValue(latlng.lng());
+					});
+					map.addOverlay(marker);
+					map.setZoom(15);
+				}
+			}
+
+			function initGeocoder() {
+				geo = new GClientGeocoder();
+				initReasons();
+			}
+			
+			function initReasons() {
+			      reasons[G_GEO_SUCCESS]            = "Success";
+			      reasons[G_GEO_MISSING_ADDRESS]    = "Missing Address: The address was either missing or had no value.";
+			      reasons[G_GEO_UNKNOWN_ADDRESS]    = "Unknown Address:  No corresponding geographic location could be found for the specified address.";
+			      reasons[G_GEO_UNAVAILABLE_ADDRESS]= "Unavailable Address:  The geocode for the given address cannot be returned due to legal or contractual reasons.";
+			      reasons[G_GEO_BAD_KEY]            = "Bad Key: The API key is either invalid or does not match the domain for which it was given";
+			      reasons[G_GEO_TOO_MANY_QUERIES]   = "Too Many Queries: The daily geocoding quota for this site has been exceeded.";
+			      reasons[G_GEO_SERVER_ERROR]       = "Server error: The geocoding request could not be successfully processed.";
+			}
+	            
+			window.onload=initMap;
+		</script>
+	</f:verbatim>
+</ui:composition>

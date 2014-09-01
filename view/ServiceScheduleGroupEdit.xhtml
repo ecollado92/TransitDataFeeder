@@ -1,0 +1,309 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Calendar</li>
+		<li class="nolink">Holidays / exceptions</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{serviceScheduleGroupHome.managed ? 'Edit' : 'Add'} Service Calendar"/>
+	</div>
+
+	<div class="editInfo">
+		Service calendars consist of date ranges (below, first) that describe the seasons and dates service
+		operate in the year. Weekly schedules are assigned to trips (services). Each weekly schedule inherits
+		the date ranges for this service calendar. For more information, consult the
+		<a href="#" onclick="javascript:window.open('http://code.google.com/transit/spec/transit_feed_specification.html');">transit data feeder documentation</a>.
+	</div>
+    <h:form id="serviceScheduleGroup" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+            <s:decorate id="serviceScheduleGroupLabelField" template="layout/edit.xhtml">
+                <ui:define name="label">Label</ui:define>
+                <h:inputText id="serviceScheduleGroupLabel"
+                       required="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{serviceScheduleGroupHome.instance.serviceScheduleGroupLabel}">
+                    <a:support event="onblur" reRender="serviceScheduleGroupLabelField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+	    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{serviceScheduleGroupHome.managed}">
+	    	<f:facet name="header">Date ranges for this calendar</f:facet>
+			<div class="tableControl">
+			    <s:div styleClass="createNew">
+    				<s:link view="/ServiceScheduleBoundEdit.xhtml"
+					 propagation="none"
+						rendered="#{empty from}">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add date range"/>
+						<f:param name="serviceScheduleGroupFrom" value="#{serviceScheduleGroupFrom}"/>
+						<f:param name="serviceScheduleBoundFrom" value="ServiceScheduleGroupEdit"/>
+						<f:param name="currentView" value="CALS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{serviceScheduleGroupHome.serviceScheduleGroupServiceScheduleGroupId}"/>
+						<f:param name="serviceScheduleBoundId"/>
+					</s:link>
+				</s:div>
+				<div class="displaying">
+					&#160;
+				</div>
+		
+				<div class="navigation">
+					&#160;
+				</div>
+			</div>
+			
+			<h:outputText value="There are no date ranges for this calendar."
+						rendered="#{empty serviceScheduleGroupHome.instance.serviceScheduleBounds}"/>
+
+			<rich:dataTable id="boundsList"
+						   var="_bounds"
+						 value="#{listAdapter.asList(serviceScheduleGroupHome.instance.serviceScheduleBounds, 'startDate')}"
+					  rendered="#{not empty serviceScheduleGroupHome.instance.serviceScheduleBounds}"
+					styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumnCentered"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Start date</f:facet>
+					<rich:calendar id="#{startEndDatesValidator.startDateFieldId}"
+							 required="true"
+								value="#{_bounds.startDate}" datePattern="MM/dd/yyyy" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">End date</f:facet>
+		            <s:decorate id="ssbEndDateField">
+		            	<div class="prop">
+		            	<span style="float: left;">
+						<rich:calendar id="#{startEndDatesValidator.endDateFieldId}"
+								 required="true"
+								 validator="#{startEndDatesValidator.validateEndDate}"
+									value="#{_bounds.endDate}" datePattern="MM/dd/yyyy" >
+							<f:attribute name="#{startEndDatesValidator.startDateReferenceId}"
+										value="serviceScheduleGroup:boundsList:#{startEndDatesValidator.startDateFieldId}"/>
+						</rich:calendar>
+						</span>
+						<span class="error">
+							<h:graphicImage value="/img/error.gif" rendered="#{invalid}" styleClass="errors" />
+							<s:message styleClass="errors" />
+						</span>
+						</div>
+					</s:decorate>
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+					<f:facet name="header">Delete</f:facet>
+					<h:commandLink id="deleteBounds"
+								value="Delete"
+							   action="#{oneStepDeletionHandler.deleteServiceScheduleBound(_bounds.serviceScheduleBoundsId)}"
+							  onclick="return confirm('Are you sure you want to delete this date range?');">
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+
+			<div class="tableControl">
+			    <s:div styleClass="createNew">
+    				<s:link view="/ServiceScheduleBoundEdit.xhtml"
+					 propagation="none"
+						rendered="#{empty from}">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add date range"/>
+						<f:param name="serviceScheduleGroupFrom" value="#{serviceScheduleGroupFrom}"/>
+						<f:param name="serviceScheduleBoundFrom" value="ServiceScheduleGroupEdit"/>
+						<f:param name="currentView" value="CALS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{serviceScheduleGroupHome.serviceScheduleGroupServiceScheduleGroupId}"/>
+						<f:param name="serviceScheduleBoundId"/>
+					</s:link>
+				</s:div>
+				<div class="displaying">
+					&#160;
+				</div>
+		
+				<div class="navigation">
+					&#160;
+				</div>
+			</div>
+		</rich:panel>
+
+	    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{serviceScheduleGroupHome.managed}">
+	    	<f:facet name="header">Weekly schedules for this calendar</f:facet>
+			<div class="tableControl">
+			    <s:div styleClass="createNew">
+    				<s:link view="/CalendarEdit.xhtml"
+					 propagation="none"
+						rendered="#{empty from}">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add weekly schedule"/>
+						<f:param name="serviceScheduleGroupFrom" value="#{serviceScheduleGroupFrom}"/>
+						<f:param name="calendarFrom" value="ServiceScheduleGroupEdit"/>
+						<f:param name="currentView" value="CALS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{serviceScheduleGroupHome.serviceScheduleGroupServiceScheduleGroupId}"/>
+						<f:param name="calendarId"/>
+					</s:link>
+				</s:div>
+				<div class="displaying">
+					&#160;
+				</div>
+		
+				<div class="navigation">
+					&#160;
+				</div>
+			</div>
+			<h:outputText value="There are no weekly calendars for this calendar."
+						rendered="#{empty serviceScheduleGroupHome.instance.calendars}"/>
+
+			<rich:dataTable id="calendarList"
+						   var="_calendar"
+						 value="#{serviceScheduleGroupHome.instance.calendars}"
+					  rendered="#{not empty serviceScheduleGroupHome.instance.calendars}"
+					styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Service Label</f:facet>
+					<h:inputText value="#{_calendar.serviceLabel}"/>
+				</h:column>
+<!--				<h:column headerClass="searchResultsTableHeader">-->
+<!--					<f:facet name="header">Start Date</f:facet>-->
+<!--					<rich:calendar id="startDate"-->
+<!--							 required="true"-->
+<!--								value="#{_calendar.startDate}" datePattern="MM/dd/yyyy" />-->
+<!--				</h:column>-->
+<!--				<h:column headerClass="searchResultsTableHeader">-->
+<!--					<f:facet name="header">End Date</f:facet>-->
+<!--					<rich:calendar id="endDate"-->
+<!--							 required="true"-->
+<!--								value="#{_calendar.endDate}" datePattern="MM/dd/yyyy" />-->
+<!--				</h:column>-->
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Mon</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.monday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Tue</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.tuesday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Wed</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.wednesday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Thu</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.thursday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Fri</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.friday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Sat</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.saturday}" />
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">Sun</f:facet>
+					<h:selectBooleanCheckbox value="#{_calendar.sunday}" />
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+					<f:facet name="header">Trips</f:facet>
+					<s:link view="/CalendarTripsList.xhtml"
+						   value="List trips(#{_calendar.tripCount})"
+					 propagation="none"
+							  id="calendarTripsId">
+						<f:param name="tripListFrom" value="ServiceScheduleGroupEdit"/>
+						<f:param name="calendarId" value="#{_calendar.calendarId}"/>
+						<f:param name="currentView" value="ROUTES"/>
+					</s:link>
+				</rich:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+					<f:facet name="header">Delete</f:facet>
+					<h:commandLink id="deleteCalendar"
+								value="Delete"
+							   action="#{oneStepDeletionHandler.deleteCalendar(_calendar.calendarId)}"
+							 rendered="#{_calendar.tripCount eq 0}"
+							  onclick="return confirm('Are you sure you want to delete this weekly calendar?');">
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+
+			<div class="tableControl">
+			    <s:div styleClass="createNew">
+    				<s:link view="/CalendarEdit.xhtml"
+					 propagation="none"
+						rendered="#{empty from}">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add weekly schedule"/>
+						<f:param name="serviceScheduleGroupFrom" value="#{serviceScheduleGroupFrom}"/>
+						<f:param name="calendarFrom" value="ServiceScheduleGroupEdit"/>
+						<f:param name="currentView" value="CALS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="serviceScheduleGroupId" value="#{serviceScheduleGroupHome.serviceScheduleGroupServiceScheduleGroupId}"/>
+						<f:param name="calendarId"/>
+					</s:link>
+				</s:div>
+				<div class="displaying">
+					&#160;
+				</div>
+		
+				<div class="navigation">
+					&#160;
+				</div>
+			</div>
+		</rich:panel>
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{serviceScheduleGroupHome.persist}"
+                       disabled="#{!serviceScheduleGroupHome.wired}"
+                       rendered="#{!serviceScheduleGroupHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{serviceScheduleGroupHome.update}"
+                       rendered="#{serviceScheduleGroupHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{serviceScheduleGroupHome.remove}"
+                      immediate="true"
+                       rendered="#{serviceScheduleGroupHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+             		view="/#{empty serviceScheduleGroupFrom ? 'ServiceScheduleGroupList' : serviceScheduleGroupFrom}.xhtml"
+                rendered="#{serviceScheduleGroupHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+             		view="/#{empty serviceScheduleGroupFrom ? 'ServiceScheduleGroupList' : serviceScheduleGroupFrom}.xhtml"
+                rendered="#{!serviceScheduleGroupHome.managed}"/>
+
+        </div>
+
+    </h:form>
+</ui:define>
+
+</ui:composition>

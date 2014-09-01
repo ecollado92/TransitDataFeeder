@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Routes</li>
+		<li class="nolink">Travel Directions</li>
+		<li class="current">Trips</li>
+		<li class="nolink">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader">
+        <f:facet name="header">Stop Time Details</f:facet>
+
+        <s:decorate id="tripId" template="layout/display.xhtml">
+            <ui:define name="label">Trip</ui:define>
+            <h:outputText value="#{displayBean.getTripDisplayValue(stopTimeHome.instance.trip)}"/>
+        </s:decorate>
+
+        <s:decorate id="stopId" template="layout/display.xhtml">
+            <ui:define name="label">Stop</ui:define>
+            <h:outputText value="#{stopTimeHome.instance.stop.stopName}"/>
+        </s:decorate>
+
+        <s:decorate id="arrivalTime" template="layout/display.xhtml">
+            <ui:define name="label">Arrival time</ui:define>
+            <h:outputText value="#{carryoverTimeViewBean.displayTime(stopTimeHome.instance.arrivalTime, stopTimeHome.instance.arrivalTimeCarryover)}" />
+        </s:decorate>
+
+        <s:decorate id="departureTime" template="layout/display.xhtml">
+            <ui:define name="label">Departure time</ui:define>
+            <h:outputText value="#{carryoverTimeViewBean.displayTime(stopTimeHome.instance.departureTime, stopTimeHome.instance.departureTimeCarryover)}" />
+        </s:decorate>
+
+        <s:decorate id="dropOffType" template="layout/display.xhtml">
+            <ui:define name="label">Drop off type</ui:define>
+            <h:outputText value="#{stopTimeHome.instance.dropOffType.pickupTypeDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="pickupType" template="layout/display.xhtml">
+            <ui:define name="label">Pickup type</ui:define>
+            <h:outputText value="#{stopTimeHome.instance.pickupType.pickupTypeDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="stopSequence" template="layout/display.xhtml">
+            <ui:define name="label">Stop sequence</ui:define>
+            <h:outputText value="#{stopTimeHome.instance.stopSequence}"/>
+        </s:decorate>
+
+        <s:decorate id="timingPoint" template="layout/display.xhtml">
+            <ui:define name="label">Timing point</ui:define>
+            <h:outputText value="#{stopTimeHome.instance.timingPoint}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+<!--        <s:button view="/StopTimesEdit.xhtml"-->
+<!--                    id="edit"-->
+<!--                 value="Edit">-->
+<!--			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--        </s:button>-->
+
+        <s:button view="/#{empty stopTimesFrom ? 'StopTimesList' : stopTimesFrom}.xhtml"
+                    id="done"
+                 value="Done">
+			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

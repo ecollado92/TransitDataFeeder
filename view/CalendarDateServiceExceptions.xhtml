@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Calendar date service exceptions Details</f:facet>
+
+        <s:decorate id="calendarDateExceptionId" template="layout/display.xhtml">
+            <ui:define name="label">Calendar date exception id</ui:define>
+            <h:outputText value="#{calendarDateServiceExceptionsHome.instance.calendarDateExceptionId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency id</ui:define>
+            <h:outputText value="#{calendarDateServiceExceptionsHome.instance.agency.agencyId}"/>
+        </s:decorate>
+
+        <s:decorate id="calendarDateId" template="layout/display.xhtml">
+            <ui:define name="label">Calendar date id</ui:define>
+            <h:outputText value="#{calendarDateServiceExceptionsHome.instance.calendarDateId}"/>
+        </s:decorate>
+
+        <s:decorate id="exceptionType" template="layout/display.xhtml">
+            <ui:define name="label">Exception type</ui:define>
+            <h:outputText value="#{calendarDateServiceExceptionsHome.instance.exceptionType}"/>
+        </s:decorate>
+
+        <s:decorate id="serviceException" template="layout/display.xhtml">
+            <ui:define name="label">Service exception</ui:define>
+            <h:outputText value="#{calendarDateServiceExceptionsHome.instance.serviceException}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CalendarDateServiceExceptionsEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty calendarDateServiceExceptionsFrom ? 'CalendarDateServiceExceptionsList' : calendarDateServiceExceptionsFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

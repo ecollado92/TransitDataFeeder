@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+	xmlns:core="http://jboss.com/products/seam/core" xmlns:persistence="http://jboss.com/products/seam/persistence"
+	xmlns:drools="http://jboss.com/products/seam/drools" xmlns:bpm="http://jboss.com/products/seam/bpm"
+	xmlns:security="http://jboss.com/products/seam/security" xmlns:mail="http://jboss.com/products/seam/mail"
+	xmlns:web="http://jboss.com/products/seam/web" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+                 http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
+
+	<core:init debug="@debug@" jndi-pattern="@jndiPattern@" />
+
+	<core:manager concurrent-request-timeout="500"
+		conversation-timeout="120000" conversation-id-parameter="cid"
+		parent-conversation-id-parameter="pid" />
+
+	<!--
+		Make sure this URL pattern is the same as that used by the Faces
+		Servlet
+	-->
+	<web:hot-deploy-filter url-pattern="*.seam" />
+
+	<!--
+		If you are still using JBoss 4, uncomment this to have you PU started
+	-->
+
+		<persistence:entity-manager-factory name="entityManagerFactory"
+		persistence-unit-name="datafeeder"
+		installed="@seamBootstrapsPu@"/>
+
+	<persistence:managed-persistence-context
+		name="entityManager" auto-create="true" entity-manager-factory="@seamEmfRef@"
+		persistence-unit-jndi-name="@puJndiName@" />
+
+	<drools:rule-base name="securityRules">
+		<drools:rule-files>
+			<value>/security.drl</value>
+		</drools:rule-files>
+	</drools:rule-base>
+
+	<security:rule-based-permission-resolver
+		security-rules="#{securityRules}" />
+
+
+
+	<event type="org.jboss.seam.security.notLoggedIn">
+		<action execute="#{redirect.captureCurrentView}" />
+	</event>
+	<event type="org.jboss.seam.security.loginSuccessful">
+		<action execute="#{redirect.returnToCapturedView}" />
+	</event>
+
+	<mail:mail-session host="localhost" port="25" />
+
+	<!-- For use with jBPM pageflow or process management -->
+	<!--
+		<bpm:jbpm> <bpm:process-definitions></bpm:process-definitions>
+		<bpm:pageflow-definitions></bpm:pageflow-definitions> </bpm:jbpm>
+	-->
+
+	<security:jpa-identity-store user-class="org.ideaproject.model.User"
+		role-class="org.ideaproject.model.UserRole" />
+
+	<security:jpa-permission-store
+		user-permission-class="org.ideaproject.model.UserPermissions" />
+
+	<security:remember-me enabled="false" />
+
+	<component name="agencyGtfsExporter" class="org.ideaproject.export.gtfs.AgencyGtfsExporter"/>
+	<component name="calendarGtfsExporter" class="org.ideaproject.export.gtfs.CalendarGtfsExporter"/>
+	<component name="calendarDateGtfsExporter" class="org.ideaproject.export.gtfs.CalendarDateGtfsExporter"/>
+	<component name="fareGtfsExporter" class="org.ideaproject.export.gtfs.FareGtfsExporter"/>
+	<component name="fareRuleGtfsExporter" class="org.ideaproject.export.gtfs.FareRuleGtfsExporter"/>
+	<component name="stationGtfsExporter" class="org.ideaproject.export.gtfs.StationGtfsExporter"/>
+	<component name="stopGtfsExporter" class="org.ideaproject.export.gtfs.StopGtfsExporter"/>
+	<component name="routeGtfsExporter" class="org.ideaproject.export.gtfs.RouteGtfsExporter"/>
+	<component name="tripGtfsExporter" class="org.ideaproject.export.gtfs.TripGtfsExporter"/>
+	<component name="stopTimeGtfsExporter" class="org.ideaproject.export.gtfs.StopTimeGtfsExporter"/>
+	<component name="transferGtfsExporter" class="org.ideaproject.export.gtfs.TransferGtfsExporter"/>
+	<component name="frequencyGtfsExporter" class="org.ideaproject.export.gtfs.FrequencyGtfsExporter"/>
+	
+	<component name="gtfsExporterService" class="org.ideaproject.export.gtfs.GtfsExporterService">
+		<property name="exporters">
+			<value>#{agencyGtfsExporter}</value>
+			<value>#{calendarGtfsExporter}</value>
+			<value>#{calendarDateGtfsExporter}</value>
+			<value>#{fareGtfsExporter}</value>
+			<value>#{fareRuleGtfsExporter}</value>
+			<value>#{stationGtfsExporter}</value>
+			<value>#{stopGtfsExporter}</value>
+			<value>#{routeGtfsExporter}</value>
+			<value>#{tripGtfsExporter}</value>
+			<value>#{stopTimeGtfsExporter}</value>
+			<value>#{transferGtfsExporter}</value>
+			<value>#{frequencyGtfsExporter}</value>
+		</property>
+	</component>
+
+	<component name="googleApiKeyManager" class="org.ideaproject.util.GoogleApiKeyManager">
+		<property name="apiKey">ABQIAAAAzFKz5k5R_igLpcCb-BW_8hT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSjoZ94S10xJa86nfae4MoRUvoYfA</property>
+	</component>
+</components>

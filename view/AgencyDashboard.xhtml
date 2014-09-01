@@ -1,0 +1,332 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<div>
+		<s:button action="#{gtfsExportBean.processActionExport()}" value="Click here to export GTFS data"/>
+	</div>
+	<div class="threeColumnLeft">
+		<rich:spacer width="1" height="10"/>
+    	<table class="dashboardFunctions" id="stopsTable">
+			<tr>
+				<th>
+					<div class="blackHeaderBlock">
+						<h:outputText value="Stops"/>
+					</div>
+				</th>
+			</tr>
+			<tr class="searchResultsRowEven">
+				<td>
+					<s:decorate id="agencyStopCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="allStopsLink" value="Total stops" view="/StopList.xhtml"
+							  rendered="#{overviewBean.allStopsCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="STOPS"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="Total stops" rendered="#{overviewBean.allStopsCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.allStopsCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+			<tr class="searchResultsRowOdd">
+				<td>
+					<s:decorate id="agencyNonLocatedStopCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="nonLocatedStopsLink" value="...without locations" view="/StopList.xhtml"
+							  rendered="#{overviewBean.nonLocatedStopsCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="STOPS"/>
+								<f:param name="geolocated" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="...without locations" rendered="#{overviewBean.nonLocatedStopsCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.nonLocatedStopsCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+			<tr class="searchResultsRowEven">
+				<td>
+					<s:decorate id="agencyNonScheduledStopCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="unscheduledStopsLink" value="...unused in schedules" view="/StopList.xhtml"
+							  rendered="#{overviewBean.unscheduledStopsCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="STOPS"/>
+								<f:param name="inSchedules" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="...unused in schedules" rendered="#{overviewBean.unscheduledStopsCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.unscheduledStopsCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+    	</table>
+		<rich:spacer width="1" height="30"/>
+    	<table class="dashboardFunctions" id="tripsTable">
+			<tr>
+				<th>
+					<div class="blackHeaderBlock">
+						<h:outputText value="Trips"/>
+					</div>
+				</th>
+			</tr>
+			<tr class="searchResultsRowEven">
+				<td>
+					<s:decorate id="agencyTripCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="allTripsLink" value="Total trips" view="/TripsList.xhtml"
+							  rendered="#{overviewBean.allTripsCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="ROUTES"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="Total trips" rendered="#{overviewBean.allTripsCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.allTripsCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+			<tr class="searchResultsRowOdd">
+				<td>
+					<s:decorate id="agencyNoStopTimeTripCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="noStopTimeTripsLink" value="...without stop times" view="/TripsList.xhtml"
+							  rendered="#{overviewBean.noStopTimesTripsCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="ROUTES"/>
+								<f:param name="hasStopTimes" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="...without stop times" rendered="#{overviewBean.noStopTimesTripsCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.noStopTimesTripsCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+    	</table>
+	</div>
+	<div class="threeColumnMiddle">
+		<rich:spacer width="1" height="10"/>
+    	<table class="dashboardFunctions" id="stopsTable">
+			<tr>
+				<th>
+					<div class="blackHeaderBlock">
+						<h:outputText value="Routes"/>
+					</div>
+				</th>
+			</tr>
+			<tr class="searchResultsRowEven">
+				<td>
+					<s:decorate id="agencyRouteCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="allRoutesLink" value="Total routes" view="/RouteList.xhtml"
+							  rendered="#{overviewBean.allRoutesCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="ROUTES"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="Total routes" rendered="#{overviewBean.allRoutesCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.allRoutesCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+			<tr class="searchResultsRowOdd">
+				<td>
+					<s:decorate id="agencyNoTripsRouteCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="noTripsRoutesLink" value="...without trips" view="/RouteList.xhtml"
+							  rendered="#{overviewBean.noTripsRoutesCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="ROUTES"/>
+								<f:param name="hasTrips" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="...without trips" rendered="#{overviewBean.noTripsRoutesCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.noTripsRoutesCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+		</table>
+		<rich:spacer width="1" height="30"/>
+    	<table class="dashboardFunctions" id="faresTable">
+			<tr>
+				<th>
+					<div class="blackHeaderBlock">
+						<h:outputText value="Fares"/>
+					</div>
+				</th>
+			</tr>
+			<tr class="searchResultsRowEven">
+				<td>
+					<s:decorate id="agencyFareCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="allFaresLink" value="Total fares" view="/FareAttributesList.xhtml"
+							  rendered="#{overviewBean.allFaresCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="FARES"/>
+								<f:param name="hasTrips" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="Total fares" rendered="#{overviewBean.allFaresCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.allFaresCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+			<tr class="searchResultsRowOdd">
+				<td>
+					<s:decorate id="agencyUnusedFareCount" template="layout/sideboxDisplay.xhtml">
+						<ui:define name="label">
+							<s:link id="allFaresLink" value="...unused" view="/FareAttributesList.xhtml"
+							  rendered="#{overviewBean.unusedFaresCount gt 0}">
+								<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+								<f:param name="currentView" value="FARES"/>
+								<f:param name="hasRules" value="false"/>
+								<f:param name="from" value="AgencyDashboard"/>
+							</s:link>
+							<h:outputText value="...unused" rendered="#{overviewBean.unusedFaresCount eq 0}"/>
+						</ui:define>
+						<h:outputText value="#{overviewBean.unusedFaresCount}"/>
+					</s:decorate>
+				</td>
+			</tr>
+		</table>
+
+<!--		<div class="sb">-->
+<!--			<div class="boxhead"><h2>Service calendar</h2></div>-->
+<!--			<div class="boxbody">-->
+<!--				<p>-->
+<!--					<s:link id="viewcalendardashboard"-->
+<!--				    styleClass="font-weight: bold;"-->
+<!--					     value="Weekly service schedules (Mon-Sun)"-->
+<!--					      view="/CalendarDashboard.xhtml">-->
+<!--						<f:param name="currentView" value="CALS"/>-->
+<!--						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--					</s:link>-->
+<!--				</p>-->
+<!--				<p>-->
+<!--					<s:link id="viewssgroupdashboard"-->
+<!--				    styleClass="font-weight: bold;"-->
+<!--					     value="Service dates (yearly schedule)"-->
+<!--					      view="/ServiceScheduleGroupList.xhtml">-->
+<!--						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--					</s:link>-->
+<!--				</p>-->
+<!--				<p>-->
+<!--					<s:link id="viewexceptiondashboard"-->
+<!--				    styleClass="font-weight: bold;"-->
+<!--					     value="Holidays / Service date exceptions"-->
+<!--					      view="/CalendarDatesList.xhtml">-->
+<!--					    <f:param name="calendarDateListFrom" value="AgencyDashboard"/>-->
+<!--						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--					</s:link>-->
+<!--				</p>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="sidebox">-->
+<!--			<div class="boxhead"><h2>News items</h2></div>-->
+<!--			<div class="boxbody">-->
+<!--				<p>-->
+<!--					<s:link id="viewnewsdashboard"-->
+<!--				    styleClass="font-weight: bold;"-->
+<!--					     value="Add, delete, and change news items"-->
+<!--					      view="/NewsDashboard.xhtml">-->
+<!--						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--					</s:link>-->
+<!--				</p>-->
+<!--			</div>-->
+<!--		</div>-->
+
+	</div>
+	<div class="threeColumnRight">
+		<rich:spacer width="1" height="10"/>
+    	<table class="dashboardFunctions" id="calendarsTable">
+			<tr>
+				<th colspan="3">
+					<div class="blackHeaderBlock">
+						<h:outputText value="Service Calendar"/>
+					</div>
+				</th>
+			</tr>
+			<a4j:repeat value="#{overviewBean.scheduleGroups}" var="_group">
+				<tr>
+					<td colspan="2">
+						<h:outputText value="#{_group.serviceScheduleGroupLabel}"/>
+					</td>
+					<td width="40%">
+						<h:outputText value="CURRENT" rendered="#{_group.current}"/>
+						<h:outputText value="NOT CURRENTLY IN SERVICE" rendered="#{not _group.current}"/>
+					</td>
+				</tr>
+				<a4j:repeat value="#{_group.calendars}" var="_calendar">
+					<tr>
+						<td width="10%">&#160;</td>
+						<td width="50%">
+							<h:outputText value="#{_calendar.serviceLabel}"/>
+						</td>
+						<td width="40%">
+							<h:outputText value="NOT CURRENTLY IN SERVICE" rendered="#{not _group.current}"/>
+							<h:outputText value="CURRENTLY IN SERVICE" rendered="#{_group.current and _calendar.applicable}"/>
+							<h:outputText value="NOT RUNNING TODAY" rendered="#{_group.current and not _calendar.applicable}"/>
+						</td>
+					</tr>
+				</a4j:repeat>
+			</a4j:repeat>
+		</table>
+		<rich:spacer width="1" height="30"/>
+    	<table class="dashboardFunctions" id="calendarsTable">
+			<tr>
+				<th>
+					<div class="blackHeaderBlock">
+						<h:outputText value="Upcoming holidays"/>
+					</div>
+				</th>
+			</tr>
+			<tr>
+				<td>
+				<h:form id="holidayForm">
+					<rich:dataTable id="holidayTable"
+								   var="_calendarDate"
+							rowClasses="searchResultsRowEven,searchResultsRowOdd"
+								 value="#{overviewBean.upcomingHolidays}">
+						<h:column>
+							<h:outputText value="#{_calendarDate.date}">
+								<s:convertDateTime type="date" dateStyle="short"/>
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{_calendarDate.description}"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{_calendarDate.serviceAdded.serviceLabel}" rendered="#{not empty _calendarDate.serviceAdded}"/>
+							<h:outputText value="#{_calendarDate.serviceRemoved.serviceLabel}" rendered="#{not empty _calendarDate.serviceRemoved}"/>
+						</h:column>
+					</rich:dataTable>
+				</h:form>
+				</td>
+			</tr>
+		</table>
+<!--		<div class="sb">-->
+<!--			<div class="boxhead"><h2>Upcoming holidays</h2></div>-->
+<!--			<div class="boxbody">-->
+<!--			</div>-->
+<!--		</div>-->
+	</div>
+</ui:define>
+
+</ui:composition>

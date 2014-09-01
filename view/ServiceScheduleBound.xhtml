@@ -1,0 +1,95 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Service schedule bound Details</f:facet>
+
+        <s:decorate id="serviceScheduleBoundsId" template="layout/display.xhtml">
+            <ui:define name="label">Service schedule bounds id</ui:define>
+            <h:outputText value="#{serviceScheduleBoundHome.instance.serviceScheduleBoundsId}"/>
+        </s:decorate>
+
+        <s:decorate id="endDate" template="layout/display.xhtml">
+            <ui:define name="label">End date</ui:define>
+            <h:outputText value="#{serviceScheduleBoundHome.instance.endDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="startDate" template="layout/display.xhtml">
+            <ui:define name="label">Start date</ui:define>
+            <h:outputText value="#{serviceScheduleBoundHome.instance.startDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ServiceScheduleBoundEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty serviceScheduleBoundFrom ? 'ServiceScheduleBoundList' : serviceScheduleBoundFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Service schedule group</h:panelGroup>
+        </f:facet>
+    <div class="association" id="serviceScheduleGroupParent">
+
+        <h:outputText value="There is no serviceScheduleGroup associated with this serviceScheduleBound."
+                   rendered="#{serviceScheduleBoundHome.instance.serviceScheduleGroup == null}"/>
+
+        <rich:dataTable var="_serviceScheduleGroup"
+                   value="#{serviceScheduleBoundHome.instance.serviceScheduleGroup}"
+                rendered="#{serviceScheduleBoundHome.instance.serviceScheduleGroup != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="serviceScheduleGroupTable">
+            <h:column>
+                <f:facet name="header">Service schedule group id</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.serviceScheduleGroupId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency agency id</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.agency.agencyId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Service schedule group label</f:facet>
+                <h:outputText value="#{_serviceScheduleGroup.serviceScheduleGroupLabel}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewserviceScheduleGroup"
+                     value="View"
+                      view="/ServiceScheduleGroup.xhtml">
+                    <f:param name="serviceScheduleGroupId"
+                           value="#{_serviceScheduleGroup.serviceScheduleGroupId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

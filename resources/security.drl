@@ -1,0 +1,126 @@
+package Permissions;
+
+dialect 'mvel'
+
+import java.security.Principal;
+import java.util.List;
+import java.security.Principal;
+
+import org.jboss.seam.security.permission.PermissionCheck;
+import org.jboss.seam.security.Role;
+
+import org.ideaproject.Constants;
+import org.ideaproject.model.User;
+import org.ideaproject.model.Agency;
+import org.ideaproject.model.Zone;
+import org.ideaproject.model.Route;
+import org.ideaproject.action.entityhome.AgencyHome;
+import org.ideaproject.action.entityhome.RouteHome;
+import org.ideaproject.action.entityhome.ZoneHome;
+
+global AgencyHome agencyHome
+global ZoneHome zoneHome
+global RouteHome routeHome
+
+/******************************************************************************************
+ This rule supports the administration of users and roles using Seam's identity management.
+ ******************************************************************************************/
+rule ManageAccount
+   no-loop
+   // The first rule in an activation-group to fire will cancel the
+   // other rules activations (stop them from firing). The activation
+   // group can be any string, as long as the string is identical for
+   // all the rules you need to be in the one group.
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(name == "seam.user" || == "seam.role", granted == false)
+   Role(name == Constants.ROLE_ADMIN)
+then
+   $perm.grant()
+end
+/******************************************************************************************
+ This rules supports the administration of users and roles using Seam's identity management.
+ ******************************************************************************************/
+
+rule EnsureAgencyAffiliation
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "agencyAware", action == "access", granted == false)
+   $currentAgency : Agency() from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+then
+   $perm.grant()
+end
+
+rule CheckZoneAndAgencyAffiliation
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "zoneAware", action == "access", granted == false)
+   $currentZone : Zone() from zoneHome.instance
+   $currentAgency : Agency( zones contains $currentZone ) from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+then
+   $perm.grant()
+end
+
+rule CheckZoneAndAgencyAffiliationAdd
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "zoneAware", action == "add", granted == false)
+   $currentAgency : Agency() from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+   eval(routeHome.definedInstance == null)
+then
+   $perm.grant()
+end
+
+rule CheckZoneAndAgencyAffiliationEdit
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "zoneAware", action == "edit", granted == false)
+   $currentZone : Zone() from zoneHome.instance
+   $currentAgency : Agency( zones contains $currentZone ) from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+then
+   $perm.grant()
+end
+
+rule CheckRouteAndAgencyAffiliationView
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "routeAware", action == "access", granted == false)
+   $currentRoute : Route() from routeHome.instance
+   $currentAgency : Agency( routes contains $currentRoute ) from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+then
+   $perm.grant()
+end
+
+rule CheckRouteAndAgencyAffiliationAdd
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "routeAware", action == "add", granted == false)
+   $currentAgency : Agency() from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+   eval(routeHome.definedInstance == null)
+then
+   $perm.grant()
+end
+
+rule CheckRouteAndAgencyAffiliationEdit
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(target == "routeAware", action == "edit", granted == false)
+   $currentRoute : Route() from routeHome.instance
+   $currentAgency : Agency( routes contains $currentRoute ) from agencyHome.instance
+   $authenticatedUser: User( agencyAffiliations contains $currentAgency )
+then
+   $perm.grant()
+end

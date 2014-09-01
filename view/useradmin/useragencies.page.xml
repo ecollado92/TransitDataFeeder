@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      http://jboss.com/products/seam/pages
+      http://jboss.com/products/seam/pages-2.2.xsd"
+	login-required="true">
+
+   <restrict>#{s:hasRole('admin')}</restrict>
+
+   <action execute="#{userHome.wire}"/>
+
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+
+   <param name="userUserId" value="#{userHome.userUserId}"/>
+
+	<navigation from-action="#{userHome.persist}">
+		<rule if-outcome="persisted">
+			<redirect view-id="/useradmin/usermanager.xhtml" >
+				<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{userHome.update}">
+		<rule if-outcome="updated">
+			<redirect view-id="/useradmin/usermanager.xhtml" >
+				<param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+			</redirect>
+		</rule>
+	</navigation>
+
+</page>          

@@ -1,0 +1,84 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Routes</li>
+		<li class="nolink">Travel Directions</li>
+		<li class="nolink">Trips</li>
+		<li class="current">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{blockHome.managed ? 'Edit' : 'Add'} Block"/>
+	</div>
+
+    <h:form id="blocks" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+
+            <s:decorate id="blockLabelField" template="layout/edit.xhtml">
+                <ui:define name="label">Block label</ui:define>
+                <h:inputText id="blockLabel"
+                       required="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{blockHome.instance.blockLabel}">
+                    <a:support event="onblur" reRender="blockLabelField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{blockHome.persist}"
+                       disabled="#{!blockHome.wired}"
+                       rendered="#{!blockHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{blockHome.update}"
+                       rendered="#{blockHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{blockHome.remove}"
+                      immediate="true"
+                       rendered="#{blockHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty blocksFrom ? 'BlocksList' : blocksFrom}.xhtml"
+                rendered="#{blockHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty blocksFrom ? 'BlocksList' : blocksFrom}.xhtml"
+                rendered="#{!blockHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

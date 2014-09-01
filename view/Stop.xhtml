@@ -1,0 +1,289 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Stop Details</f:facet>
+
+        <s:decorate id="stopId" template="layout/display.xhtml">
+            <ui:define name="label">Stop id</ui:define>
+            <h:outputText value="#{stopHome.instance.stopId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency</ui:define>
+            <h:outputText value="#{empty stopHome.instance.zone ? '' : stopHome.instance.zone.agency.agencyName}"/>
+        </s:decorate>
+
+        <s:decorate id="stopCode" template="layout/display.xhtml">
+            <ui:define name="label">Stop code</ui:define>
+            <h:outputText value="#{stopHome.instance.stopCode}"/>
+        </s:decorate>
+
+        <s:decorate id="stopComments" template="layout/display.xhtml">
+            <ui:define name="label">Stop comments</ui:define>
+            <h:outputText value="#{stopHome.instance.stopComments}"/>
+        </s:decorate>
+
+        <s:decorate id="stopDesc" template="layout/display.xhtml">
+            <ui:define name="label">Stop desc</ui:define>
+            <h:outputText value="#{stopHome.instance.stopDesc}"/>
+        </s:decorate>
+
+        <s:decorate id="stopLat" template="layout/display.xhtml">
+            <ui:define name="label">Stop lat</ui:define>
+            <h:outputText value="#{stopHome.instance.stopLat}"/>
+        </s:decorate>
+
+        <s:decorate id="stopListOrder" template="layout/display.xhtml">
+            <ui:define name="label">Stop list order</ui:define>
+            <h:outputText value="#{stopHome.instance.stopListOrder}"/>
+        </s:decorate>
+
+        <s:decorate id="stopLon" template="layout/display.xhtml">
+            <ui:define name="label">Stop lon</ui:define>
+            <h:outputText value="#{stopHome.instance.stopLon}"/>
+        </s:decorate>
+
+        <s:decorate id="stopName" template="layout/display.xhtml">
+            <ui:define name="label">Stop name</ui:define>
+            <h:outputText value="#{stopHome.instance.stopName}"/>
+        </s:decorate>
+
+        <s:decorate id="stopUrl" template="layout/display.xhtml">
+            <ui:define name="label">Stop url</ui:define>
+            <h:outputText value="#{stopHome.instance.stopUrl}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/StopEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty stopFrom ? 'StopList' : stopFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Direction</h:panelGroup>
+        </f:facet>
+    <div class="association" id="directionParent">
+
+        <h:outputText value="There is no direction associated with this stop."
+                   rendered="#{stopHome.instance.direction == null}"/>
+
+        <rich:dataTable var="_direction"
+                   value="#{stopHome.instance.direction}"
+                rendered="#{stopHome.instance.direction != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="directionTable">
+            <h:column>
+                <f:facet name="header">Direction id</f:facet>
+                <h:outputText value="#{_direction.directionId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency</f:facet>
+                <h:outputText value="#{_direction.agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direction label</f:facet>
+                <h:outputText value="#{_direction.directionLabel}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Inbound flag</f:facet>
+                <h:outputText value="#{_direction.inboundFlag}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewdirection"
+                     value="View"
+                      view="/Direction.xhtml">
+                    <f:param name="directionDirectionId"
+                           value="#{_direction.directionId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Parent station</h:panelGroup>
+        </f:facet>
+    <div class="association" id="parentStationParent">
+
+        <h:outputText value="There is no parentStation associated with this stop."
+                   rendered="#{stopHome.instance.parentStation == null}"/>
+
+        <rich:dataTable var="_stop"
+                   value="#{stopHome.instance.parentStation}"
+                rendered="#{stopHome.instance.parentStation != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="parentStationTable">
+            <h:column>
+                <f:facet name="header">Stop id</f:facet>
+                <h:outputText value="#{_stop.stopId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency</f:facet>
+                <h:outputText value="#{_stop.agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direction direction id</f:facet>
+                <h:outputText value="#{_stop.direction.directionId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Parent station stop id</f:facet>
+                <h:outputText value="#{_stop.parentStation.stopId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop code</f:facet>
+                <h:outputText value="#{_stop.stopCode}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop comments</f:facet>
+                <h:outputText value="#{_stop.stopComments}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop desc</f:facet>
+                <h:outputText value="#{_stop.stopDesc}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop lat</f:facet>
+                <h:outputText value="#{_stop.stopLat}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop list order</f:facet>
+                <h:outputText value="#{_stop.stopListOrder}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop lon</f:facet>
+                <h:outputText value="#{_stop.stopLon}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop name</f:facet>
+                <h:outputText value="#{_stop.stopName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop url</f:facet>
+                <h:outputText value="#{_stop.stopUrl}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zone zone id</f:facet>
+                <h:outputText value="#{_stop.zone.zoneId}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewstop"
+                     value="View"
+                      view="/Stop.xhtml">
+                    <f:param name="stopId"
+                           value="#{_stop.stopId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Zone</h:panelGroup>
+        </f:facet>
+    <div class="association" id="zoneParent">
+
+        <h:outputText value="There is no zone associated with this stop."
+                   rendered="#{stopHome.instance.zone == null}"/>
+
+        <rich:dataTable var="_zone"
+                   value="#{stopHome.instance.zone}"
+                rendered="#{stopHome.instance.zone != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="zoneTable">
+            <h:column>
+                <f:facet name="header">Zone id</f:facet>
+                <h:outputText value="#{_zone.zoneId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency</f:facet>
+                <h:outputText value="#{_zone.agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zone name</f:facet>
+                <h:outputText value="#{_zone.zoneName}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewzone"
+                     value="View"
+                      view="/Zone.xhtml">
+                    <f:param name="zoneId"
+                           value="#{_zone.zoneId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Stop Times</h:panelGroup>
+        </f:facet>
+    <div class="association" id="stopTimesParent">
+
+        <h:outputText value="There are no stop times associated with this stop."
+                   rendered="#{empty stopHome.instance.stopTimes}"/>
+
+        <rich:dataTable var="_stopTime"
+                   value="#{stopHome.instance.stopTimes}"
+                rendered="#{not empty stopHome.instance.stopTimes}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="stopTimesTable">
+            <h:column>
+                <f:facet name="header">Zone id</f:facet>
+                <h:outputText value="#{_zone.zoneId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency</f:facet>
+                <h:outputText value="#{_zone.agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zone name</f:facet>
+                <h:outputText value="#{_zone.zoneName}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewzone"
+                     value="View"
+                      view="/Zone.xhtml">
+                    <f:param name="zoneId"
+                           value="#{_zone.zoneId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

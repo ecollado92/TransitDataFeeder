@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/home.xhtml"
+      login-required="true">
+
+   <restrict>#{(empty routeHome.routeRouteId and s:hasPermission('agencyAware', 'access')) or s:hasPermission('routeAware','access')}</restrict>
+
+   <param name="firstResult" value="#{tripList.firstResult}"/>
+   <param name="sort" value="#{tripList.orderColumn}"/>
+   <param name="dir" value="#{tripList.orderDirection}"/>
+   <param name="logic" value="#{tripList.restrictionLogicOperator}"/>
+
+   <param name="tripListFrom"/>
+   <param name="from"/>
+   <param name="currentView" value="#{navigationViewBean.currentMenuItem}"/>
+   <param name="serviceScheduleGroupFrom"/>
+   <param name="serviceScheduleGroupId" value="#{serviceScheduleGroupHome.serviceScheduleGroupServiceScheduleGroupId}"/>
+   <param name="calendarId" value="#{calendarHome.calendarCalendarId}"/>
+   <param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+   <param name="routeId" value="#{routeHome.routeRouteId}"/>
+
+</page>

@@ -1,0 +1,238 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/StopList.xhtml" value="Stops">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/StationList.xhtml" value="Stations">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+		<li class="current">Zones</li>
+		<li>
+			<s:link view="/TransfersList.xhtml" value="Transfers">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="STOPS"/>
+			</s:link>
+		</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+	<div class="searchPanelHeader">
+		<h:outputText value="Zones"/>
+	</div>
+
+	<rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/ZoneEdit.xhtml"
+						  id="boxtopZoneCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add Zone"/>
+					<f:param name="zoneFrom" value="ZoneList"/>
+					<f:param name="currentView" value="STOPS"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="zoneId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty zoneList.resultList}">
+				<h:outputText value="Displaying #{zoneList.firstResult + 1} - #{zoneList.lastResult + 1} of #{zoneList.resultCount}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty zoneList.resultList}">
+				&#160;
+			</s:div>
+		
+			<s:div styleClass="navigation" rendered="#{not empty zoneList.resultList}">
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="boxtopFirstPage">
+					<f:param name="zoneFirstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="boxtopPreviousPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="boxtopNextPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="boxtopLastPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty zoneList.resultList}">
+				&#160;
+			</s:div>
+		
+		</div>
+ 
+	    <div class="results" id="zoneList">
+
+			<h:outputText value="The zone search returned no results."
+					   rendered="#{empty zoneList.resultList}"/>
+
+			<h:form id="zoneForm">
+			<rich:dataTable id="zoneList"
+						   var="_zone"
+						 value="#{zoneList.resultList}"
+					  rendered="#{not empty zoneList.resultList}"
+					styleClass="searchResultsTable"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{zoneList}"/>
+							<ui:param name="propertyLabel" value="Zone name"/>
+							<ui:param name="propertyPath" value="zone.zoneName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_zone.zoneName}"/>
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader"
+							   rendered="#{empty from}">
+					<f:facet name="header">Stops</f:facet>
+					<s:link view="/StopList.xhtml"
+						   value="Stops"
+					 propagation="none"
+							  id="zoneStopList"
+						rendered="#{empty from}">
+						<f:param name="zoneFrom" value="ZoneList"/>
+						<f:param name="currentView" value="STOPS"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="zoneId"
+								value="#{_zone.zoneId}"/>
+					</s:link>
+				</rich:column>
+
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader"
+							   rendered="#{empty from}">
+					<f:facet name="header">Edit</f:facet>
+					<s:link view="/ZoneEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="zoneEdit"
+						rendered="#{empty from}">
+						<f:param name="zoneFrom" value="ZoneList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="zoneId"
+								value="#{_zone.zoneId}"/>
+					</s:link>
+				</rich:column>
+
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader"
+							   rendered="#{empty from}">
+					<f:facet name="header">Delete</f:facet>
+					<h:commandLink id="deleteRoute"
+								value="Delete"
+							   action="#{oneStepDeletionHandler.deleteZone(_zone.zoneId)}"
+							immediate="true"
+							  onclick="return confirm('Are you sure you want to delete this zone?');">
+					</h:commandLink>
+				</rich:column>
+		    </rich:dataTable>
+			</h:form>
+	    </div>
+
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/ZoneEdit.xhtml"
+						  id="bottomZoneCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add Zone"/>
+					<f:param name="zoneFrom" value="ZoneList"/>
+					<f:param name="currentView" value="STOPS"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="zoneId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty zoneList.resultList}">
+				<h:outputText value="Displaying #{zoneList.firstResult + 1} - #{zoneList.lastResult + 1} of #{zoneList.resultCount}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty zoneList.resultList}">
+				&#160;
+			</s:div>
+		
+			<s:div styleClass="navigation" rendered="#{not empty zoneList.resultList}">
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="bottomFirstPage">
+					<f:param name="zoneFirstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="bottomPreviousPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="bottomNextPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/ZoneList.xhtml"
+					rendered="#{zoneList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="bottomLastPage">
+					<f:param name="zoneFirstResult"
+							value="#{zoneList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty zoneList.resultList}">
+				&#160;
+			</s:div>
+		
+		</div>
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

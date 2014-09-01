@@ -1,0 +1,221 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/RouteList.xhtml" value="Routes">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/DirectionList.xhtml" value="Travel Directions">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/TripsList.xhtml" value="Trips">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="calendarId" value=""/>
+				<f:param name="routeId" value=""/>
+				<f:param name="blockId" value=""/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+		<li class="current">Blocks</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="Blocks"/>
+	</div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+	    <div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/BlocksEdit.xhtml"
+						  id="topCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add block"/>
+	              	<f:param name="blocksFrom" value="BlocksList"/>
+	        	    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+	           		<f:param name="blockBlockId"/>
+				</s:link>
+			</s:div>
+
+			<div class="displaying">
+				<h:outputText value="Displaying #{blockList.firstResult + 1} - #{blockList.lastResult + 1} of #{blockList.resultCount}"
+						   rendered="#{not empty blockList.resultList}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</div>
+		
+			<div class="navigation">
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="topFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="topPreviousPage">
+					<f:param name="firstResult"
+							value="#{blockList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="topNextPage">
+					<f:param name="firstResult"
+							value="#{blockList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="topLastPage">
+					<f:param name="firstResult"
+							value="#{blockList.lastFirstResult}"/>
+				</s:link>
+			</div>
+		</div>
+
+
+		<div class="results" id="blockList">
+
+			<h:outputText value="The blocks search returned no results."
+					   rendered="#{empty blockList.resultList}"/>
+
+			<h:form id="blockForm">
+				<rich:dataTable id="blockList"
+							   var="_block"
+							 value="#{blockList.resultList}"
+						  rendered="#{not empty blockList.resultList}"
+						styleClass="searchResultsTable"
+						rowClasses="searchResultsRowEven,searchResultsRowOdd">
+           
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{blockList}"/>
+								<ui:param name="propertyLabel" value="Block label"/>
+								<ui:param name="propertyPath" value="block.blockLabel"/>
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_block.blockLabel}"/>
+					</h:column>
+
+					<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+						<f:facet name="header">Trips</f:facet>
+						<s:link view="/BlockTripsList.xhtml"
+							   value="Trips"
+								  id="blockTripsViewId">
+							<f:param name="currentView" value="ROUTES"/>
+							<f:param name="tripListFrom" value="BlocksList"/>
+							<f:param name="blockId"
+									value="#{_block.blockId}"/>
+						</s:link>
+					</rich:column>
+					
+<!--					<rich:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--						<f:facet name="header">View</f:facet>-->
+<!--						<s:link view="/#{empty from ? 'Blocks' : from}.xhtml"-->
+<!--							   value="#{empty from ? 'View' : 'Select'}"-->
+<!--						 propagation="#{empty from ? 'none' : 'default'}"-->
+<!--								  id="blocksViewId">-->
+<!--							<f:param name="blockBlockId"-->
+<!--									value="#{_block.blockId}"/>-->
+<!--						</s:link>-->
+<!--					</rich:column>-->
+					
+					<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+						<f:facet name="header">Edit</f:facet>
+						<s:link view="/BlocksEdit.xhtml"
+							   value="Edit"
+						 propagation="none"
+								  id="blocksEdit">
+			              	<f:param name="blocksFrom" value="BlocksList"/>
+							<f:param name="blockBlockId"
+									value="#{_block.blockId}"/>
+						</s:link>
+					</rich:column>
+				</rich:dataTable>
+			</h:form>
+		</div>
+
+	    <div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/BlocksEdit.xhtml"
+						  id="bottomCreate"
+				 propagation="none"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add block"/>
+	              	<f:param name="blocksFrom" value="BlocksList"/>
+	        	    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+	           		<f:param name="blockBlockId"/>
+				</s:link>
+			</s:div>
+
+			<div class="displaying">
+				<h:outputText value="Displaying #{blockList.firstResult + 1} - #{blockList.lastResult + 1} of #{blockList.resultCount}"
+						   rendered="#{not empty blockList.resultList}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</div>
+		
+			<div class="navigation">
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="bottomFirstPage">
+					<f:param name="firstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="bottomPreviousPage">
+					<f:param name="firstResult"
+							value="#{blockList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="bottomNextPage">
+					<f:param name="firstResult"
+							value="#{blockList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/BlocksList.xhtml"
+					rendered="#{blockList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="bottomLastPage">
+					<f:param name="firstResult"
+							value="#{blockList.lastFirstResult}"/>
+				</s:link>
+			</div>
+		</div>
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,311 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/FaresDashboard.xhtml" value="Fares">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="FARES"/>
+			</s:link>
+		</li>
+		<li class="current">Fare Rules</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+    <h:form id="ruleSearch" styleClass="edit">
+        <rich:simpleTogglePanel label="Filter fare rules by:" headerClass="searchPanelHeader" 
+        	styleClass="searchPanel" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Fare</ui:define>
+                <h:selectOneMenu id="ruleFareId" value="#{fareRuleList.ruleFareId}">
+                	<s:selectItems value="#{agencyViewBean.currentAgencyFares}" var="_fare"
+						label="#{displayBean.getFareDisplayValue(_fare)}"
+						itemValue="#{_fare.fareId}"
+						noSelectionLabel="Select fare..."/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Origin</ui:define>
+                <h:selectOneMenu id="ruleOriginId" value="#{fareRuleList.ruleOriginId}">
+                	<s:selectItems value="#{agencyViewBean.currentAgencyZones}" var="_zone"
+						label="#{_zone.zoneName}"
+						itemValue="#{_zone.zoneId}"
+						noSelectionLabel="Select zone..."/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Destination</ui:define>
+                <h:selectOneMenu id="ruleDestinationId" value="#{fareRuleList.ruleDestinationId}">
+                	<s:selectItems value="#{agencyViewBean.currentAgencyZones}" var="_zone"
+						label="#{_zone.zoneName}"
+						itemValue="#{_zone.zoneId}"
+						noSelectionLabel="Select zone..."/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Contains</ui:define>
+                <h:selectOneMenu id="ruleContainsId" value="#{fareRuleList.ruleContainsId}">
+                	<s:selectItems value="#{agencyViewBean.currentAgencyZones}" var="_zone"
+						label="#{_zone.zoneName}"
+						itemValue="#{_zone.zoneId}"
+						noSelectionLabel="Select zone..."/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Route</ui:define>
+                <h:selectOneMenu id="ruleRouteId" value="#{fareRuleList.ruleRouteId}">
+                	<s:selectItems value="#{agencyViewBean.currentAgencyRoutes}" var="_route"
+						label="#{displayBean.getRouteDisplayValue(_route)}"
+						itemValue="#{_route.routeId}"
+						noSelectionLabel="Select route..."/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+	        <div class="actionButtons">
+    	        <h:commandButton id="search" value="Search" action="/FareRulesList.xhtml"/>
+        	    <s:button id="reset" value="Reset" includePageParams="false">
+        	    	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        	    </s:button>
+        	</div>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+    </h:form>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/FareRulesEdit.xhtml"
+						  id="boxtopFareRuleCreate"
+				 propagation="nest"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add Fare Rule"/>
+					<f:param name="fareRulesFrom" value="FareRulesList"/>
+					<f:param name="currentView" value="FARES"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="fareRuleFareRuleId"/>
+				</s:link>
+			</s:div>
+			<s:div styleClass="displaying" rendered="#{not empty fareRuleList.resultList}">
+				<h:outputText value="Displaying #{fareRuleList.firstResult + 1} - #{fareRuleList.lastResult + 1} of #{fareRuleList.resultCount}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty fareRuleList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty fareRuleList.resultList}">
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="boxtopFareRuleFirstPage">
+					<f:param name="fareRuleFirstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="boxtopFareRulePreviousPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="boxtopFareRuleNextPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="boxtopFareRuleLastPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty fareRuleList.resultList}">
+				&#160;
+			</s:div>
+		</div>
+
+		<div class="results" id="boxfareRuleList">
+			<h:outputText value="The fare rules search returned no results."
+					   rendered="#{empty fareRuleList.resultList}"/>
+
+			<h:form id="fareRulesForm">
+			<rich:dataTable id="boxfareRulesList"
+						   var="_fareRule"
+						 value="#{fareRuleList.resultList}"
+					  rendered="#{not empty fareRuleList.resultList}"
+					styleClass="searchResultsTable"
+				 columnClasses="searchResultsTableColumn"
+					rowClasses="searchResultsRowEven,searchResultsRowOdd">
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{fareRuleList}"/>
+							<ui:param name="propertyLabel" value="Fare"/>
+							<ui:param name="propertyPath" value="fareRule.fare.price"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_fareRule.fare.price}">
+						<f:convertNumber currencySymbol="$" type="currency"/>
+					</h:outputText>
+					#{' '}
+					<h:outputText value="#{_fareRule.fare.currencyType}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{fareRuleList}"/>
+							<ui:param name="propertyLabel" value="Origin"/>
+							<ui:param name="propertyPath" value="fareRule.origin.zoneName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_fareRule.origin.zoneName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{fareRuleList}"/>
+							<ui:param name="propertyLabel" value="Destination"/>
+							<ui:param name="propertyPath" value="fareRule.destination.zoneName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_fareRule.destination.zoneName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{fareRuleList}"/>
+							<ui:param name="propertyLabel" value="Contains"/>
+							<ui:param name="propertyPath" value="fareRule.contains.zoneName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_fareRule.contains.zoneName}"/>
+				</h:column>
+				<h:column headerClass="searchResultsTableHeader">
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{fareRuleList}"/>
+							<ui:param name="propertyLabel" value="Route"/>
+							<ui:param name="propertyPath" value="fareRule.route.routeLongName"/>
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{displayBean.getRouteDisplayValue(_fareRule.route)}"/>
+				</h:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+					<f:facet name="header">Edit</f:facet>
+					<s:link view="/FareRulesEdit.xhtml"
+						   value="Edit"
+					 propagation="none"
+							  id="fareRulesEdit">
+						<f:param name="fareRulesFrom" value="FareRulesList"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="fareRuleFareRuleId"
+								value="#{_fareRule.fareRuleId}"/>
+					</s:link>
+				</rich:column>
+				<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+					<f:facet name="header">Delete</f:facet>
+					<h:commandLink id="deleteFareRule"
+								value="Delete"
+							   action="#{oneStepDeletionHandler.deleteFareRule(_fareRule.fareRuleId)}"
+							immediate="true"
+							  onclick="return confirm('Are you sure you want to delete this fare rule?');">
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+			</h:form>
+		</div>
+
+		<div class="tableControl">
+			<s:div styleClass="createNew">
+				<s:link view="/FareRulesEdit.xhtml"
+						  id="boxbottomFareRuleCreate"
+				 propagation="nest"
+					rendered="#{empty from}">
+					<h:graphicImage value="/img/new.png" alt="create new"/>
+					<h:outputText value=" Add Fare Rule"/>
+					<f:param name="fareRulesFrom" value="FareRulesList"/>
+					<f:param name="currentView" value="FARES"/>
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="fareRuleFareRuleId"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{not empty fareRuleList.resultList}">
+				<h:outputText value="Displaying #{fareRuleList.firstResult + 1} - #{fareRuleList.lastResult + 1} of #{fareRuleList.resultCount}"/>
+				<br/>
+				<span class='displayInfo'><h:outputText value="click on a column header to sort"/></span>
+			</s:div>
+
+			<s:div styleClass="displaying" rendered="#{empty fareRuleList.resultList}">
+				&#160;
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{not empty fareRuleList.resultList}">
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.previousExists}"
+					   value="#{messages.left}#{messages.left} First Page"
+						  id="boxbottomFareRuleFirstPage">
+					<f:param name="fareRuleFirstResult" value="0"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.previousExists}"
+					   value="#{messages.left} Previous Page"
+						  id="boxbottomFareRulePreviousPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.previousFirstResult}"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.nextExists}"
+					   value="Next Page #{messages.right}"
+						  id="boxbottomFareRuleNextPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.nextFirstResult}"/>
+				</s:link>
+
+				<s:link view="/FareRulesList.xhtml"
+					rendered="#{fareRuleList.nextExists}"
+					   value="Last Page #{messages.right}#{messages.right}"
+						  id="boxbottomFareRuleLastPage">
+					<f:param name="fareRuleFirstResult"
+							value="#{fareRuleList.lastFirstResult}"/>
+				</s:link>
+			</s:div>
+
+			<s:div styleClass="navigation" rendered="#{empty fareRuleList.resultList}">
+				&#160;
+			</s:div>
+		</div>
+
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

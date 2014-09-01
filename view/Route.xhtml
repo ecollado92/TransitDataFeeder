@@ -1,0 +1,132 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Route Details</f:facet>
+
+        <s:decorate id="routeId" template="layout/display.xhtml">
+            <ui:define name="label">ID</ui:define>
+            <h:outputText value="#{routeHome.instance.routeId}"/>
+        </s:decorate>
+
+        <s:decorate id="routeShortName" template="layout/display.xhtml">
+            <ui:define name="label">Short Name</ui:define>
+            <h:outputText value="#{routeHome.instance.routeShortName}"/>
+        </s:decorate>
+
+        <s:decorate id="routeLongName" template="layout/display.xhtml">
+            <ui:define name="label">Long Name</ui:define>
+            <h:outputText value="#{routeHome.instance.routeLongName}"/>
+        </s:decorate>
+
+        <s:decorate id="routeDesc" template="layout/display.xhtml">
+            <ui:define name="label">Description</ui:define>
+            <h:outputText value="#{routeHome.instance.routeDesc}"/>
+        </s:decorate>
+
+        <s:decorate id="routeType" template="layout/display.xhtml">
+            <ui:define name="label">Route Type</ui:define>
+            <h:outputText value="#{routeHome.instance.routeType.routeTypeDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="routeUrl" template="layout/display.xhtml">
+            <ui:define name="label">URL</ui:define>
+            <h:outputText value="#{routeHome.instance.routeUrl}"/>
+        </s:decorate>
+
+        <s:decorate id="routeColor" template="layout/display.xhtml">
+            <ui:define name="label">Route color</ui:define>
+            <h:outputText value="#{routeHome.instance.routeColor}"/>
+        </s:decorate>
+
+        <s:decorate id="routeTextColor" template="layout/display.xhtml">
+            <ui:define name="label">Route text color</ui:define>
+            <h:outputText value="#{routeHome.instance.routeTextColor}"/>
+        </s:decorate>
+
+        <s:decorate id="routeBikesAllowed" template="layout/display.xhtml">
+            <ui:define name="label">Bikes Allowed</ui:define>
+            <h:outputText value="#{routeHome.instance.bikeOption.bikeOptionDescription}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/RouteEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty routeFrom ? 'RouteList' : routeFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Trips</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tripsChild">
+
+        <h:outputText value="There are no trips associated with this route."
+                   rendered="#{empty routeHome.instance.trips}"/>
+
+        <rich:dataTable var="_trip"
+                   value="#{listAdapter.asList(routeHome.instance.trips)}"
+                rendered="#{not empty routeHome.instance.trips}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tripsTable">
+            <h:column>
+                <f:facet name="header">Trip ID</f:facet>
+                <h:outputText value="#{_trip.tripId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Headsign</f:facet>
+                <h:outputText value="#{_trip.tripHeadsign}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Start Time</f:facet>
+	            <h:outputText value="#{_trip.tripStartTime}">
+    	            <s:convertDateTime type="time"/>
+        	    </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direction</f:facet>
+				<h:outputText value="#{_trip.direction.directionLabel}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bikes?</f:facet>
+				<h:outputText value="#{_trip.bikeOption.bikeOptionDescription}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtrip"
+                     value="View"
+                      view="/Trips.xhtml">
+                    <f:param name="tripId"
+                           value="#{_trip.tripId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

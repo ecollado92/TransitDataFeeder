@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Fare rules Details</f:facet>
+
+        <s:decorate id="fareRuleId" template="layout/display.xhtml">
+            <ui:define name="label">Fare rule id</ui:define>
+            <h:outputText value="#{fareRuleHome.instance.fareRuleId}"/>
+        </s:decorate>
+
+        <s:decorate id="agencyId" template="layout/display.xhtml">
+            <ui:define name="label">Agency</ui:define>
+            <h:outputText value="#{fareRuleHome.instance.agency.agencyName}"/>
+        </s:decorate>
+
+        <s:decorate id="containsId" template="layout/display.xhtml">
+            <ui:define name="label">Contains id</ui:define>
+            <h:outputText value="#{fareRuleHome.instance.contains.zoneName}"/>
+        </s:decorate>
+
+        <s:decorate id="destinationId" template="layout/display.xhtml">
+            <ui:define name="label">Destination id</ui:define>
+            <h:outputText value="#{fareRuleHome.instance.destination.zoneName}"/>
+        </s:decorate>
+
+        <s:decorate id="fareId" template="layout/display.xhtml">
+            <ui:define name="label">Fare</ui:define>
+           	<h:outputText value="#{fareRuleHome.instance.fare.price}">
+                <f:convertNumber currencySymbol="$" type="currency"/>
+            </h:outputText>
+            #{' '}
+            <h:outputText value="#{fareRuleHome.instance.fare.currencyType}"/>
+        </s:decorate>
+
+        <s:decorate id="originId" template="layout/display.xhtml">
+            <ui:define name="label">Origin id</ui:define>
+            <h:outputText value="#{fareRuleHome.instance.origin.zoneName}"/>
+        </s:decorate>
+
+        <s:decorate id="routeId" template="layout/display.xhtml">
+            <ui:define name="label">Route</ui:define>
+            <h:outputText value="#{displayBean.getRouteDisplayValue(fareRuleHome.instance.route)}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/FareRulesEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+        <s:button view="/#{empty fareRulesFrom ? 'FareRulesList' : fareRulesFrom}.xhtml"
+                    id="done"
+                 value="Done">
+			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+		</s:button>
+    </div>
+
+</ui:define>
+
+</ui:composition>

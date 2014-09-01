@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">User Details</f:facet>
+
+        <s:decorate id="userId" template="layout/display.xhtml">
+            <ui:define name="label">User id</ui:define>
+            <h:outputText value="#{userHome.instance.userId}"/>
+        </s:decorate>
+
+        <s:decorate id="active" template="layout/display.xhtml">
+            <ui:define name="label">Active</ui:define>
+            <h:outputText value="#{userHome.instance.active}"/>
+        </s:decorate>
+
+        <s:decorate id="email" template="layout/display.xhtml">
+            <ui:define name="label">Email</ui:define>
+            <h:outputText value="#{userHome.instance.email}"/>
+        </s:decorate>
+
+        <s:decorate id="firstName" template="layout/display.xhtml">
+            <ui:define name="label">First name</ui:define>
+            <h:outputText value="#{userHome.instance.firstName}"/>
+        </s:decorate>
+
+        <s:decorate id="lastName" template="layout/display.xhtml">
+            <ui:define name="label">Last name</ui:define>
+            <h:outputText value="#{userHome.instance.lastName}"/>
+        </s:decorate>
+
+        <s:decorate id="readOnly" template="layout/display.xhtml">
+            <ui:define name="label">Read only</ui:define>
+            <h:outputText value="#{userHome.instance.readOnly}"/>
+        </s:decorate>
+
+        <s:decorate id="registrationDate" template="layout/display.xhtml">
+            <ui:define name="label">Registration date</ui:define>
+            <h:outputText value="#{userHome.instance.registrationDate}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="shaHashedPass" template="layout/display.xhtml">
+            <ui:define name="label">Sha hashed pass</ui:define>
+            <h:outputText value="#{userHome.instance.shaHashedPass}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/UserEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty userFrom ? 'UserList' : userFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

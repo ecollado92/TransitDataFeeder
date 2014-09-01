@@ -1,0 +1,3 @@
+jboss.home=/Users/dirk/Projects/IDEA/jboss-5.1.0.GA
+jboss.domain=default
+profile=dev

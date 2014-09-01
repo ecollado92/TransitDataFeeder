@@ -1,0 +1,1 @@
+ALTER TABLE stop ALTER COLUMN stop_desc DROP NOT NULL;

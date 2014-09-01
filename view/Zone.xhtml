@@ -1,0 +1,327 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Zone Details</f:facet>
+
+        <s:decorate id="zoneId" template="layout/display.xhtml">
+            <ui:define name="label">Zone id</ui:define>
+            <h:outputText value="#{zoneHome.instance.zoneId}"/>
+        </s:decorate>
+
+        <s:decorate id="zoneName" template="layout/display.xhtml">
+            <ui:define name="label">Zone name</ui:define>
+            <h:outputText value="#{zoneHome.instance.zoneName}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ZoneEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+			<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+
+        <s:button view="/#{empty zoneFrom ? 'ZoneList' : zoneFrom}.xhtml"
+                    id="done"
+                 value="Done">
+			<f:param name="agencyId"
+                 value="#{agencyHome.agencyAgencyId}"/>
+        </s:button>
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Agency</h:panelGroup>
+        </f:facet>
+    <div class="association" id="agencyParent">
+
+        <h:outputText value="There is no agency associated with this zone."
+                   rendered="#{zoneHome.instance.agency == null}"/>
+
+        <rich:dataTable var="_agency"
+                   value="#{zoneHome.instance.agency}"
+                rendered="#{zoneHome.instance.agency != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="agencyTable">
+            <h:column>
+                <f:facet name="header">Agency id</f:facet>
+                <h:outputText value="#{_agency.agencyId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency fare url</f:facet>
+                <h:outputText value="#{_agency.agencyFareUrl}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency name</f:facet>
+                <h:outputText value="#{_agency.agencyName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency phone</f:facet>
+                <h:outputText value="#{_agency.agencyPhone}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency short name</f:facet>
+                <h:outputText value="#{_agency.agencyShortName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency timezone</f:facet>
+                <h:outputText value="#{_agency.agencyTimezone}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agency url</f:facet>
+                <h:outputText value="#{_agency.agencyUrl}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewagency"
+                     value="View"
+                      view="/Agency.xhtml">
+                    <f:param name="agencyId"
+                           value="#{_agency.agencyId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Stops</h:panelGroup>
+        </f:facet>
+    <div class="association" id="stopsChild">
+
+        <h:outputText value="This zone has no stops."
+                   rendered="#{empty zoneHome.instance.stops}"/>
+
+        <rich:dataTable var="_stop"
+                   value="#{zoneHome.instance.stops}"
+                rendered="#{not empty zoneHome.instance.stops}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="stopsTable">
+            <h:column>
+                <f:facet name="header">Stop ID</f:facet>
+                <h:outputText value="#{_stop.stopId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                <h:outputText value="#{_stop.stopName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direction</f:facet>
+                <h:outputText value="#{_stop.direction.directionLabel}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Parent Station</f:facet>
+                <h:outputText value="#{_stop.parentStation.stopName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop Code</f:facet>
+                <h:outputText value="#{_stop.stopCode}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Latitude</f:facet>
+                <h:outputText value="#{_stop.stopLat}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Longitude</f:facet>
+                <h:outputText value="#{_stop.stopLon}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewstop"
+                     value="View"
+                      view="/Stop.xhtml">
+	                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+	                <f:param name="stopId"
+	                    value="#{_stop.stopId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Fare Rules for which this Zone is the Origin</h:panelGroup>
+        </f:facet>
+    <div class="association" id="originFareRulesChild">
+
+        <h:outputText value="This zone is not the origin for any fare rules."
+                   rendered="#{empty zoneHome.instance.originFareRules}"/>
+
+        <rich:dataTable var="_fareRule"
+                   value="#{zoneHome.instance.originFareRules}"
+                rendered="#{not empty zoneHome.instance.originFareRules}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="originFareRulesTable">
+            <h:column>
+                <f:facet name="header">Fare Rule ID</f:facet>
+                <h:outputText value="#{_fareRule.fareRuleId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Route</f:facet>
+                <h:outputText value="#{_fareRule.route.routeLongName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Origin Zone</f:facet>
+                <h:outputText value="#{_fareRule.origin.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Contains Zone</f:facet>
+                <h:outputText value="#{_fareRule.contains.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Destination Zone</f:facet>
+                <h:outputText value="#{_fareRule.destination.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fare</f:facet>
+                <h:outputText value="#{_fareRule.fare.price}">
+                	<f:convertNumber currencySymbol="$" type="currency"/>
+                </h:outputText>
+                #{' '}
+                <h:outputText value="#{_fareRule.fare.currencyType}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="vieworiginfarerule"
+                     value="View"
+                      view="/FareRules.xhtml">
+	                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Fare Rules for which this Zone is the Destination</h:panelGroup>
+        </f:facet>
+    <div class="association" id="destinationFareRulesChild">
+
+        <h:outputText value="This zone is not the destination for any fare rules."
+                   rendered="#{empty zoneHome.instance.destinationFareRules}"/>
+
+        <rich:dataTable var="_fareRule"
+                   value="#{zoneHome.instance.destinationFareRules}"
+                rendered="#{not empty zoneHome.instance.destinationFareRules}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="destinationFareRulesTable">
+            <h:column>
+                <f:facet name="header">Fare Rule ID</f:facet>
+                <h:outputText value="#{_fareRule.fareRuleId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Route</f:facet>
+                <h:outputText value="#{_fareRule.route.routeLongName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Origin Zone</f:facet>
+                <h:outputText value="#{_fareRule.origin.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Contains Zone</f:facet>
+                <h:outputText value="#{_fareRule.contains.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Destination Zone</f:facet>
+                <h:outputText value="#{_fareRule.destination.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fare</f:facet>
+                <h:outputText value="#{_fareRule.fare.price}">
+                	<f:convertNumber currencySymbol="$" type="currency"/>
+                </h:outputText>
+                #{' '}
+                <h:outputText value="#{_fareRule.fare.currencyType}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="vieworiginfarerule"
+                     value="View"
+                      view="/FareRules.xhtml">
+	                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Fare Rules containing this Zone</h:panelGroup>
+        </f:facet>
+    <div class="association" id="containsFareRulesChild">
+
+        <h:outputText value="No fare rules contain this zone."
+                   rendered="#{empty zoneHome.instance.containsFareRules}"/>
+
+        <rich:dataTable var="_fareRule"
+                   value="#{zoneHome.instance.containsFareRules}"
+                rendered="#{not empty zoneHome.instance.containsFareRules}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="containsFareRulesTable">
+            <h:column>
+                <f:facet name="header">Fare Rule ID</f:facet>
+                <h:outputText value="#{_fareRule.fareRuleId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Route</f:facet>
+                <h:outputText value="#{_fareRule.route.routeLongName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Origin Zone</f:facet>
+                <h:outputText value="#{_fareRule.origin.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Contains Zone</f:facet>
+                <h:outputText value="#{_fareRule.contains.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Destination Zone</f:facet>
+                <h:outputText value="#{_fareRule.destination.zoneName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fare</f:facet>
+                <h:outputText value="#{_fareRule.fare.price}">
+                	<f:convertNumber currencySymbol="$" type="currency"/>
+                </h:outputText>
+                #{' '}
+                <h:outputText value="#{_fareRule.fare.currencyType}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="vieworiginfarerule"
+                     value="View"
+                      view="/FareRules.xhtml">
+	                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

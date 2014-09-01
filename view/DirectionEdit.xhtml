@@ -1,0 +1,87 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Routes</li>
+		<li class="current">Travel Directions</li>
+		<li class="nolink">Trips</li>
+		<li class="nolink">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+    <h:form id="direction" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader">
+            <f:facet name="header">#{directionHome.managed ? 'Edit' : 'Add'} Direction</f:facet>
+
+            <s:decorate id="directionLabelField" template="layout/edit.xhtml">
+                <ui:define name="label">Label</ui:define>
+                <h:inputText id="directionLabel"
+                       required="true"
+                           size="35"
+                      maxlength="35"
+                          value="#{directionHome.instance.directionLabel}">
+                    <a:support event="onblur" reRender="directionLabelField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="inboundField" template="layout/edit.xhtml">
+                <ui:define name="label">Inbound</ui:define>
+                <h:selectBooleanCheckbox id="inboundFlag"
+                                      value="#{directionHome.instance.inboundFlag}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{directionHome.persist}"
+                       disabled="#{!directionHome.wired}"
+                       rendered="#{!directionHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{directionHome.update}"
+                       rendered="#{directionHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{directionHome.remove}"
+                      immediate="true"
+                       rendered="#{directionHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty directionFrom ? 'Direction' : directionFrom}.xhtml"
+                rendered="#{directionHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty directionFrom ? 'DirectionList' : directionFrom}.xhtml"
+                rendered="#{!directionHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

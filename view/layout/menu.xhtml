@@ -1,0 +1,57 @@
+<rich:toolBar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich"
+    styleClass="toolbarContainer">
+
+    <rich:toolBarGroup styleClass="#{'HOME' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{!navigationViewBean.agencyMenuShown}">
+        <s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="none">
+        	<f:param name="currentView" value="HOME"/>
+        </s:link>
+    </rich:toolBarGroup>
+    <rich:toolBarGroup styleClass="#{'DASH' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{navigationViewBean.agencyMenuShown}">
+        <s:link id="menuDashboardId" view="/AgencyDashboard.xhtml" value="Overview">
+        	<f:param name="currentView" value="DASH"/>
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:link>
+    </rich:toolBarGroup>
+    <rich:toolBarGroup styleClass="#{'STOPS' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{navigationViewBean.agencyMenuShown}">
+        <s:link id="menuStopsId" view="/StopList.xhtml" value="Stops">
+        	<f:param name="currentView" value="STOPS"/>
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:link>
+    </rich:toolBarGroup>
+    <rich:toolBarGroup styleClass="#{'ROUTES' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{navigationViewBean.agencyMenuShown}">
+        <s:link id="menuRoutesId" view="/RouteList.xhtml" value="Routes / timetables">
+        	<f:param name="currentView" value="ROUTES"/>
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:link>
+    </rich:toolBarGroup>
+    <rich:toolBarGroup styleClass="#{'FARES' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{navigationViewBean.agencyMenuShown}">
+        <s:link id="menuFaresId" view="/FaresDashboard.xhtml" value="Fare schedule">
+        	<f:param name="currentView" value="FARES"/>
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:link>
+    </rich:toolBarGroup>
+    <rich:toolBarGroup styleClass="#{'CALS' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}"
+    	rendered="#{navigationViewBean.agencyMenuShown}">
+        <s:link id="menuCalendarsId" view="/CalendarDashboard.xhtml" value="Service Calendar">
+        	<f:param name="currentView" value="CALS"/>
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        </s:link>
+    </rich:toolBarGroup>
+<!--    <rich:toolBarGroup rendered="#{identity.hasRole('admin')}" styleClass="#{'USERS' eq navigationViewBean.currentMenuItem ? 'toolbarSelected' : 'toolbarUnselected'}">-->
+<!--        <s:link id="manageUsersId" view="/useradmin/home.xhtml" value="Manage Users" propagation="none">-->
+<!--        	<f:param name="currentView" value="USERS"/>-->
+<!--        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--        </s:link>-->
+<!--    </rich:toolBarGroup>-->
+</rich:toolBar>

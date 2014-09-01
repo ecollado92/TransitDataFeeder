@@ -1,0 +1,188 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="agency" styleClass="edit">
+
+        <rich:panel headerClass="searchPanelHeader" styleClass="searchPanel">
+            <f:facet name="header">#{agencyHome.managed ? 'Edit' : 'Add'} Agency</f:facet>
+
+            <s:decorate id="agencyNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputText id="agencyName"
+                       required="true"
+                           size="100"
+                      maxlength="120"
+                          value="#{agencyHome.instance.agencyName}">
+                    <a:support event="onblur" reRender="agencyNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="agencyShortNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Short Name</ui:define>
+                <h:inputText id="agencyShortName"
+                       required="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{agencyHome.instance.agencyShortName}">
+                    <a:support event="onblur" reRender="agencyShortNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="agencyLangField" template="layout/edit.xhtml">
+                <ui:define name="label">ISO 639-1 Language</ui:define>
+                <h:inputText id="agencyLang"
+                       required="true"
+                           size="2"
+                      maxlength="2"
+                          value="#{agencyHome.instance.agencyLanguage}">
+                    <a:support event="onblur" reRender="agencyLangField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="agencyUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">URL</ui:define>
+                <h:inputText id="agencyUrl"
+                       required="true"
+                           size="100"
+                      maxlength="100"
+                          value="#{agencyHome.instance.agencyUrl}">
+                    <a:support event="onblur" reRender="agencyUrlField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="agencyPhoneField" template="layout/edit.xhtml">
+                <ui:define name="label">Phone</ui:define>
+                <h:inputText id="agencyPhone"
+                           size="25"
+                      maxlength="25"
+                          value="#{agencyHome.instance.agencyPhone}">
+                    <a:support event="onblur" reRender="agencyPhoneField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="agencyTimezoneField" template="layout/edit.xhtml">
+                <ui:define name="label">Timezone</ui:define>
+                <h:selectOneMenu id="agencyTimezone" value="#{agencyHome.instance.agencyTimezone}">
+                	<s:selectItems var="_tz" value="#{agencyList.availableTimezoneIds}" label="#{_tz}"/>
+                    <a:support event="onblur" reRender="agencyTimezoneField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+			<s:decorate id="agencyMapCenterField" template="layout/edit.xhtml">
+				<ui:define name="label">Agency Geolocation Information</ui:define>
+				<input type="text" id="addressInfo" size="64"/>
+				<input type="button" id="getGeoCoordsBtn" value="Update lat/lon" onclick="javascript:getGeoCoords();"/>
+				<f:verbatim>
+					<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=#{googleApiKeyManager.apiKey}"
+						type="text/javascript">
+						<!--  -->
+					</script>
+					<script type="text/javascript">
+						function getGeoCoords() {
+							var addressInfo = $('addressInfo').getValue();
+							var geocoder = new GClientGeocoder();
+
+							geocoder.getLocations(addressInfo, handleLookup);
+						}
+
+						function handleLookup(response) {
+							var elt;
+
+							place = response.Placemark[0];
+							$('agency:agencyMapCenterField:agencyLatField:agencyLatitude').setValue(place.Point.coordinates[1]);
+							$('agency:agencyMapCenterField:agencyLonField:agencyLongitude').setValue(place.Point.coordinates[0]);
+						}
+					</script>
+				</f:verbatim>
+            	<s:decorate id="agencyLatField" template="layout/edit.xhtml">
+                	<ui:define name="label">Latitude</ui:define>
+                	<h:inputText id="agencyLatitude"
+                   	        size="25"
+                   	   maxlength="25"
+                   	       value="#{agencyHome.instance.agencyLatitude}">
+						<a:support event="onblur" reRender="agencyLatField" bypassUpdates="true" ajaxSingle="true"/>
+					</h:inputText>
+				</s:decorate>
+            	<s:decorate id="agencyLonField" template="layout/edit.xhtml">
+                	<ui:define name="label">Longitude</ui:define>
+                	<h:inputText id="agencyLongitude"
+                   	        size="25"
+                   	   maxlength="25"
+                   	       value="#{agencyHome.instance.agencyLongitude}">
+						<a:support event="onblur" reRender="agencyLonField" bypassUpdates="true" ajaxSingle="true"/>
+					</h:inputText>
+				</s:decorate>
+			</s:decorate>
+
+            <s:decorate id="agencyFareUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">Fare URL</ui:define>
+                <h:inputTextarea id="agencyFareUrl"
+                               cols="80"
+                               rows="3"
+                              value="#{agencyHome.instance.agencyFareUrl}"/>
+            </s:decorate>
+
+            <s:decorate id="agencyGroupsField" template="layout/edit.xhtml">
+                <ui:define name="label">Agency Groups</ui:define>
+                <h:selectManyCheckbox id="agencyGroups" styleClass="checkboxContainer" value="#{agencyHome.instance.agencyGroups}"
+                	layout="pageDirection">
+                	<s:selectItems value="#{agencyGroupList.allAgencyGroups}" var="_agencyGroup"
+                		label="#{_agencyGroup.groupName}" styleClass="twoColumnCheckboxItem"/>
+                	<s:convertEntity />
+                </h:selectManyCheckbox>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{agencyHome.persist}"
+                       disabled="#{!agencyHome.wired}"
+                       rendered="#{!agencyHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{agencyHome.update}"
+                       rendered="#{agencyHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{agencyHome.remove}"
+                      immediate="true"
+                       rendered="#{agencyHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty agencyFrom ? 'Agency' : agencyFrom}.xhtml"
+                rendered="#{agencyHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty agencyFrom ? 'AgencyList' : agencyFrom}.xhtml"
+                rendered="#{!agencyHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

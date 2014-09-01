@@ -1,0 +1,296 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Stops</li>
+		<li class="nolink">Stations</li>
+		<li class="nolink">Zones</li>
+		<li class="nolink">Transfers</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+	
+    <h:form id="stop" styleClass="edit">
+
+        <rich:panel headerClass="searchPanelHeader" styleClass="searchPanel">
+            <f:facet name="header">#{stopHome.managed ? 'Edit' : 'Add'} Stop</f:facet>
+			<h:inputHidden id="stopId" value="#{stopHome.instance.stopId}"/>
+
+            <s:decorate id="stopNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop name</ui:define>
+                <h:inputText id="stopName"
+                       required="true"
+                           size="80"
+                      maxlength="80"
+                          value="#{stopHome.instance.stopName}">
+                    <a:support event="onblur" reRender="stopNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopCodeField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop code</ui:define>
+                <h:inputText id="stopCode"
+                           size="18"
+                      maxlength="18"
+                          value="#{stopHome.instance.stopCode}">
+                    <a:support event="onblur" reRender="stopCodeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stopCommentsField" template="layout/edit.xhtml">
+                <ui:define name="label">Comments</ui:define>
+                <h:inputTextarea id="stopComments"
+                               cols="80"
+                               rows="2"
+                              value="#{stopHome.instance.stopComments}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop URL</ui:define>
+                <h:inputText id="stopUrl"
+                           size="80"
+                      maxlength="255"
+                          value="#{stopHome.instance.stopUrl}">
+                    <a:support event="onblur" reRender="stopUrlField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+			
+            <s:decorate id="parentStationField" template="layout/edit.xhtml">
+                <ui:define name="label">Parent station</ui:define>
+				<h:selectOneMenu id="parentStation" value="#{stopHome.instance.parentStation}">
+					<s:selectItems var="_stop" value="#{stopViewBean.currentAgencyStations}" label="#{_stop.stopName}"
+						noSelectionLabel="none"/>
+					<s:convertEntity />
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="stopDescField" template="layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <h:inputTextarea id="stopDesc"
+                               cols="80"
+                               rows="3"
+                              value="#{stopHome.instance.stopDesc}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopZoneField" template="layout/edit.xhtml">
+                <ui:define name="label">Zone</ui:define>
+				<h:selectOneMenu id="stopZone" value="#{stopHome.instance.zone}">
+					<s:selectItems var="_zone" value="#{agencyViewBean.currentAgencyZones}" label="#{_zone.zoneName}"
+						noSelectionLabel="all zones"/>
+					<s:convertEntity />
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="stopLocationField" template="layout/edit.xhtml">
+                <ui:define name="label">Location</ui:define>
+                <ui:include src="/layout/mapWidget.xhtml">
+					<ui:param name="rootLevelId" value="stop:stopLocationField" />
+					<ui:param name="latField" value="stopLatField:stopLat" />
+					<ui:param name="lonField" value="stopLonField:stopLon" />
+					<ui:param name="centerLat" value="#{empty stopHome.instance.stopLat ? agencyHome.instance.agencyLatitude : stopHome.instance.stopLat}"/>
+					<ui:param name="centerLon" value="#{empty stopHome.instance.stopLon ? agencyHome.instance.agencyLongitude : stopHome.instance.stopLon}"/>
+					<ui:param name="markerLat" value="#{empty stopHome.instance.stopLat ? '' : stopHome.instance.stopLat}"/>
+					<ui:param name="markerLon" value="#{empty stopHome.instance.stopLon ? '' : stopHome.instance.stopLon}"/>
+                </ui:include>
+	            <s:decorate id="stopLatField" template="layout/edit.xhtml">
+    	            <ui:define name="label">Latitude</ui:define>
+        	        <h:inputText id="stopLat"
+            	              value="#{stopHome.instance.stopLat}">
+                	    <a:support event="onblur" reRender="stopLatField" bypassUpdates="true" ajaxSingle="true"/>
+	                </h:inputText>
+    	        </s:decorate>
+
+	            <s:decorate id="stopLonField" template="layout/edit.xhtml">
+    	            <ui:define name="label">Longitude</ui:define>
+        	        <h:inputText id="stopLon"
+            	              value="#{stopHome.instance.stopLon}">
+                	    <a:support event="onblur" reRender="stopLonField" bypassUpdates="true" ajaxSingle="true"/>
+                	</h:inputText>
+            	</s:decorate>
+
+            </s:decorate>
+
+            <s:decorate id="stopDirectionField" template="layout/edit.xhtml">
+                <ui:define name="label">Direction</ui:define>
+				<h:selectOneMenu id="stopDirection" value="#{stopHome.instance.direction}">
+					<s:selectItems var="_direction" value="#{agencyViewBean.currentAgencyDirections}" label="#{_direction.directionLabel}"
+						noSelectionLabel="not directional"/>
+					<s:convertEntity />
+				</h:selectOneMenu>
+            </s:decorate>
+			
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{stopHome.persist}"
+                       disabled="#{!stopHome.wired}"
+                       rendered="#{!stopHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{stopHome.update}"
+                       rendered="#{stopHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{stopHome.remove}"
+                      immediate="true"
+                       rendered="#{stopHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stopFrom ? 'StopList' : stopFrom}.xhtml"
+                rendered="#{stopHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stopFrom ? 'StopList' : stopFrom}.xhtml"
+                rendered="#{!stopHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+        </div>
+
+		<rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{stopHome.managed}">
+			<f:facet name="header">Stop times for this stop</f:facet>
+			<s:div styleClass="tableControl">
+				<s:div styleClass="createNew">
+					<s:link view="/StopTimesEdit.xhtml"
+							  id="topCreate"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Stop Time"/>
+						<f:param name="stopTimeEditFrom" value="StopEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="stopId" value="#{stopHome.stopStopId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"/>
+					</s:link>
+				</s:div>
+
+				<div class="displaying">
+					&#160;
+				</div>
+
+				<div class="navigation">
+					&#160;
+				</div>
+			</s:div>
+
+			<div class="results" id="ruleList">
+
+				<h:outputText value="This stop has no associated stop times."
+						   rendered="#{empty stopHome.instance.stopTimes}"/>
+
+				<rich:dataTable var="_stopTime"
+							  value="#{stopHome.instance.stopTimes}"
+						   rendered="#{not empty stopHome.instance.stopTimes}"
+						 styleClass="searchResultsTable"
+					  columnClasses="searchResultsTableColumn"
+						 rowClasses="searchResultsRowEven,searchResultsRowOdd">
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Arrival Time</f:facet>
+						<h:selectOneMenu id="arrivalTimeHourSelect" value="#{_stopTime.arrivalTimeHour}" required="true">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu id="arrivalTimeMinuteSelect" value="#{_stopTime.arrivalTimeMinute}" required="true">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="arrivalNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="arrivalNextDay" value="#{_stopTime.arrivalTimeCarryover}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Departure Time</f:facet>
+						<h:selectOneMenu id="departureTimeHourSelect" value="#{_stopTime.departureTimeHour}" required="true">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu id="departureTimeMinuteSelect" value="#{_stopTime.departureTimeMinute}" required="true">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="departureNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="departureNextDay" value="#{_stopTime.departureTimeCarryover}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Drop Off Type</f:facet>
+						<h:selectOneMenu id="stopTimeDropoffSelect" value="#{_stopTime.dropOffType}" required="true">
+							<s:selectItems var="_pickupType" value="#{validationTableBean.pickupTypes}" label="#{_pickupType.pickupTypeDescription}" noSelectionLabel="Select One"/>
+							<s:convertEntity />
+						</h:selectOneMenu>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Pickup Type</f:facet>
+						<h:selectOneMenu id="stopTimePickupSelect" value="#{_stopTime.pickupType}" required="true">
+							<s:selectItems var="_pickupType" value="#{validationTableBean.pickupTypes}" label="#{_pickupType.pickupTypeDescription}" noSelectionLabel="Select One"/>
+							<s:convertEntity />
+						</h:selectOneMenu>
+					</h:column>
+
+					<rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+						<f:facet name="header">Delete</f:facet>
+						<h:commandLink id="deleteStopTime"
+									value="Delete"
+								   action="#{oneStepDeletionHandler.deleteStopTime(_stopTime.stopTimeId)}"
+								immediate="true"
+								  onclick="return confirm('Are you sure you want to delete this stop time?');">
+						</h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+			</div>
+
+			<s:div styleClass="tableControl">
+				<s:div styleClass="createNew">
+					<s:link view="/StopTimesEdit.xhtml"
+							  id="bottomCreate"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Stop Time"/>
+						<f:param name="stopTimeEditFrom" value="StopEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="stopId" value="#{stopHome.stopStopId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"/>
+					</s:link>
+				</s:div>
+
+				<div class="displaying">
+					&#160;
+				</div>
+
+				<div class="navigation">
+					&#160;
+				</div>
+			</s:div>
+		</rich:panel>
+    </h:form>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,238 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Stops</li>
+		<li class="current">Stations</li>
+		<li class="nolink">Zones</li>
+		<li class="nolink">Transfers</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+	
+    <h:form id="stop" styleClass="edit">
+
+        <rich:panel headerClass="searchPanelHeader" styleClass="searchPanel">
+            <f:facet name="header">#{stationHome.managed ? 'Edit' : 'Add'} Station</f:facet>
+			<h:inputHidden id="stopId" value="#{stationHome.instance.stopId}"/>
+
+            <s:decorate id="stopNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Station name</ui:define>
+                <h:inputText id="stopName"
+                       required="true"
+                           size="80"
+                      maxlength="80"
+                          value="#{stationHome.instance.stopName}">
+                    <a:support event="onblur" reRender="stopNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="stopCodeField" template="layout/edit.xhtml">
+                <ui:define name="label">Station code</ui:define>
+                <h:inputText id="stopCode"
+                           size="18"
+                      maxlength="18"
+                          value="#{stationHome.instance.stopCode}">
+                    <a:support event="onblur" reRender="stopCodeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="stopCommentsField" template="layout/edit.xhtml">
+                <ui:define name="label">Comments</ui:define>
+                <h:inputTextarea id="stopComments"
+                               cols="80"
+                               rows="2"
+                              value="#{stationHome.instance.stopComments}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">Station URL</ui:define>
+                <h:inputText id="stopUrl"
+                           size="80"
+                      maxlength="255"
+                          value="#{stationHome.instance.stopUrl}">
+                    <a:support event="onblur" reRender="stopUrlField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="stopDescField" template="layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <h:inputTextarea id="stopDesc"
+                               cols="80"
+                               rows="3"
+                              value="#{stationHome.instance.stopDesc}"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopZoneField" template="layout/edit.xhtml">
+                <ui:define name="label">Zone</ui:define>
+				<h:selectOneMenu id="stopZone" value="#{stationHome.instance.zone}">
+					<s:selectItems var="_zone" value="#{agencyViewBean.currentAgencyZones}" label="#{_zone.zoneName}"
+						noSelectionLabel="all zones"/>
+					<s:convertEntity />
+				</h:selectOneMenu>
+            </s:decorate>
+
+
+            <s:decorate id="stopLocationField" template="layout/edit.xhtml">
+                <ui:define name="label">Location</ui:define>
+                <ui:include src="/layout/mapWidget.xhtml">
+					<ui:param name="rootLevelId" value="stop:stopLocationField" />
+					<ui:param name="latField" value="stopLatField:stopLat" />
+					<ui:param name="lonField" value="stopLonField:stopLon" />
+					<ui:param name="centerLat" value="#{empty stationHome.instance.stopLat ? agencyHome.instance.agencyLatitude : stationHome.instance.stopLat}"/>
+					<ui:param name="centerLon" value="#{empty stationHome.instance.stopLon ? agencyHome.instance.agencyLongitude : stationHome.instance.stopLon}"/>
+					<ui:param name="markerLat" value="#{empty stationHome.instance.stopLat ? '' : stationHome.instance.stopLat}"/>
+					<ui:param name="markerLon" value="#{empty stationHome.instance.stopLon ? '' : stationHome.instance.stopLon}"/>
+                </ui:include>
+	            <s:decorate id="stopLatField" template="layout/edit.xhtml">
+    	            <ui:define name="label">Latitude</ui:define>
+        	        <h:inputText id="stopLat"
+            	              value="#{stationHome.instance.stopLat}">
+                	    <a:support event="onblur" reRender="stopLatField" bypassUpdates="true" ajaxSingle="true"/>
+	                </h:inputText>
+    	        </s:decorate>
+
+	            <s:decorate id="stopLonField" template="layout/edit.xhtml">
+    	            <ui:define name="label">Longitude</ui:define>
+        	        <h:inputText id="stopLon"
+            	              value="#{stationHome.instance.stopLon}">
+                	    <a:support event="onblur" reRender="stopLonField" bypassUpdates="true" ajaxSingle="true"/>
+                	</h:inputText>
+            	</s:decorate>
+
+            </s:decorate>
+
+            <s:decorate id="stopDirectionField" template="layout/edit.xhtml">
+                <ui:define name="label">Direction</ui:define>
+				<h:selectOneMenu id="stopDirection" value="#{stationHome.instance.direction}">
+					<s:selectItems var="_direction" value="#{agencyViewBean.currentAgencyDirections}" label="#{_direction.directionLabel}"
+						noSelectionLabel="not directional"/>
+					<s:convertEntity />
+				</h:selectOneMenu>
+            </s:decorate>
+			
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{stationHome.persist}"
+                       disabled="#{!stationHome.wired}"
+                       rendered="#{!stationHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{stationHome.update}"
+                       rendered="#{stationHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{stationHome.remove}"
+                      immediate="true"
+                       rendered="#{stationHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stationFrom ? 'StationList' : stationFrom}.xhtml"
+                rendered="#{stationHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty stationFrom ? 'StationList' : stationFrom}.xhtml"
+                rendered="#{!stationHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+        </div>
+
+		<rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{stationHome.managed}">
+			<f:facet name="header">Stops for this station</f:facet>
+			<div class="results" id="stopList">
+
+				<h:outputText value="This station has no associated stops."
+						   rendered="#{empty stationHome.instance.childStops}"/>
+
+				<rich:dataTable var="_stop"
+							  value="#{stationHome.instance.childStops}"
+						   rendered="#{not empty stationHome.instance.childStops}"
+						 styleClass="searchResultsTable"
+					  columnClasses="searchResultsTableColumn"
+						 rowClasses="searchResultsRowEven,searchResultsRowOdd">
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Stop Code</f:facet>
+						<h:outputText value="#{_stop.stopCode}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Name</f:facet>
+						<h:outputText value="#{_stop.stopName}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Comments</f:facet>
+						<h:outputText value="#{_stop.stopComments}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Zone</f:facet>
+						<h:outputText value="#{_stop.zone.zoneName}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Located</f:facet>
+						<h:graphicImage value="/img/true.png" alt="true" rendered="#{_stop.geolocated}"/>
+						<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _stop.geolocated}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Used<br/>in<br/>schedules?</f:facet>
+						<h:graphicImage value="/img/true.png" alt="true" rendered="#{_stop.inSchedules}"/>
+						<h:graphicImage value="/img/false.png" alt="false" rendered="#{not _stop.inSchedules}"/>
+					</h:column>
+
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Transfer<br/>Rules</f:facet>
+						<h:graphicImage value="/img/true.png" alt="to" rendered="#{not empty _stop.transfersToLocation}"/>
+						<h:graphicImage value="/img/true.png" alt="from" rendered="#{not empty _stop.transfersFromLocation}"/>
+					</h:column>
+
+					<rich:column styleClass="action" headerClass="searchResultsTableHeader">
+						<f:facet name="header">Edit</f:facet>
+						<s:link view="/StopEdit.xhtml"
+			                   value="Edit"
+			             propagation="none"
+			                      id="stopEdit"
+			                rendered="#{empty from}">
+				            <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+			                <f:param name="stopId"
+        		                value="#{_stop.stopId}"/>
+            			</s:link>
+        			</rich:column>
+				</rich:dataTable>
+			</div>
+		</rich:panel>
+    </h:form>
+</ui:define>
+
+</ui:composition>

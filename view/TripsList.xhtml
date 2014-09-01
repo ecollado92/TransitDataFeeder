@@ -1,0 +1,79 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+
+<ui:define name="subnav">
+	<ul>
+		<li>
+			<s:link view="/RouteList.xhtml" value="Routes">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+		<li>
+			<s:link view="/DirectionList.xhtml" value="Travel Directions">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+		<li class="current">Trips</li>
+		<li>
+			<s:link view="/BlocksList.xhtml" value="Blocks">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="currentView" value="ROUTES"/>
+			</s:link>
+		</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+	<s:div styleClass="searchPanelHeader" rendered="#{not empty routeHome.routeRouteId}">
+		<h:outputText value="Trips for #{displayBean.getRouteDisplayValue(routeHome.instance)}"/>
+	</s:div>
+
+    <h:form id="tripsSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="#{empty routeHome.routeRouteId ? 'Trips' : 'Trips for '.concat(displayBean.getRouteDisplayValue(routeHome.instance))}"
+						  headerClass="searchPanelHeader" styleClass="searchPanel"
+        				   switchType="ajax" rendered="#{empty routeHome.routeRouteId}">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Trip headsign</ui:define>
+                <h:inputText id="tripHeadsign" value="#{tripList.trip.tripHeadsign}"/>
+            </s:decorate>
+
+			<div style="clear:both;"/>
+
+	        <s:div styleClass="actionButtons" rendered="#{empty routeHome.routeRouteId}">
+	            <h:commandButton id="search" value="Search" action="/TripsList.xhtml"/>
+	            <s:button id="reset" value="Reset" includePageParams="false">
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+	            </s:button>
+	        </s:div>
+	        <s:div styleClass="actionButtons" rendered="#{not empty routeHome.routeRouteId}">
+	            <s:button id="cancel"
+	                   value="Cancel"
+	             propagation="end"
+	                    view="/#{empty tripListFrom ? 'RouteList' : tripListFrom}.xhtml">
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+        </s:div>
+
+        </rich:simpleTogglePanel>
+
+
+    </h:form>
+	<ui:include src="TripListing.xhtml">
+		<ui:param name="caller" value="TripsList"/>
+	</ui:include>
+</ui:define>
+
+</ui:composition>

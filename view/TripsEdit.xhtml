@@ -1,0 +1,524 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Routes</li>
+		<li class="nolink">Travel Directions</li>
+		<li class="current">Trips</li>
+		<li class="nolink">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{tripHome.managed ? 'Edit' : 'Add'} Trip"/>
+	</div>
+	<rich:panel styleClass="searchResultsPanel" rendered="#{empty agencyViewBean.currentAgencyCalendars}">
+<!--		<h:outputText>-->
+<!--			You will not be able to edit this trip until you create a Weekly Calendar/Service for this agency.-->
+<!--			Click-->
+<!--			<s:link id="goToServiceCalendarEdit"-->
+<!--				 value=" here "-->
+<!--		   propagation="end"-->
+<!--				  view="/CalendarDashboard.xhtml">-->
+<!--		   		<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--		   	</s:link>-->
+<!--		   	and then on "Edit" to add weekly calendars.-->
+<!--		</h:outputText>-->
+		<h:outputText>
+			You will not be able to edit this trip until you create a Weekly Calendar/Service for this agency.
+			Click 
+			<s:link view="/ServiceScheduleGroupEdit.xhtml"
+			 propagation="none"
+				rendered="#{empty from}">
+				<h:outputText value=" here"/>
+				<f:param name="serviceScheduleGroupFrom" value="CalendarDashboard"/>
+				<f:param name="currentView" value="CALS"/>
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+				<f:param name="serviceScheduleGroupId"/>
+			</s:link>
+			to add weekly calendars.
+		</h:outputText>
+	</rich:panel>
+
+    <h:form id="trips" styleClass="edit">
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+            <s:decorate id="tripHeadsignField" template="layout/edit.xhtml">
+                <ui:define name="label">Headsign</ui:define>
+                <h:inputText id="tripHeadsign"
+                           size="35"
+                      maxlength="35"
+                          value="#{tripHome.instance.tripHeadsign}">
+                    <a:support event="onblur" reRender="tripHeadsignField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="routeField" template="layout/edit.xhtml" rendered="#{empty routeId}">
+                <ui:define name="label">Route</ui:define>
+                <h:selectOneMenu id="routeSelect" value="#{tripHome.instance.route}" required="true">
+                	<s:selectItems var="_route" value="#{agencyViewBean.currentAgencyRoutes}"
+                		label="#{displayBean.getRouteDisplayValue(_route)}" noSelectionLabel="Select one"/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="routeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="serviceIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Service Calendar</ui:define>
+                <h:selectOneMenu id="serviceSelect" value="#{tripHome.instance.calendar}" required="true">
+                	<s:selectItems var="_calendar" value="#{agencyViewBean.currentAgencyCalendars}" label="#{_calendar.serviceLabel}" noSelectionLabel="Select one"/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="serviceIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="basedOnField" template="layout/edit.xhtml">
+                <ui:define name="label">Based on</ui:define>
+                <h:selectOneMenu id="basedOnSelect" value="#{tripHome.instance.basedOn}">
+                	<s:selectItems var="_trip" value="#{tripViewBean.availableTripParents}"
+                		         label="#{displayBean.getTripDisplayValue(_trip)}"
+					  noSelectionLabel="none"/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="basedOnField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="tripStartTimeField" template="layout/edit.xhtml">
+                <ui:define name="label">Start Time</ui:define>
+                <h:selectOneMenu id="startTimeHourSelect" value="#{tripHome.instance.startTimeHour}">
+					<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+                </h:selectOneMenu>
+				<h:outputText value=" : "/>
+				<h:selectOneMenu id="startTimeMinuteSelect" value="#{tripHome.instance.startTimeMinute}">
+					<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+				</h:selectOneMenu>
+				<h:outputLabel for="arrivalNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="startTimeNextDay" value="#{tripHome.instance.startTimeCarryover}"/>
+            </s:decorate>
+
+            <s:decorate id="directionIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Direction</ui:define>
+				<h:selectOneMenu id="directionSelect" value="#{tripHome.instance.direction}">
+					<s:selectItems var="_direction" value="#{tripViewBean.currentRouteDirections}" label="#{_direction.directionLabel}" noSelectionLabel="unspecified"/>
+					<s:convertEntity/>
+                    <a:support event="onblur" reRender="directionIdField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="blockField" template="layout/edit.xhtml">
+                <ui:define name="label">Block</ui:define>
+                <h:selectOneMenu id="blockSelect" value="#{tripHome.instance.block}">
+                	<s:selectItems var="_block" value="#{agencyViewBean.currentAgencyBlocks}" label="#{_block.blockLabel}" noSelectionLabel="none" />
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="blockIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="tripBikesAllowedField" template="layout/edit.xhtml">
+                <ui:define name="label">Trip bikes allowed</ui:define>
+                <h:selectOneMenu value="#{tripHome.instance.bikeOption}" required="true">
+                	<s:selectItems var="_bikeOption" value="#{validationTableBean.bikeOptions}"
+                		label="#{_bikeOption.bikeOptionDescription}" noSelectionLabel="Select one"/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="tripBikesAllowedField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{tripHome.persist}"
+                       disabled="#{!tripHome.wired}"
+                       rendered="#{!tripHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{tripHome.update}"
+                       rendered="#{tripHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{tripHome.remove}"
+                      immediate="true"
+                       rendered="#{tripHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tripEditFrom ? 'TripsList' : tripEditFrom}.xhtml"
+                rendered="#{tripHome.managed}">
+                <f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+                <f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+            </s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tripEditFrom ? 'TripsList' : tripEditFrom}.xhtml"
+                rendered="#{!tripHome.managed}">
+                <f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+                <f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+			</s:button>
+
+        </div>
+
+	    <rich:simpleTogglePanel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{tripHome.managed}">
+	    	<f:facet name="header">Frequencies</f:facet>
+
+			<s:div styleClass="tableControl" rendered="#{empty from}">
+				<s:div styleClass="createNew">
+					<s:link view="/FrequenciesEdit.xhtml"
+							  id="topCreateFreq"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Frequency"/>
+						<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+						<f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+						<f:param name="tripEditFrom" value="#{tripEditFrom}"/>
+						<f:param name="frequenciesFrom" value="TripsEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="frequencyId"/>
+					</s:link>
+				</s:div>
+				
+				<div class="displaying">&#160;</div>
+
+				<div class="navigation">&#160;</div>
+
+			</s:div>
+
+		    <s:div styleClass="results" id="editableFrequenciesList">
+
+				<h:outputText value="There are no frequencies associated with this trip."
+    	               rendered="#{empty tripHome.instance.frequencies}"/>
+
+				<rich:dataTable var="_frequency"
+						  value="#{tripHome.instance.frequencies}"
+					   rendered="#{not empty tripHome.instance.frequencies}"
+							 id="editableFrequenciesTable"
+					 styleClass="searchResultsTable"
+				  columnClasses="searchResultsTableColumn"
+					 rowClasses="searchResultsRowEven,searchResultsRowOdd">
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Start time</f:facet>
+						<h:selectOneMenu value="#{_frequency.startTimeHour}">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu value="#{_frequency.startTimeMinute}">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="arrivalNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="arrivalNextDay" value="#{_frequency.startTimeCarryover}"/>						
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">End time</f:facet>
+						<h:selectOneMenu value="#{_frequency.endTimeHour}">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu value="#{_frequency.endTimeMinute}">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="departureNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="departureNextDay" value="#{_frequency.endTimeCarryover}"/>						
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Headway (minutes)</f:facet>
+                		<h:inputText id="headwayInMinutes"
+                       		   required="true"
+							      value="#{_frequency.headwaySecs}"
+							  converter="minutesSecondsConverter"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Exact times</f:facet>
+						<h:selectBooleanCheckbox id="exactTimesCheckboxGroup" value="#{_frequency.exactTimes}" />
+					</h:column>
+<!--					<h:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--						<f:facet name="header">Action</f:facet>-->
+<!--						<s:link id="viewstoptime"-->
+<!--							 value="View"-->
+<!--							  view="/FrequenciesEdit.xhtml">-->
+<!--							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--							<f:param name="tripId" value="#{tripHome.tripTripId}"/>-->
+<!--							<f:param name="frequencyId" value="#{_frequency.frequencyId}"/>-->
+<!--						</s:link>-->
+<!--					</h:column>-->
+				</rich:dataTable>
+			</s:div>
+
+			<s:div styleClass="tableControl" rendered="#{empty from and empty tripHome.instance.basedOn}">
+				<s:div styleClass="createNew">
+					<s:link view="/FrequenciesEdit.xhtml"
+							  id="bottomCreateFreq"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Frequency"/>
+						<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+						<f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+						<f:param name="tripEditFrom" value="#{tripEditFrom}"/>
+						<f:param name="frequenciesFrom" value="TripsEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="frequencyId"/>
+					</s:link>
+				</s:div>
+				
+				<div class="displaying">&#160;</div>
+
+				<div class="navigation">&#160;</div>
+
+			</s:div>
+
+		</rich:simpleTogglePanel>
+
+
+	    <rich:simpleTogglePanel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{tripHome.managed}">
+	    	<f:facet name="header">Stop Times</f:facet>
+
+			<s:div styleClass="tableControl" rendered="#{empty from and empty tripHome.instance.basedOn}">
+				<s:div styleClass="createNew">
+					<s:link view="/StopTimesEdit.xhtml"
+							  id="topCreate"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Stop Time"/>
+						<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+						<f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+						<f:param name="tripEditFrom" value="#{tripEditFrom}"/>
+						<f:param name="stopTimeEditFrom" value="TripsEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"/>
+					</s:link>
+				</s:div>
+				
+				<div class="displaying">&#160;</div>
+
+				<div class="navigation">&#160;</div>
+
+			</s:div>
+
+		    <s:div styleClass="results" id="editableStopTimesList" rendered="#{empty tripHome.instance.basedOn}">
+
+				<h:outputText value="There are no stop times associated with this trip."
+    	               rendered="#{empty tripHome.instance.stopTimes}"/>
+
+				<rich:dataTable var="_stopTime"
+						  value="#{tripHome.instance.stopTimes}"
+					   rendered="#{not empty tripHome.instance.stopTimes}"
+							 id="editableStopTimesTable"
+					 styleClass="searchResultsTable"
+				  columnClasses="searchResultsTableColumn"
+					 rowClasses="searchResultsRowEven,searchResultsRowOdd">
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Stop</f:facet>
+						<h:selectOneMenu id="stopTimeStopSelect" value="#{_stopTime.stop}">
+							<s:selectItems var="_stop" value="#{agencyViewBean.currentAgencyStops}" label="#{_stop.stopName}" noSelectionLabel="none" />
+							<s:convertEntity />
+						</h:selectOneMenu>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Arrival time</f:facet>
+						<h:selectOneMenu value="#{_stopTime.arrivalTimeHour}">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu value="#{_stopTime.arrivalTimeMinute}">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="arrivalNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="arrivalNextDay" value="#{_stopTime.arrivalTimeCarryover}"/>						
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Departure time</f:facet>
+						<h:selectOneMenu value="#{_stopTime.departureTimeHour}">
+							<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputText value=" : "/>
+						<h:selectOneMenu value="#{_stopTime.departureTimeMinute}">
+							<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+						</h:selectOneMenu>
+						<h:outputLabel for="departureNextDay">Next Day</h:outputLabel><h:selectBooleanCheckbox id="departureNextDay" value="#{_stopTime.departureTimeCarryover}"/>						
+<!--						<h:outputText value="#{carryoverTimeViewBean.displayTime(_stopTime.departureTime, _stopTime.departureTimeCarryover)}"/>-->
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Drop off type</f:facet>
+						<h:selectOneMenu id="stopTimeDropoffSelect" value="#{_stopTime.dropOffType}">
+							<s:selectItems var="_pickupType" value="#{validationTableBean.pickupTypes}" label="#{_pickupType.pickupTypeDescription}" noSelectionLabel="Select One"/>
+							<s:convertEntity />
+						</h:selectOneMenu>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Pickup type</f:facet>
+						<h:selectOneMenu id="stopTimePickupSelect" value="#{_stopTime.pickupType}">
+							<s:selectItems var="_dropoffType" value="#{validationTableBean.pickupTypes}" label="#{_dropoffType.pickupTypeDescription}" noSelectionLabel="Select One"/>
+							<s:convertEntity />
+						</h:selectOneMenu>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Stop sequence</f:facet>
+		                <h:inputText id="stopSequence"
+		                		   size="4"
+		                	  maxlength="5"
+        		               required="true"
+                		          value="#{_stopTime.stopSequence}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Timing point?</f:facet>
+						<h:selectBooleanCheckbox id="stTimingPoint" value="#{_stopTime.timingPoint}"/>
+					</h:column>
+					<h:column styleClass="action" headerClass="searchResultsTableHeader">
+						<f:facet name="header">Action</f:facet>
+						<h:commandLink id="deleteStopTime"
+									value="Delete"
+								   action="#{oneStepDeletionHandler.deleteStopTime(_stopTime.stopTimeId)}"
+								  onclick="return confirm('Are you sure you want to delete this stop time?');">
+						</h:commandLink>
+					</h:column>
+<!--					<h:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--						<f:facet name="header">Action</f:facet>-->
+<!--						<s:link id="viewstoptime"-->
+<!--							 value="View"-->
+<!--							  view="/StopTimes.xhtml">-->
+<!--							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--							<f:param name="tripId" value="#{tripHome.tripTripId}"/>-->
+<!--							<f:param name="stopTimeId" value="#{_stopTime.stopTimeId}"/>-->
+<!--						</s:link>-->
+<!--					</h:column>-->
+				</rich:dataTable>
+			</s:div>
+
+			<s:div rendered="#{not empty tripHome.instance.basedOn}">
+				<span class='displayInfo'>
+					<h:outputText value="Stop times inherited from trip"/>
+					<s:link id="editParentTrip"
+						 value=" '#{displayBean.getTripDisplayValue(tripHome.instance.basedOn)}'"
+				   propagation="end"
+						  view="/TripsEdit.xhtml">
+		   				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                		<f:param name="tripEditFrom" value="#{tripEditFrom}"/>
+						<f:param name="tripId" value="#{tripHome.instance.basedOn.tripId}"/>
+				   	</s:link>
+				</span>
+			</s:div>
+
+		    <s:div styleClass="results" id="immutableStopTimesList" rendered="#{not empty tripHome.instance.basedOn}">
+
+				<h:outputText value="There are no stop times associated with this trip's 'based on' trip."
+    	               rendered="#{empty tripViewBean.currentTripInheritedStopTimes}"/>
+
+				<rich:dataTable var="_stopTime"
+						  value="#{tripViewBean.currentTripInheritedStopTimes}"
+					   rendered="#{not empty tripViewBean.currentTripInheritedStopTimes}"
+							 id="immutableStopTimesTable"
+					 styleClass="searchResultsTable"
+				  columnClasses="searchResultsTableColumn"
+					 rowClasses="searchResultsRowEven,searchResultsRowOdd">
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Arrival time</f:facet>
+						<h:outputText value="#{_stopTime.arrivalTimeHour}">
+							<f:convertNumber minIntegerDigits="2"/>
+						</h:outputText>
+						:
+						<h:outputText value="#{_stopTime.arrivalTimeMinute}">
+							<f:convertNumber minIntegerDigits="2"/>
+						</h:outputText>
+						<h:outputText value=" (next day)" rendered="#{_stopTime.arrivalTimeCarryover}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Departure time</f:facet>
+						<h:outputText value="#{_stopTime.departureTimeHour}">
+							<f:convertNumber minIntegerDigits="2"/>
+						</h:outputText>
+						:
+						<h:outputText value="#{_stopTime.departureTimeMinute}">
+							<f:convertNumber minIntegerDigits="2"/>
+						</h:outputText>
+						<h:outputText value=" (next day)" rendered="#{_stopTime.departureTimeCarryover}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Drop off type</f:facet>
+						<h:outputText value="#{_stopTime.dropOffType.pickupTypeDescription}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Pickup type</f:facet>
+						<h:outputText value="#{_stopTime.pickupType.pickupTypeDescription}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Stop</f:facet>
+						<h:outputText value="#{_stopTime.stop.stopName}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Stop sequence</f:facet>
+						<h:outputText value="#{_stopTime.stopSequence}"/>
+					</h:column>
+					<h:column headerClass="searchResultsTableHeader">
+						<f:facet name="header">Timing point?</f:facet>
+						<h:outputText value="#{_stopTime.timingPoint}"/>
+					</h:column>
+<!--					<h:column styleClass="action" headerClass="searchResultsTableHeader">-->
+<!--						<f:facet name="header">Action</f:facet>-->
+<!--						<s:link id="viewstoptime"-->
+<!--							 value="View"-->
+<!--							  view="/StopTimes.xhtml">-->
+<!--							<f:param name="stopTimesFrom" value="TripsEdit"/>-->
+<!--							<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>-->
+<!--							<f:param name="tripId" value="#{tripHome.tripTripId}"/>-->
+<!--							<f:param name="stopTimeId" value="#{_stopTime.stopTimeId}"/>-->
+<!--						</s:link>-->
+<!--					</h:column>-->
+				</rich:dataTable>
+			</s:div>
+
+			<s:div styleClass="tableControl" rendered="#{empty from and empty tripHome.instance.basedOn}">
+				<s:div styleClass="createNew">
+					<s:link view="/StopTimesEdit.xhtml"
+							  id="bottomCreate"
+					 propagation="none">
+						<h:graphicImage value="/img/new.png" alt="create new"/>
+						<h:outputText value=" Add Stop Time"/>
+						<f:param name="routeDashboardFrom" value="#{routeDashboardFrom}"/>
+						<f:param name="routeEditFrom" value="#{routeEditFrom}"/>
+						<f:param name="tripEditFrom" value="#{tripEditFrom}"/>
+						<f:param name="stopTimeEditFrom" value="TripsEdit"/>
+						<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+						<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+						<f:param name="tripId" value="#{tripHome.tripTripId}"/>
+						<f:param name="stopTimeId"/>
+					</s:link>
+				</s:div>
+				
+				<div class="displaying">&#160;</div>
+
+				<div class="navigation">&#160;</div>
+
+			</s:div>
+
+		</rich:simpleTogglePanel>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

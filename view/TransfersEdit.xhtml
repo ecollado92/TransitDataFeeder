@@ -1,0 +1,115 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="nolink">Stops</li>
+		<li class="nolink">Stations</li>
+		<li class="nolink">Zones</li>
+		<li class="current">Transfers</li>
+	</ul>
+</ui:define>
+
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{transfersHome.managed ? 'Edit' : 'Add'} Transfer"/>
+	</div>
+
+    <h:form id="transfers" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+            <s:decorate id="transferTypeField" template="layout/edit.xhtml">
+                <ui:define name="label">Transfer type</ui:define>
+                <h:selectOneMenu value="#{transfersHome.instance.transferType}" required="true">
+                	<s:selectItems var="_transferType" value="#{validationTableBean.transferTypes}" label="#{_transferType.transferTypeDescription}" noSelectionLabel="Select Transfer Type..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="transferTypeField,transferTimeContainer" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="fromStopIdField" template="layout/edit.xhtml">
+                <ui:define name="label">From stop</ui:define>
+                <h:selectOneMenu value="#{transfersHome.instance.fromLocation}" required="true">
+                	<s:selectItems var="_stop" value="#{agencyViewBean.currentAgencyTransferableStops}" label="#{_stop.stopName}" noSelectionLabel="Select stop..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="fromStopIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="toStopIdField" template="layout/edit.xhtml">
+                <ui:define name="label">To stop</ui:define>
+                <h:selectOneMenu value="#{transfersHome.instance.toLocation}" required="true">
+                	<s:selectItems var="_stop" value="#{agencyViewBean.currentAgencyTransferableStops}" label="#{_stop.stopName}" noSelectionLabel="Select stop..."/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="toStopIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+			<s:div id="transferTimeContainer" styleClass="#{transfersHome.instance.transferType.timed ? 'shown' : 'hidden'}">
+            <s:decorate id="minTransferTimeField" template="layout/edit.xhtml">
+                <ui:define name="label">Min transfer time</ui:define>
+                <h:inputText id="minTransferTime"
+                          value="#{transfersHome.instance.minTransferTime}"
+                      converter="minutesSecondsConverter">
+                    <a:support event="onblur" reRender="minTransferTimeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+			</s:div>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{transfersHome.persist}"
+                       disabled="#{!transfersHome.wired}"
+                       rendered="#{!transfersHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{transfersHome.update}"
+                       rendered="#{transfersHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{transfersHome.remove}"
+                      immediate="true"
+                       rendered="#{transfersHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty transfersFrom ? 'Transfers' : transfersFrom}.xhtml"
+                rendered="#{transfersHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty transfersFrom ? 'TransfersList' : transfersFrom}.xhtml"
+                rendered="#{!transfersHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

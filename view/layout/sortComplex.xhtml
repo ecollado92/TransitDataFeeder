@@ -1,0 +1,14 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<s:link styleClass="columnHeader"
+		value="#{propertyLabel} #{entityList.multiColumnSort == propertyPath ? (entityList.orderDirection == 'desc' ? messages.down : messages.up) : ''}">
+		<f:param name="dir"
+			value="#{entityList.multiColumnSort == propertyPath and entityList.orderDirection == 'asc' ? 'desc' : 'asc'}" />
+		<f:param name="sort" value="" />
+		<f:param name="multiColumnSort" value="#{propertyPath}" />
+	</s:link>
+</ui:composition>

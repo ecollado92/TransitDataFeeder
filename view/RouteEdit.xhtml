@@ -1,0 +1,282 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/subnav_template.xhtml">
+
+<ui:define name="subnav">
+	<ul>
+		<li class="current">Routes</li>
+		<li class="nolink">Travel Directions</li>
+		<li class="nolink">Trips</li>
+		<li class="nolink">Blocks</li>
+	</ul>
+</ui:define>
+<ui:define name="body">
+
+	<div class="searchPanelHeader">
+		<h:outputText value="#{routeHome.managed ? 'Edit' : 'Add'} Route"/>
+	</div>
+
+    <h:form id="route" styleClass="edit">
+
+        <rich:panel styleClass="searchResultsPanel" headerClass="searchResultsPanelHeader">
+			<h:inputHidden id="routeId" value="#{routeHome.instance.routeId}"/>
+
+            <s:decorate id="routeShortNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Short Name</ui:define>
+                <h:inputText id="routeShortName"
+                           size="15"
+                      maxlength="15"
+                      	required="#{empty routeHome.instance.routeLongName}"
+                          value="#{routeHome.instance.routeShortName}">
+                    <a:support event="onblur" reRender="routeShortNameField,routeLongNameField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="routeLongNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Long Name</ui:define>
+                <h:inputText id="routeLongName"
+                           size="40"
+                      maxlength="40"
+                       required="#{empty routeHome.instance.routeShortName}"
+                          value="#{routeHome.instance.routeLongName}">
+                    <a:support event="onblur" reRender="routeLongNameField,routeShortNameField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="routeDescField" template="layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <h:inputTextarea id="routeDesc"
+                               cols="80"
+                               rows="3"
+                              value="#{routeHome.instance.routeDesc}"/>
+            </s:decorate>
+
+            <s:decorate id="routeTypeField" template="layout/edit.xhtml">
+                <ui:define name="label">Route Type</ui:define>
+                <h:selectOneMenu value="#{routeHome.instance.routeType}" required="true">
+                	<s:selectItems var="_routeType" value="#{validationTableBean.routeTypes}"
+                		label="#{_routeType.routeTypeDescription}"/>
+                	<s:convertEntity/>
+                    <a:support event="onblur" reRender="routeTypeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="routeUrlField" template="layout/edit.xhtml">
+                <ui:define name="label">URL</ui:define>
+                <h:inputText id="routeUrl"
+                           size="80"
+                      maxlength="255"
+                          value="#{routeHome.instance.routeUrl}"/>
+            </s:decorate>
+
+            <s:decorate id="routeColorField" template="layout/edit.xhtml">
+                <ui:define name="label">Route Color</ui:define>
+                <rich:colorPicker value="#{routeHome.instance.routeColor}" colorMode="hex">
+                	<a:support event="onchange" reRender="routeColorSample" ajaxSingle="true"/>
+                </rich:colorPicker>
+            </s:decorate>
+
+            <s:decorate id="routeTextColorField" template="layout/edit.xhtml">
+                <ui:define name="label">Route text color</ui:define>
+                <rich:colorPicker value="#{routeHome.instance.routeTextColor}" colorMode="hex">
+                	<a:support event="onchange" reRender="routeColorSample" ajaxSingle="true"/>
+                </rich:colorPicker>
+            </s:decorate>
+
+            <s:decorate id="routeColorSample" template="layout/edit.xhtml">
+                <ui:define name="label">Route color (sample)</ui:define>
+                <div style="#{not empty routeHome.instance.routeColor ? 'background-color: '.concat(routeHome.instance.routeColor).concat(';') : ''} #{not empty routeHome.instance.routeTextColor ? 'color: '.concat(routeHome.instance.routeTextColor).concat(';') : ''} padding: 10px;">
+                	SAMPLE
+                </div>
+            </s:decorate>
+
+            <s:decorate id="routeBikesAllowedField" template="layout/edit.xhtml">
+                <ui:define name="label">Bikes Allowed</ui:define>
+				<h:selectOneMenu value="#{routeHome.instance.bikeOption}" required="true">
+					<s:selectItems var="_bikeOption" value="#{validationTableBean.bikeOptions}"
+						label="#{_bikeOption.bikeOptionDescription}"/>
+					<s:convertEntity/>
+                    <a:support event="onblur" reRender="routeBikesAllowedField" bypassUpdates="true" ajaxSingle="true"/>
+				</h:selectOneMenu>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{routeHome.persist}"
+                       disabled="#{!routeHome.wired}"
+                       rendered="#{!routeHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{routeHome.update}"
+                       rendered="#{routeHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{routeHome.remove}"
+                      immediate="true"
+                       rendered="#{routeHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty routeEditFrom ? 'RouteList' : routeEditFrom}.xhtml"
+                rendered="#{routeHome.managed}">
+                <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+			</s:button>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty routeEditFrom ? 'RouteList' : routeEditFrom}.xhtml"
+                rendered="#{!routeHome.managed}">
+				<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+            </s:button>
+
+        </div>
+
+    <rich:panel styleClass="searchResultsPanel" headerClass="searchPanelHeader" rendered="#{routeHome.managed}">
+    	<f:facet name="header">Trips for this route</f:facet>
+	    <s:div styleClass="tableControl">
+		    <s:div styleClass="createNew">
+		    	<s:link view="/TripsEdit.xhtml"
+	        	          id="topCreate"
+        	      propagation="none"
+            	     rendered="#{empty from}">
+            	  	<h:graphicImage value="/img/new.png" alt="create new"/>
+         	     	<h:outputText value=" Add trip"/>
+        		    <f:param name="tripEditFrom" value="RouteEdit"/>
+        		    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        		    <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        	   		<f:param name="tripId"/>
+				</s:link>
+    		</s:div>
+    	</s:div>
+	    <div class="results" id="tripList">
+
+	    <h:outputText value="This route has no associated trips"
+	               rendered="#{empty routeHome.instance.trips}"/>
+
+	    <rich:dataTable id="tripListTable"
+					   var="_trip"
+					 value="#{routeHome.instance.trips}"
+				  rendered="#{not empty routeHome.instance.trips}"
+				styleClass="searchResultsTable"
+			 columnClasses="searchResultsTableColumn"
+				rowClasses="searchResultsRowEven,searchResultsRowOdd">
+<!--			<h:column headerClass="searchResultsTableHeader">-->
+<!--    	        <f:facet name="header">Trip ID</f:facet>-->
+<!--	            <h:outputText value="#{_trip.tripId}"/>-->
+<!--    	    </h:column>-->
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Headsign</f:facet>
+	            <h:inputText value="#{_trip.tripHeadsign}"/>
+	        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Service Calendar</f:facet>
+				<h:selectOneMenu value="#{_trip.calendar}" required="true">
+					<s:selectItems var="_cal" value="#{agencyViewBean.currentAgencyCalendars}"
+						label="#{_cal.serviceLabel}"/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+    	    </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">
+					<ui:include src="layout/sort.xhtml">
+						<ui:param name="entityList" value="#{tripList}"/>
+						<ui:param name="propertyLabel" value="Start time"/>
+						<ui:param name="propertyPath" value="trip.tripStartTime"/>
+					</ui:include>
+				</f:facet>
+				<h:selectOneMenu value="#{_trip.startTimeHour}">
+					<ui:include src="/layout/timeHourSelectItems.xhtml"/>
+				</h:selectOneMenu>
+				<h:outputText value=" : "/>
+				<h:selectOneMenu value="#{_trip.startTimeMinute}">
+					<ui:include src="/layout/timeMinuteSelectItems.xhtml"/>
+				</h:selectOneMenu>
+				<h:outputLabel for="startTimeNextDay">Next Day</h:outputLabel>
+				<h:selectBooleanCheckbox id="startTimeNextDay" value="#{_trip.startTimeCarryover}"/>
+	        </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+	            <f:facet name="header">Direction</f:facet>
+	            <h:selectOneMenu value="#{_trip.direction}">
+	            	<s:selectItems var="_dir" value="#{tripViewBean.currentRouteDirections}"
+	            		label="#{_dir.directionLabel}" />
+	            	<s:convertEntity/>
+	            </h:selectOneMenu>
+    	    </h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Based on</f:facet>
+				<h:selectOneMenu value="#{_trip.basedOn}">
+					<s:selectItems var="_basedon" value="#{routeHome.instance.trips}"
+						noSelectionLabel="None" label="#{displayBean.getTripDisplayValue(_basedon)}"/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+				<f:facet name="header">Block</f:facet>
+				<h:selectOneMenu value="#{_trip.block}">
+					<s:selectItems var="_block" value="#{agencyViewBean.currentAgencyBlocks}"
+						noSelectionLabel="None" label="#{_block.blockLabel}"/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</h:column>
+			<h:column headerClass="searchResultsTableHeader">
+	            <f:facet name="header">Bikes?</f:facet>
+	            <h:selectOneMenu value="#{_trip.bikeOption}" required="true">
+	            	<s:selectItems var="_bikeOption" value="#{validationTableBean.bikeOptions}"
+	            		label="#{_bikeOption.bikeOptionDescription}"/>
+	            	<s:convertEntity/>
+	            </h:selectOneMenu>
+			</h:column>
+    	    <rich:column styleClass="action" headerClass="searchResultsTableHeader" rendered="#{empty from}">
+				<f:facet name="header">Stop Times</f:facet>
+				<s:link view="/StopTimesList.xhtml"
+	                   value="Stop Times"
+						  id="stopTimesViewId">
+					<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+					<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+					<f:param name="tripId"
+						value="#{_trip.tripId}"/>
+				</s:link>
+	        </rich:column>
+	    </rich:dataTable>
+
+    	</div>
+	    <s:div styleClass="tableControl">
+		    <s:div styleClass="createNew">
+		    	<s:link view="/TripsEdit.xhtml"
+	        	          id="bottomCreate"
+        	      propagation="none"
+            	     rendered="#{empty from}">
+            	  	<h:graphicImage value="/img/new.png" alt="create new"/>
+         	     	<h:outputText value=" Add trip"/>
+        		    <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        		    <f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        	   		<f:param name="tripId"/>
+				</s:link>
+    		</s:div>
+    	</s:div>
+    </rich:panel>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

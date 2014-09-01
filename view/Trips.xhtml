@@ -1,0 +1,147 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Trips Details</f:facet>
+
+        <s:decorate id="tripId" template="layout/display.xhtml">
+            <ui:define name="label">Trip id</ui:define>
+            <h:outputText value="#{tripHome.instance.tripId}"/>
+        </s:decorate>
+
+        <s:decorate id="basedOn" template="layout/display.xhtml">
+            <ui:define name="label">Based on</ui:define>
+            <h:outputText value="#{displayBean.getTripDisplayValue(tripHome.instance.basedOn)}"/>
+        </s:decorate>
+
+        <s:decorate id="blockId" template="layout/display.xhtml">
+            <ui:define name="label">Block</ui:define>
+            <h:outputText value="#{tripHome.instance.block.blockLabel}"/>
+        </s:decorate>
+
+        <s:decorate id="directionId" template="layout/display.xhtml">
+            <ui:define name="label">Direction</ui:define>
+            <h:outputText value="#{tripHome.instance.direction.directionLabel}"/>
+        </s:decorate>
+
+        <s:decorate id="routeId" template="layout/display.xhtml">
+            <ui:define name="label">Route</ui:define>
+            <h:outputText value="#{displayBean.getRouteDisplayValue(tripHome.instance.route)}"/>
+        </s:decorate>
+
+        <s:decorate id="serviceId" template="layout/display.xhtml">
+            <ui:define name="label">Service id</ui:define>
+            <h:outputText value="#{tripHome.instance.calendar.serviceLabel}"/>
+        </s:decorate>
+
+        <s:decorate id="tripBikesAllowed" template="layout/display.xhtml">
+            <ui:define name="label">Bikes allowed</ui:define>
+            <h:outputText value="#{tripHome.instance.bikeOption.bikeOptionDescription}"/>
+        </s:decorate>
+
+        <s:decorate id="tripHeadsign" template="layout/display.xhtml">
+            <ui:define name="label">Trip headsign</ui:define>
+            <h:outputText value="#{tripHome.instance.tripHeadsign}"/>
+        </s:decorate>
+
+        <s:decorate id="tripStartTime" template="layout/display.xhtml">
+            <ui:define name="label">Trip start time</ui:define>
+            <h:outputText value="#{tripHome.instance.tripStartTime}">
+                <s:convertDateTime type="time"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TripsEdit.xhtml"
+                    id="edit"
+                 value="Edit">
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        	<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        </s:button>
+
+        <s:button view="/#{empty tripsFrom ? 'TripsList' : tripsFrom}.xhtml"
+                    id="done"
+                 value="Done">
+        	<f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+        	<f:param name="routeId" value="#{routeHome.routeRouteId}"/>
+        </s:button>
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Stop Times</h:panelGroup>
+        </f:facet>
+    <div class="association" id="stopTimesChildren">
+
+        <h:outputText value="There are no stop times associated with this trip."
+                   rendered="#{empty tripHome.instance.stopTimes}"/>
+
+        <rich:dataTable var="_stopTime"
+                   value="#{tripHome.instance.stopTimes}"
+                rendered="#{not empty tripHome.instance.stopTimes}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="stopTimesTable">
+            <h:column>
+                <f:facet name="header">Arrival time</f:facet>
+                <h:outputText value="#{carryoverTimeViewBean.displayTime(_stopTime.arrivalTime, _stopTime.arrivalTimeCarryover)}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Departure time</f:facet>
+                <h:outputText value="#{carryoverTimeViewBean.displayTime(_stopTime.departureTime, _stopTime.departureTimeCarryover)}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Drop off type</f:facet>
+                <h:outputText value="#{_stopTime.dropOffType.pickupTypeDescription}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pickup type</f:facet>
+                <h:outputText value="#{_stopTime.pickupType.pickupTypeDescription}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop</f:facet>
+                <h:outputText value="#{_stopTime.stop.stopName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Stop sequence</f:facet>
+                <h:outputText value="#{_stopTime.stopSequence}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Timing point</f:facet>
+                <h:outputText value="#{_stopTime.timingPoint}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewstoptime"
+                     value="View"
+                      view="/StopTimes.xhtml">
+                      <f:param name="agencyId" value="#{agencyHome.agencyAgencyId}"/>
+                      <f:param name="tripId" value="#{tripHome.tripTripId}"/>
+                      <f:param name="stopTimeId" value="#{_stopTime.stopTimeId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+</rich:tabPanel>
+
+</ui:define>
+
+</ui:composition>
